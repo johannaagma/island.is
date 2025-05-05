@@ -558,6 +558,9 @@
       "@island.is/application/templates/social-insurance-administration/pension-supplement": [
         "libs/application/templates/social-insurance-administration/pension-supplement/src/index.ts"
       ],
+      "@island.is/application/templates/tax-return": [
+        "libs/application/templates/tax-return/src/index.ts"
+      ],
       "@island.is/application/templates/transport-authority/anonymity-in-vehicle-registry": [
         "libs/application/templates/transport-authority/anonymity-in-vehicle-registry/src/index.ts"
       ],
@@ -1195,6 +1198,7 @@
       "application/templates/name-of-application": [
         "libs/application/templates/name-of-application/src/index.ts"
       ],
+      "clients/tax-return": ["libs/clients/tax-return/src/index.ts"],
       "delegation-admin": ["libs/portals/admin/delegation-admin/src/index.ts"]
     }
   }

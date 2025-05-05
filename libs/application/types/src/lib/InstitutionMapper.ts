@@ -434,4 +434,9 @@ export const institutionMapper = {
     slug: InstitutionTypes.MIDSTOD_MENNTUNAR_SKOLATHJONUSTU,
     contentfulId: InstitutionContentfulIds.MIDSTOD_MENNTUNAR_SKOLATHJONUSTU,
   },
+  [ApplicationTypes.TAX_RETURN]: {
+    nationalId: InstitutionNationalIds.STAFRAENT_ISLAND,
+    slug: InstitutionTypes.STAFRAENT_ISLAND,
+    contentfulId: InstitutionContentfulIds.STAFRAENT_ISLAND,
+  },
 }
