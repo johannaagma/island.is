@@ -1,0 +1,137 @@
+{
+  "name": "services-tax-return-backend",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/tax-return-backend/src",
+  "projectType": "application",
+  "prefix": "services-tax-return-backend",
+  "tags": ["scope:nest"],
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/node:build",
+      "options": {
+        "outputPath": "dist/apps/services/tax-return-backend",
+        "main": "apps/services/tax-return-backend/src/main.ts",
+        "tsConfig": "apps/services/tax-return-backend/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "*",
+            "input": "apps/services/tax-return-backend/migrations",
+            "output": "./migrations"
+          },
+          {
+            "glob": "*",
+            "input": "apps/services/tax-return-backend/seeders",
+            "output": "./seeders"
+          },
+          {
+            "glob": ".sequelizerc",
+            "input": "apps/services/tax-return-backend",
+            "output": "./"
+          },
+          {
+            "glob": "sequelize.config.js",
+            "input": "apps/services/tax-return-backend",
+            "output": "./"
+          }
+        ],
+        "maxWorkers": 2
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "services-tax-return-backend:build",
+        "runtimeArgs": ["--no-experimental-fetch", "--trace-deprecation"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "worker": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "services-tax-return-backend:build",
+        "args": ["--job", "worker"]
+      }
+    },
+    "dev-services": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose up -d",
+        "cwd": "apps/services/tax-return-backend"
+      }
+    },
+    "codegen/backend-schema": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/services/tax-return-backend/tsconfig.app.json apps/services/tax-return-backend/src/buildOpenApi.ts"
+      },
+      "outputs": ["{projectRoot}/src/openapi.yaml"]
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:migrate",
+        "cwd": "apps/services/tax-return-backend"
+      }
+    },
+    "migrate/undo": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:migrate:undo",
+        "cwd": "apps/services/tax-return-backend"
+      }
+    },
+    "migrate/generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli migration:generate --name $(whoami)",
+        "cwd": "apps/services/tax-return-backend"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:seed:all",
+        "cwd": "apps/services/tax-return-backend"
+      }
+    },
+    "docker-express": {
+      "executor": "Intentionally left blank, only so this target is valid when using `nx show projects --with-target docker-express`"
+    },
+    "dev-init": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "yarn dev-services services-tax-return-backend",
+          "yarn nx run services-tax-return-backend:migrate",
+          "yarn nx run services-tax-return-backend:seed"
+        ],
+        "parallel": false
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["yarn start services-tax-return-backend"],
+        "parallel": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/services/tax-return-backend"],
+      "options": {
+        "jestConfig": "apps/services/tax-return-backend/jest.config.ts"
+      }
+    }
+  }
+}
