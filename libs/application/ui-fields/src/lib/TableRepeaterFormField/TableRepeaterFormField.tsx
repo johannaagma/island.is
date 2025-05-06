@@ -20,12 +20,13 @@ import {
 } from '@island.is/island-ui/core'
 import { useLocale } from '@island.is/localization'
 import { FieldDescription } from '@island.is/shared/form-fields'
-import { FC, useEffect, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
 import {
   buildDefaultTableHeader,
   buildDefaultTableRows,
   handleCustomMappedValues,
+  handleCustomStaticValues,
 } from './utils'
 import { Item } from './TableRepeaterItem'
 import { Locale } from '@island.is/shared/types'
@@ -61,6 +62,7 @@ export const TableRepeaterFormField: FC<Props> = ({
     onSubmitLoad,
     loadErrorMessage,
     initActiveFieldIfEmpty,
+    getFixedBottomRow,
   } = data
 
   const apolloClient = useApolloClient()
@@ -72,24 +74,38 @@ export const TableRepeaterFormField: FC<Props> = ({
   }))
 
   const load = async () => {
-    if (!onSubmitLoad) {
-      return
+    if (onSubmitLoad) {
+      try {
+        setLoadError(false)
+        const submitResponse = await onSubmitLoad({
+          apolloClient,
+          application,
+          tableItems: values,
+          staticData: staticData,
+        })
+
+        submitResponse.dictionaryOfItems.forEach((x) => {
+          methods.setValue(x.path, x.value)
+        })
+      } catch (e) {
+        console.error('e', e)
+        setLoadError(true)
+      }
     }
 
-    try {
-      setLoadError(false)
-      const submitResponse = await onSubmitLoad({
-        apolloClient,
-        application,
-        tableItems: values,
-      })
-
-      submitResponse.dictionaryOfItems.forEach((x) => {
-        methods.setValue(x.path, x.value)
-      })
-    } catch (e) {
-      console.error('e', e)
-      setLoadError(true)
+    if (getFixedBottomRow) {
+      try {
+        const updatedFixedValue = await getFixedBottomRow({
+          apolloClient,
+          application,
+          updatedValues: methods.getValues(),
+          staticData: staticData,
+        })
+        setFixedBottomRow(updatedFixedValue.items)
+      } catch (e) {
+        console.error('e', e)
+        setLoadError(true)
+      }
     }
   }
 
@@ -111,8 +127,14 @@ export const TableRepeaterFormField: FC<Props> = ({
   const staticData = getStaticTableData?.(application)
   const canAddItem = maxRows ? savedFields.length < maxRows : true
 
+  const [fixedBottomRow, setFixedBottomRow] = useState<
+    Array<ReactNode> | undefined
+  >()
   // check for components that might need some custom value mapping
   const customMappedValues = handleCustomMappedValues(tableItems, values)
+  const customStaticValues = staticData
+    ? handleCustomStaticValues(tableItems, staticData)
+    : []
 
   const handleSaveItem = async (index: number) => {
     const isValid = await methods.trigger(`${data.id}[${index}]`, {
@@ -140,10 +162,21 @@ export const TableRepeaterFormField: FC<Props> = ({
     methods.clearErrors()
   }
 
-  const handleRemoveItem = (index: number) => {
+  const handleRemoveItem = async (index: number) => {
     if (activeIndex === index) setActiveIndex(-1)
     if (activeIndex > index) setActiveIndex(activeIndex - 1)
     remove(index)
+    if (!getFixedBottomRow) {
+      return
+    }
+
+    const updatedFixedValue = await getFixedBottomRow({
+      apolloClient,
+      application,
+      updatedValues: methods.getValues(),
+      staticData: staticData,
+    })
+    setFixedBottomRow(updatedFixedValue.items)
   }
 
   const handleEditItem = (index: number) => {
@@ -152,6 +185,9 @@ export const TableRepeaterFormField: FC<Props> = ({
   }
 
   const formatTableValue = (key: string, item: Record<string, string>) => {
+    if (item === undefined) {
+      return
+    }
     item[key] = item[key] ?? ''
     const formatFn = table?.format?.[key]
     const formatted = formatFn ? formatFn(item[key]) : item[key]
@@ -170,6 +206,20 @@ export const TableRepeaterFormField: FC<Props> = ({
       })
       setActiveIndex(0)
     }
+
+    if (!getFixedBottomRow) {
+      return
+    }
+    const updateFixedValue = async () => {
+      const updatedFixedValue = await getFixedBottomRow({
+        apolloClient,
+        application,
+        updatedValues: methods.getValues(),
+        staticData: staticData,
+      })
+      setFixedBottomRow(updatedFixedValue.items)
+    }
+    updateFixedValue()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -212,10 +262,58 @@ export const TableRepeaterFormField: FC<Props> = ({
               {staticData &&
                 staticData.map((item, index) => (
                   <T.Row key={index}>
-                    <T.Data></T.Data>
-                    {Object.keys(item).map((key, index) => (
-                      <T.Data key={`static-${key}-${index}`}>
-                        {formatTableValue(key, item)}
+                    <T.Data
+                      borderColor={
+                        fixedBottomRow &&
+                        index === savedFields.length + staticData.length - 1
+                          ? 'dark300'
+                          : undefined
+                      }
+                    >
+                      <Box display="flex" alignItems="center">
+                        {editField && (
+                          <Tooltip
+                            placement="left"
+                            text={formatText(
+                              editButtonTooltipText,
+                              application,
+                              formatMessage,
+                            )}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleEditItem(index)}
+                            >
+                              <Icon
+                                icon="pencil"
+                                color="blue400"
+                                type="outline"
+                                size="small"
+                              />
+                            </button>
+                          </Tooltip>
+                        )}
+                      </Box>
+                    </T.Data>
+                    {Object.keys(item).map((key, indexy) => (
+                      <T.Data
+                        key={`static-${key}-${indexy}`}
+                        borderColor={
+                          fixedBottomRow &&
+                          index === savedFields.length + staticData.length - 1
+                            ? 'dark300'
+                            : undefined
+                        }
+                      >
+                        {formatTableValue(
+                          key,
+                          customStaticValues?.length
+                            ? (customStaticValues[index] as Record<
+                                string,
+                                string
+                              >)
+                            : (item as Record<string, string>),
+                        )}
                       </T.Data>
                     ))}
                   </T.Row>
@@ -223,7 +321,17 @@ export const TableRepeaterFormField: FC<Props> = ({
               {values &&
                 savedFields.map((field, index) => (
                   <T.Row key={field.id}>
-                    <T.Data>
+                    <T.Data
+                      borderColor={
+                        fixedBottomRow &&
+                        (index === savedFields.length - 1 ||
+                          (staticData &&
+                            index ===
+                              savedFields.length + staticData.length - 1))
+                          ? 'dark300'
+                          : undefined
+                      }
+                    >
                       <Box display="flex" alignItems="center">
                         <Tooltip
                           placement="left"
@@ -268,8 +376,17 @@ export const TableRepeaterFormField: FC<Props> = ({
                     {tableRows.map((item, idx) => (
                       <T.Data
                         key={`${item}-${idx}`}
+                        borderColor={
+                          fixedBottomRow &&
+                          (index === savedFields.length - 1 ||
+                            (staticData &&
+                              index ===
+                                savedFields.length + staticData.length - 1))
+                            ? 'dark300'
+                            : undefined
+                        }
                         disabled={
-                          values[index].disabled === 'true' ? true : false
+                          values[index]?.disabled === 'true' ? true : false
                         }
                       >
                         {formatTableValue(
@@ -282,6 +399,19 @@ export const TableRepeaterFormField: FC<Props> = ({
                     ))}
                   </T.Row>
                 ))}
+              {fixedBottomRow &&
+                ((savedFields && savedFields.length > 0) ||
+                  (staticData && staticData.length > 0)) && (
+                  <T.Row>
+                    {fixedBottomRow.map((item, index) => (
+                      <T.Data key={index} text={{ fontWeight: 'semiBold' }}>
+                        {typeof item === 'string'
+                          ? formatText(item ?? '', application, formatMessage)
+                          : item}
+                      </T.Data>
+                    ))}
+                  </T.Row>
+                )}
             </T.Body>
           </T.Table>
           {activeField ? (

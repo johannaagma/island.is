@@ -95,6 +95,7 @@ export const Item = ({
     defaultValue,
     clearOnChange,
     setOnChange,
+    size,
     ...props
   } = item
 
@@ -423,8 +424,9 @@ export const Item = ({
                 clearErrors(id)
               }
             }}
+            size={size}
             application={application}
-            large={true}
+            large={false}
             placeholder={formatText(placeholder, application, formatMessage)}
             clearOnChange={clearOnChangeVal}
             setOnChange={setOnChangeFunc}

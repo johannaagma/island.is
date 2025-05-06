@@ -20,7 +20,7 @@ import { CallToAction } from './StateMachine'
 import { Colors } from '@island.is/island-ui/theme'
 import { Condition } from './Condition'
 import { FormatInputValueFunction } from 'react-number-format'
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, ReactNode } from 'react'
 import { TestSupport } from '@island.is/island-ui/utils'
 import { MessageDescriptor } from 'react-intl'
 import { BffUser, Locale } from '@island.is/shared/types'
@@ -36,6 +36,7 @@ export type MaybeWithApplicationAndFieldAndLocale<T> =
 export type ValidAnswers = 'yes' | 'no' | undefined
 export type FieldWidth = 'full' | 'half'
 export type TitleVariants = 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
+export type FieldSizeVariants = 'xs' | 'sm' | 'md' | undefined
 export type TextFieldVariant =
   | 'text'
   | 'email'
@@ -52,6 +53,12 @@ export type Context = {
 
 export type TableContext = Context & {
   tableItems: Array<any>
+  staticData?: Array<Record<string, any>> | undefined
+}
+
+export type TableFixedBottomRowContext = Context & {
+  updatedValues: Record<string, any>
+  staticData?: Array<Record<string, any>> | undefined
 }
 
 export type AsyncSelectContext = {
@@ -152,6 +159,7 @@ export type RepeaterItem = {
         ) => string | string[] | undefined)
   }
   clearOnChange?: MaybeWithIndex<string[]>
+  size?: FieldSizeVariants
   setOnChange?:
     | { key: string; value: any }[]
     | ((
@@ -477,6 +485,7 @@ export interface TextField extends InputField {
   suffix?: string
   rows?: number
   tooltip?: FormText
+  size?: FieldSizeVariants
   onChange?: (...event: any[]) => void
 }
 
@@ -722,6 +731,9 @@ export type TableRepeaterField = BaseField & {
   editField?: boolean
   titleVariant?: TitleVariants
   fields: Record<string, RepeaterItem>
+  getFixedBottomRow?(
+    c: TableFixedBottomRowContext,
+  ): Promise<{ items: ReactNode[] }>
   onSubmitLoad?(c: TableContext): Promise<{
     dictionaryOfItems: Array<{ path: string; value: string }>
   }>

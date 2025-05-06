@@ -7,7 +7,8 @@ import {
   coreMessages,
 } from '@island.is/application/core'
 import { DefaultEvents } from '@island.is/application/types'
-import { FormModes, UserProfileApi } from '@island.is/application/types'
+import { FormModes } from '@island.is/application/types'
+import { GetApplicantApi } from '../../dataProviders'
 
 export const Prerequisites = buildForm({
   id: 'PrerequisitesDraft',
@@ -23,11 +24,10 @@ export const Prerequisites = buildForm({
           title: 'External data',
           dataProviders: [
             buildDataProviderItem({
-              provider: UserProfileApi,
-              title: 'User profile',
-              subTitle: 'User profile',
+              provider: GetApplicantApi,
+              title: 'Upplýsingar úr Þjóðskrá',
+              subTitle: 'Upplýsingar um þig, maka og börn.',
             }),
-            // Add more data providers as needed
           ],
           submitField: buildSubmitField({
             id: 'submit',
