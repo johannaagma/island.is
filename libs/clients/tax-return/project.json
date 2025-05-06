@@ -3,7 +3,8 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/clients/tax-return/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["lib:client", "scope:client"],
+  "implicitDependencies": ["services-tax-return-backend"],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
@@ -14,6 +15,16 @@
       "options": {
         "jestConfig": "libs/clients/tax-return/jest.config.ts"
       }
+    },
+    "codegen/backend-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "yarn openapi-generator -o libs/clients/tax-return/gen/fetch -i apps/services/tax-return-backend/src/openapi.yaml --additional-properties=enumPropertyNaming=original"
+        ],
+        "parallel": false
+      },
+      "outputs": ["{projectRoot}/gen/fetch"]
     }
   }
 }

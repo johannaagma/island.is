@@ -811,6 +811,7 @@
       ],
       "@island.is/clients/statistics": ["libs/clients/statistics/src/index.ts"],
       "@island.is/clients/syslumenn": ["libs/clients/syslumenn/src/index.ts"],
+      "@island.is/clients/tax-return": ["libs/clients/tax-return/src/index.ts"],
       "@island.is/clients/transport-authority/digital-tachograph-drivers-card": [
         "libs/clients/transport-authority/digital-tachograph-drivers-card/src/index.ts"
       ],
@@ -1198,7 +1199,6 @@
       "application/templates/name-of-application": [
         "libs/application/templates/name-of-application/src/index.ts"
       ],
-      "clients/tax-return": ["libs/clients/tax-return/src/index.ts"],
       "delegation-admin": ["libs/portals/admin/delegation-admin/src/index.ts"]
     }
   }

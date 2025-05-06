@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { ApplicationTypes } from '@island.is/application/types'
 import { BaseTemplateApiService } from '../../base-template-api.service'
+import { TaxReturnClient } from '@island.is/clients/tax-return'
 
 @Injectable()
 export class TaxReturnService extends BaseTemplateApiService {
-  constructor() {
+  constructor(private readonly taxReturnClient: TaxReturnClient) {
     super(ApplicationTypes.TAX_RETURN)
   }
 
