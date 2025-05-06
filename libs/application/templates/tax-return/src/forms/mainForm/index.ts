@@ -1,12 +1,24 @@
 import { buildForm } from '@island.is/application/core'
 import { FormModes } from '@island.is/application/types'
-import { firstSection } from '../mainForm/firstSection'
-import { secondSection } from '../mainForm/secondSection'
+import { applicantSection } from './applicant'
+import { incomeSection } from './income'
 import { overviewSection } from './overview'
+import { generalInfoSection } from './generalInfo'
+import { otherAssetsSection } from './otherAssets'
+import { capitalInfoSection } from './capitalIncome'
+import { debtSection } from './debt'
 
 export const MainForm = buildForm({
   id: 'MainForm',
   mode: FormModes.DRAFT,
   renderLastScreenButton: true,
-  children: [firstSection, secondSection, overviewSection],
+  children: [
+    applicantSection,
+    generalInfoSection,
+    incomeSection,
+    capitalInfoSection,
+    otherAssetsSection,
+    debtSection,
+    overviewSection,
+  ],
 })

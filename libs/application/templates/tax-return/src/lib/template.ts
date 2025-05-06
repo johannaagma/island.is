@@ -7,17 +7,17 @@ import {
   Application,
   DefaultEvents,
   FormModes,
-  UserProfileApi,
   ApplicationConfigurations,
 } from '@island.is/application/types'
 import { Events, Roles, States } from '../utils/constants'
 import { CodeOwners } from '@island.is/shared/constants'
-import { dataSchema } from './dataSchema'
+import { TaxReturnAnswerSchema } from './dataSchema'
 import {
   DefaultStateLifeCycle,
   EphemeralStateLifeCycle,
 } from '@island.is/application/core'
 import { assign } from 'xstate'
+import { GetApplicantApi } from '../dataProviders'
 
 const template: ApplicationTemplate<
   ApplicationContext,
@@ -28,7 +28,8 @@ const template: ApplicationTemplate<
   name: 'Skattframtal',
   codeOwner: CodeOwners.Origo,
   translationNamespaces: [ApplicationConfigurations.TaxReturn.translation],
-  dataSchema,
+  allowMultipleApplicationsInDraft: false,
+  dataSchema: TaxReturnAnswerSchema,
   stateMachineConfig: {
     initial: States.PREREQUISITES,
     states: {
@@ -50,7 +51,7 @@ const template: ApplicationTemplate<
               ],
               write: 'all',
               read: 'all',
-              api: [UserProfileApi],
+              api: [GetApplicantApi],
               delete: true,
             },
           ],

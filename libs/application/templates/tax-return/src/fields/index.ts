@@ -1,0 +1,7 @@
+export { SalaryIncomeTable } from './SalaryIncomeTable'
+export { OtherIncomeTable } from './OtherIncomeTable'
+export { SupportingIncomeTable } from './SupportingIncomeTable'
+export { DomesticPropertiesTable } from './DomesticPropertiesTable'
+export { AccordionWithTagSection } from './AccordionWithTagSection'
+export { CarTable } from './CarTable'
+export { OtherDebtsTable } from './OtherDebtsTable'

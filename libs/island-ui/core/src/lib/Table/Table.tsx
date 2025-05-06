@@ -82,6 +82,7 @@ export const Data = ({
   borderColor = 'blue200',
   align,
   disabled,
+  color,
   ...props
 }: DataField &
   Omit<AllHTMLAttributes<HTMLTableDataCellElement>, 'className'>) => {
@@ -122,7 +123,8 @@ export const HeadData = ({
   const classNames = cn(
     styles.cell,
     getTextStyles({
-      variant: 'h5',
+      variant: 'medium',
+      fontWeight: 'semiBold',
       disabled,
       ...text,
     }),

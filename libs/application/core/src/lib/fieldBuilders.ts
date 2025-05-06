@@ -307,6 +307,7 @@ export const buildTextField = (
     readOnly,
     rightAlign,
     tooltip,
+    size,
     onChange,
   } = data
   return {
@@ -329,6 +330,7 @@ export const buildTextField = (
     onChange,
     type: FieldTypes.TEXT,
     component: FieldComponents.TEXT,
+    size,
   }
 }
 
@@ -903,6 +905,7 @@ export const buildTableRepeaterField = (
     onSubmitLoad,
     loadErrorMessage,
     initActiveFieldIfEmpty,
+    getFixedBottomRow,
   } = data
 
   return {
@@ -924,6 +927,7 @@ export const buildTableRepeaterField = (
     onSubmitLoad,
     loadErrorMessage,
     initActiveFieldIfEmpty,
+    getFixedBottomRow,
   }
 }
 

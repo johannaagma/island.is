@@ -8,6 +8,22 @@ type Item = {
 
 export type Value<T> = { [key: string]: T }
 
+export const formatIsk = (value: number): string =>
+  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' kr.'
+
+export const handleCustomStaticValues = <T>(
+  tableItems: Array<Item>,
+  staticData: Array<Record<string, string>>,
+) => {
+  return tableItems.reduce((acc, item) => {
+    if (item.component === 'input' && item.currency) {
+      const stat = staticData as Array<Value<T>>
+      return handleCurrency(item, stat)
+    }
+    return acc
+  }, [] as Array<Value<T>>)
+}
+
 export const handleCustomMappedValues = <T>(
   tableItems: Array<Item>,
   values: Array<Value<T>>,
@@ -17,8 +33,32 @@ export const handleCustomMappedValues = <T>(
     if (item.component === 'nationalIdWithName') {
       return handleNationalIdWithNameItem(item, values)
     }
+    if (item.component === 'input' && item.currency) {
+      return handleCurrency(item, values)
+    }
     return acc
   }, [] as Array<Value<T>>)
+}
+
+const handleCurrency = <T>(item: Item, values: Array<Value<T>>) => {
+  if (!values?.length) {
+    return []
+  }
+
+  const newValues = values.map((value) => {
+    if (value[item.id]) {
+      const { [item.id]: nestedObject, ...rest } = value
+      const formattedCurrency = formatIsk(nestedObject as number)
+
+      return {
+        [item.id]: formattedCurrency as T,
+        ...rest,
+      }
+    }
+    return value
+  })
+
+  return newValues
 }
 
 const handleNationalIdWithNameItem = <T>(
