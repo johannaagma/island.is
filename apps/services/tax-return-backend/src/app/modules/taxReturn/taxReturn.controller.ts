@@ -1,15 +1,22 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common'
 import { TaxReturnService } from './taxReturn.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
 import { TaxReturn } from './model/taxReturn'
-// import { CurrentUser, User } from '@island.is/auth-nest-tools'
 import { CreateTaxReturnDto } from './dto/createTaxReturnDto'
 import { UpdateTaxReturnDto } from './dto/updateTaxReturnDto'
+import { TaxReturnsResponse } from './dto/taxReturnsResponse'
 
-//TODOx ætti að vera IdsUserGuard
-// @UseGuards(IdsUserGuard, ScopesGuard)
-@ApiTags('Tax Return Backend')
+@ApiTags('Tax return')
 @Controller({
   path: 'tax-return',
   version: ['1'],
@@ -17,11 +24,53 @@ import { UpdateTaxReturnDto } from './dto/updateTaxReturnDto'
 export class TaxReturnController {
   constructor(private readonly taxReturnService: TaxReturnService) {}
 
-  //TODO bæta við get all
+  @Get()
+  @Documentation({
+    summary: 'Get all tax returns, possible to filter by year',
+    response: {
+      status: 200,
+      type: TaxReturnsResponse,
+    },
+    request: {
+      query: {
+        limit: {
+          type: 'number',
+          description:
+            'Limits the number of results in a request. The server should have a default value for this field.',
+          required: false,
+        },
+        before: {
+          type: 'string',
+          description:
+            'The client provides the value of startCursor from the previous response pageInfo to query the previous page of limit number of data items.',
+          required: false,
+        },
+        after: {
+          type: 'string',
+          description:
+            'The client provides the value of endCursor from the previous response to query the next page of limit number of data items.',
+          required: false,
+        },
+        year: {
+          type: 'string',
+          description: 'Year the tax return belongs to',
+          required: false,
+        },
+      },
+    },
+  })
+  getTaxReturns(
+    @Query('limit') limit: number,
+    @Query('before') before: string,
+    @Query('after') after: string,
+    @Query('year') year?: string,
+  ): Promise<TaxReturnsResponse> {
+    return this.taxReturnService.getTaxReturns(limit, before, after, year)
+  }
 
   @Get(':id')
   @Documentation({
-    description: 'Get tax return by ID for logged in user',
+    summary: 'Get tax return by ID',
     response: {
       status: 200,
       type: TaxReturn,
@@ -31,37 +80,33 @@ export class TaxReturnController {
         id: {
           type: 'string',
           description:
-            'Application ID, should be the same application GUID that is used in island.is application system',
+            'Tax return ID, should be the same application GUID that is used in island.is application system',
           required: true,
         },
       },
     },
   })
-  getApplicationById(
-    @Param('id') id: string,
-    // @CurrentUser() user: User,
-  ): Promise<TaxReturn | null> {
+  getTaxReturnById(@Param('id') id: string): Promise<TaxReturn | null> {
     return this.taxReturnService.getTaxReturnById(id)
   }
 
   @Post()
   @Documentation({
-    description: 'Create tax return for logged in user',
+    summary: 'Create tax return',
     response: {
       status: 201,
       type: TaxReturn,
     },
   })
-  createApplication(
-    @Body() applicationDto: CreateTaxReturnDto,
-    // @CurrentUser() user: User,
+  createTaxReturn(
+    @Body() taxReturnDto: CreateTaxReturnDto,
   ): Promise<TaxReturn> {
-    return this.taxReturnService.createTaxReturn(applicationDto)
+    return this.taxReturnService.createTaxReturn(taxReturnDto)
   }
 
   @Put(':id')
   @Documentation({
-    description: 'Update tax return for logged in user',
+    summary: 'Update tax return by ID',
     response: {
       status: 200,
       type: TaxReturn,
@@ -71,17 +116,38 @@ export class TaxReturnController {
         id: {
           type: 'string',
           description:
-            'Application ID, should be the same application GUID that is used in island.is application system',
+            'Tax return ID, should be the same application GUID that is used in island.is application system',
           required: true,
         },
       },
     },
   })
-  updateApplication(
+  updateTaxReturn(
     @Param('id') id: string,
-    @Body() applicationDto: UpdateTaxReturnDto,
-    // @CurrentUser() user: User,
+    @Body() taxReturnDto: UpdateTaxReturnDto,
   ): Promise<TaxReturn> {
-    return this.taxReturnService.updateTaxReturn(id, applicationDto)
+    return this.taxReturnService.updateTaxReturn(id, taxReturnDto)
+  }
+
+  @Delete(':id')
+  @Documentation({
+    summary: 'Delete tax return by ID',
+    response: {
+      status: 204,
+      type: TaxReturn,
+    },
+    request: {
+      params: {
+        id: {
+          type: 'string',
+          description:
+            'Tax return ID, should be the same application GUID that is used in island.is application system',
+          required: true,
+        },
+      },
+    },
+  })
+  deleteTaxReturn(@Param('id') id: string) {
+    this.taxReturnService.deleteTaxReturn(id)
   }
 }

@@ -24,7 +24,7 @@ export class TaxReturn extends Model<
 > {
   @ApiProperty({
     description:
-      'Application ID, should be the same application GUID that is used in island.is application system',
+      'Tax return ID, should be the same application GUID that is used in island.is application system',
     example: '00000000-0000-0000-0000-000000000000',
     type: String,
   })
@@ -69,5 +69,5 @@ export class TaxReturn extends Model<
     type: [TaxReturnEntry],
   })
   @HasMany(() => TaxReturnEntry)
-  entries!: TaxReturnEntry[]
+  entries?: TaxReturnEntry[]
 }

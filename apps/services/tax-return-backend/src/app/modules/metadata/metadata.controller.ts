@@ -1,12 +1,9 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { MetadataService } from './metadata.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
-import { Field } from './model/field'
-// import { CurrentUser, User } from '@island.is/auth-nest-tools'
+import { FieldsReponse } from './dto/fieldsResponse'
 
-//TODOx ætti að vera IdsUserGuard og nota nationalId úr token ekki param
-// @UseGuards(IdsUserGuard, ScopesGuard)
 @ApiTags('Metadata')
 @Controller({
   path: 'metadata',
@@ -17,10 +14,10 @@ export class MetadataController {
 
   @Get('fields')
   @Documentation({
-    description: 'Get fields to display in the tax return',
+    summary: 'Get fields to display in the tax return',
     response: {
       status: 200,
-      type: [Field], //TODO wrapper utan um result
+      type: FieldsReponse,
     },
     request: {
       query: {
@@ -32,10 +29,7 @@ export class MetadataController {
       },
     },
   })
-  getFields(@Query('year') year: string): Promise<Field[]> {
-    return this.metadataService.getFields(
-      year,
-      // user,
-    )
+  getFields(@Query('year') year: string): Promise<FieldsReponse> {
+    return this.metadataService.getFields(year)
   }
 }

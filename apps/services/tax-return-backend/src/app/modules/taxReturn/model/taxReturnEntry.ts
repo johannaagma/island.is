@@ -19,6 +19,7 @@ import {
   InferCreationAttributes,
 } from 'sequelize'
 import { TaxReturn } from './taxReturn'
+import { Field } from '../../metadata/model/field'
 
 @Table({
   tableName: 'tax_return_entry',
@@ -46,19 +47,31 @@ export class TaxReturnEntry extends Model<
 
   @ApiHideProperty()
   @BelongsTo(() => TaxReturn, 'taxReturnId')
-  taxReturn!: TaxReturn
+  taxReturn?: TaxReturn
 
-  //TODO add connection to field...
+  @ApiHideProperty()
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  @ForeignKey(() => Field)
+  fieldId!: string
+
+  @ApiPropertyOptional({
+    description: 'Entry field information',
+  })
+  @BelongsTo(() => Field, 'fieldId')
+  field?: Field
 
   @ApiPropertyOptional({
     description: 'Data object for this field entry',
-    example: '{}',
+    example: "{ sourceName: 'VR' }",
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.JSONB,
     allowNull: true,
   })
-  data?: string //TODO JSONB
+  data?: Record<string, unknown>
 
   @ApiProperty({
     description: 'Amount for this field entry',

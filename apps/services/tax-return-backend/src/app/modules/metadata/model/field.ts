@@ -9,6 +9,7 @@ import {
   CreatedAt,
   DataType,
   ForeignKey,
+  HasOne,
   Model,
   Table,
   UpdatedAt,
@@ -52,7 +53,7 @@ export class Field extends Model<
 
   @ApiProperty({
     description: 'Tax return field number (reitur)',
-    example: 23,
+    example: 131,
   })
   @Column({
     type: DataType.INTEGER,
@@ -62,7 +63,7 @@ export class Field extends Model<
 
   @ApiProperty({
     description: 'Tax return field name',
-    example: 'Dagpeningar',
+    example: 'Starfsmenntastyrkur',
   })
   @Column({
     type: DataType.STRING,
@@ -97,10 +98,10 @@ export class Field extends Model<
     example: '{}',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.JSONB,
     allowNull: true,
   })
-  entryDataSchema?: string //TODO JSONB
+  entryDataSchema?: Record<string, unknown>
 
   @ApiProperty({
     description:

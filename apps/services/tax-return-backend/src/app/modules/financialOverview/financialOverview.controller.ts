@@ -1,12 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { FinancialOverviewService } from './financialOverview.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
 import { FinancialOverview } from './model/financialOverview'
-// import { CurrentUser, User } from '@island.is/auth-nest-tools'
 
-//TODOx ætti að vera IdsUserGuard og nota nationalId úr token ekki param
-// @UseGuards(IdsUserGuard, ScopesGuard)
 @ApiTags('Financial overview')
 @Controller({
   path: 'financial-overview',
@@ -17,15 +14,15 @@ export class FinancialOverviewController {
     private readonly financialOverviewService: FinancialOverviewService,
   ) {}
 
-  @Get(':nationalId')
+  @Get()
   @Documentation({
-    description: 'Get financial overview for logged in user',
+    summary: 'Get financial overview, to pre-fill tax return fields',
     response: {
       status: 200,
       type: FinancialOverview,
     },
     request: {
-      params: {
+      query: {
         nationalId: {
           type: 'string',
           description:
@@ -35,13 +32,11 @@ export class FinancialOverviewController {
       },
     },
   })
-  getApplicationById(
-    @Param('nationalId') nationalId: string,
-    // @CurrentUser() user: User,
+  getFinancialOverviewByNationalId(
+    @Query('nationalId') nationalId: string,
   ): Promise<FinancialOverview | null> {
-    return this.financialOverviewService.getMyFinancialOverview(
+    return this.financialOverviewService.getFinancialOverviewByNationalId(
       nationalId,
-      // user,
     )
   }
 }

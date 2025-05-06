@@ -33,7 +33,7 @@ export class Section extends Model<
 
   @ApiProperty({
     description: 'Tax return section number',
-    example: '2.2',
+    example: '2.3',
   })
   @Column({
     type: DataType.STRING,
@@ -43,7 +43,8 @@ export class Section extends Model<
 
   @ApiProperty({
     description: 'Tax return section name',
-    example: 'Ökutækjastyrkur, dagpeningar og hlunnindi',
+    example:
+      'Lífeyrisgreiðslur. Greiðslur frá Tryggingastofnun. Aðrar bótagreiðslur, styrkir o.fl.',
   })
   @Column({
     type: DataType.STRING,

@@ -19,6 +19,7 @@ import {
   InferCreationAttributes,
 } from 'sequelize'
 import { FinancialOverview } from './financialOverview'
+import { Field } from '../../metadata/model/field'
 
 @Table({
   tableName: 'financial_overview_entry',
@@ -48,17 +49,29 @@ export class FinancialOverviewEntry extends Model<
   @BelongsTo(() => FinancialOverview, 'financialOverviewId')
   financialOverview!: FinancialOverview
 
-  //TODO add connection to field...
+  @ApiHideProperty()
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  @ForeignKey(() => Field)
+  fieldId!: string
+
+  @ApiPropertyOptional({
+    description: 'Entry field information',
+  })
+  @BelongsTo(() => Field, 'fieldId')
+  field!: Field
 
   @ApiPropertyOptional({
     description: 'Data object for this field entry',
-    example: '{}',
+    example: "{ sourceName: 'VR' }",
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.JSONB,
     allowNull: true,
   })
-  data?: string //TODO JSONB
+  data?: string
 
   @ApiProperty({
     description: 'Amount for this field entry',
