@@ -18,7 +18,7 @@ export class MetadataService {
         {
           model: Section,
           attributes: {
-            exclude: ['id', 'created', 'modified'],
+            exclude: ['id', 'created', 'modified', 'fields'],
           },
         },
       ],

@@ -60,10 +60,7 @@ export class Section extends Model<
   @UpdatedAt
   readonly modified!: CreationOptional<Date>
 
-  @ApiProperty({
-    description: 'Fields connected to this section',
-    type: [Field],
-  })
+  @ApiHideProperty()
   @HasMany(() => Field)
   fields!: Field[]
 }

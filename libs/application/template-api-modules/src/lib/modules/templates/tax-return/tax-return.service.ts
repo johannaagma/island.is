@@ -3,12 +3,14 @@ import { SharedTemplateApiService } from '../../shared'
 import { ApplicationTypes } from '@island.is/application/types'
 import { NotificationsService } from '../../../notification/notifications.service'
 import { BaseTemplateApiService } from '../../base-template-api.service'
+import { TaxReturnClient } from '@island.is/clients/tax-return'
 
 @Injectable()
 export class TaxReturnService extends BaseTemplateApiService {
   constructor(
     private readonly sharedTemplateAPIService: SharedTemplateApiService,
     private readonly notificationsService: NotificationsService,
+    private readonly taxReturnClient: TaxReturnClient,
   ) {
     super(ApplicationTypes.TAX_RETURN)
   }
