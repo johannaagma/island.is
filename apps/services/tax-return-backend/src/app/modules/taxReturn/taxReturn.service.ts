@@ -23,8 +23,8 @@ export class TaxReturnService {
     private readonly sequelize: Sequelize,
   ) {}
 
-  async getTaxReturns(): Promise<GetTaxReturnsResponse> {
-    const items = await this.taxReturnModel.findAll()
+  async getTaxReturns(nationalId: string): Promise<GetTaxReturnsResponse> {
+    const items = await this.taxReturnModel.findAll({ where: { nationalId } })
 
     return {
       data: items.map((item) => ({

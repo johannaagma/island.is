@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common'
 import { TaxReturnService } from './taxReturn.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
@@ -23,9 +32,21 @@ export class TaxReturnController {
       status: 200,
       type: GetTaxReturnsResponse,
     },
+    request: {
+      query: {
+        nationalId: {
+          type: 'string',
+          description:
+            'National ID of the logged-in user. Will be retrieved from token when authentication is implemented.',
+          required: true,
+        },
+      },
+    },
   })
-  getTaxReturns(): Promise<GetTaxReturnsResponse> {
-    return this.taxReturnService.getTaxReturns()
+  getTaxReturns(
+    @Query('nationalId') nationalId: string,
+  ): Promise<GetTaxReturnsResponse> {
+    return this.taxReturnService.getTaxReturns(nationalId)
   }
 
   @Get(':id')

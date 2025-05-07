@@ -15,6 +15,7 @@ import {
   supportingIncomeCategories,
 } from './constants/EntryCategories'
 import { groupOtherDebtsById } from './utils'
+import { TemplateApiError } from '@island.is/nest/problem'
 
 @Injectable()
 export class TaxReturnService extends BaseTemplateApiService {
@@ -23,6 +24,23 @@ export class TaxReturnService extends BaseTemplateApiService {
     private readonly nationalRegistryClient: NationalRegistryBackendApiClient,
   ) {
     super(ApplicationTypes.TAX_RETURN)
+  }
+
+  async validateCanCreate() {
+    const taxReturns = await this.taxReturnClient.getTaxReturns('1203894569')
+    const currentYear = new Date().getFullYear()
+    const currentYearTaxReturn = taxReturns.find((x) => x.year === currentYear)
+
+    if (currentYearTaxReturn) {
+      throw new TemplateApiError(
+        {
+          title: 'Ekki tókst að hefja skattframtal',
+          summary:
+            'Þú hefur nú þegar skilað inn skattframtali fyrir núverandi tímabil. Þú getur nálgast það inni á þínu svæði á mínum síðum.',
+        },
+        500,
+      )
+    }
   }
 
   async getFinancialOverview() {
@@ -72,6 +90,7 @@ export class TaxReturnService extends BaseTemplateApiService {
   async completeApplication({ application }: TemplateApiModuleActionProps) {
     this.taxReturnClient.submitTaxReturn('1203894569', {
       id: application.id,
+      year: new Date().getFullYear(),
       entries: [
         //TODO add fields from answers
         {

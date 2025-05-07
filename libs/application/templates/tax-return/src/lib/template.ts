@@ -17,7 +17,7 @@ import {
   EphemeralStateLifeCycle,
 } from '@island.is/application/core'
 import { assign } from 'xstate'
-import { GetFinancialOveriew } from '../dataProviders'
+import { GetFinancialOveriew, ValidateCanCreate } from '../dataProviders'
 
 const template: ApplicationTemplate<
   ApplicationContext,
@@ -51,7 +51,7 @@ const template: ApplicationTemplate<
               ],
               write: 'all',
               read: 'all',
-              api: [GetFinancialOveriew],
+              api: [GetFinancialOveriew, ValidateCanCreate],
               delete: true,
             },
           ],
