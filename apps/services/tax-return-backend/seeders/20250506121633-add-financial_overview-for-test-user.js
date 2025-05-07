@@ -53,7 +53,9 @@ module.exports = {
           id: uuid(),
           financial_overview_id: 'af34f1c8-b7f4-4d76-8bf5-2340ea2d48af',
           field_id: '9207226b-ac05-483c-bbed-71270556cd92',
-          data: null,
+          data: {
+            description: 'Dagpeningar',
+          },
           amount: 120000,
           created: new Date(),
           modified: new Date(),
