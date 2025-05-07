@@ -263,7 +263,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                     setIsEditing(true)
                   }}
                 >
-                  Breyta upplysingum
+                  Breyta upplýsingum
                 </Button>
               </Box>
             )}
@@ -279,7 +279,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
         >
           <Box display={'flex'} flexDirection={'row'} margin={1}>
             <Box width="full">
-              <Text>{'Samtals Vaxtagjold'}</Text>
+              <Text>{'Samtals vaxtagjöld'}</Text>
             </Box>
             <Box width="full" display={'flex'} justifyContent={'spaceBetween'}>
               <Text fontWeight="semiBold">
@@ -290,7 +290,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
           </Box>
           <Box display={'flex'} flexDirection={'row'} margin={1}>
             <Box width="full">
-              <Text>{'Samtals eftirstodvar'}</Text>
+              <Text>{'Samtals eftirstöðvar'}</Text>
             </Box>
             <Box width="full" display={'flex'} justifyContent={'spaceBetween'}>
               <Text fontWeight="semiBold">

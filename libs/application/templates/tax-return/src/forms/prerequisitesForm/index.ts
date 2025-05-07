@@ -26,7 +26,8 @@ export const Prerequisites = buildForm({
       children: [
         buildExternalDataProvider({
           id: 'approveExternalData',
-          title: 'External data',
+          title: 'Gagnaöflun',
+          checkboxLabel: 'Ég hef kynnt mér ofangreint varðandi gagnaöflun',
           dataProviders: [
             buildDataProviderItem({
               provider: GetIndividual,
@@ -34,9 +35,15 @@ export const Prerequisites = buildForm({
               subTitle: 'Allar upplýsingar um þig koma frá Þjóðskrá..',
             }),
             buildDataProviderItem({
+              title: 'Netfang og símanúmer úr þínum stillingum',
+              subTitle:
+                'Til þess að auðvelda umsóknarferlið er gott að hafa fyllt út netfang og símanúmer á mínum síðum',
+            }),
+            buildDataProviderItem({
               provider: GetFinancialOveriew,
               title: 'Upplýsingar frá Skattinum',
-              subTitle: 'Skatturinn sækir gögn varðandi tekjur, eignir og ...',
+              subTitle:
+                'Skatturinn sækir gögn varðandi tekjur, eignir og fleira',
             }),
             buildDataProviderItem({
               provider: ValidateCanCreate,
