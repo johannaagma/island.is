@@ -17,9 +17,9 @@ export class FinancialOverviewDto {
 
   @ApiProperty({
     description: 'What year this financial overview is for',
-    example: '2025',
+    example: 2025,
   })
-  year!: string
+  year!: number
 
   @ApiProperty({
     description: 'Entries connected to this financial overview',

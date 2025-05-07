@@ -11,7 +11,7 @@ module.exports = {
         {
           id: 'af34f1c8-b7f4-4d76-8bf5-2340ea2d48af',
           national_id: '1203894569',
-          year: '2025',
+          year: 2025,
           created: new Date(),
           modified: new Date(),
         },

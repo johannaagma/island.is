@@ -9,7 +9,7 @@ import { Section } from '../metadata/model/section'
 import { GetTaxReturnsResponse } from './dto/getTaxReturnsResponse'
 import { logger } from '@island.is/logging'
 import { Sequelize } from 'sequelize-typescript'
-import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
+import { TaxReturnDto } from './dto/taxReturnDto'
 
 @Injectable()
 export class TaxReturnService {
@@ -23,13 +23,8 @@ export class TaxReturnService {
     private readonly sequelize: Sequelize,
   ) {}
 
-  async getTaxReturns(year?: string): Promise<GetTaxReturnsResponse> {
-    const where: {
-      year?: string
-    } = {}
-    if (year !== undefined) where.year = year
-
-    const items = await this.taxReturnModel.findAll({ where })
+  async getTaxReturns(): Promise<GetTaxReturnsResponse> {
+    const items = await this.taxReturnModel.findAll()
 
     return {
       data: items.map((item) => ({
@@ -40,7 +35,7 @@ export class TaxReturnService {
     }
   }
 
-  async getTaxReturnById(id: string): Promise<GetTaxReturnResponse> {
+  async getTaxReturnById(id: string): Promise<TaxReturnDto> {
     const item = await this.taxReturnModel.findByPk(id, {
       include: [
         {
@@ -60,26 +55,24 @@ export class TaxReturnService {
     }
 
     return {
-      data: {
-        id: item.id,
-        nationalId: item.nationalId,
-        year: item.year,
-        entries: item.entries?.map((entry) => ({
-          fieldSectionNumber: entry.field?.section.sectionNumber || '',
-          fieldSectionName: entry.field?.section.sectionName || '',
-          fieldNumber: entry.field?.fieldNumber || -1,
-          fieldName: entry.field?.fieldName,
-          data: entry.data,
-          amount: entry.amount,
-        })),
-      },
+      id: item.id,
+      nationalId: item.nationalId,
+      year: item.year,
+      entries: item.entries?.map((entry) => ({
+        fieldSectionNumber: entry.field?.section.sectionNumber || '',
+        fieldSectionName: entry.field?.section.sectionName || '',
+        fieldNumber: entry.field?.fieldNumber || -1,
+        fieldName: entry.field?.fieldName,
+        data: entry.data,
+        amount: entry.amount,
+      })),
     }
   }
 
   async createTaxReturn(taxReturnDto: CreateTaxReturnDto): Promise<TaxReturn> {
     const transaction = await this.sequelize.transaction()
     try {
-      const currentYear = new Date().getFullYear().toString()
+      const currentYear = new Date().getFullYear()
 
       const taxReturnId = (
         await this.taxReturnModel.create(

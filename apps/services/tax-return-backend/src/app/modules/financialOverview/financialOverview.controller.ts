@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { FinancialOverviewService } from './financialOverview.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
-import { GetFinancialOverviewResponse } from './dto/getFinancialOverviewResponse'
+import { FinancialOverviewDto } from './dto/financialOverviewDto'
 
 @ApiTags('Financial overview')
 @Controller({
@@ -19,7 +19,7 @@ export class FinancialOverviewController {
     summary: 'Get financial overview, to pre-fill tax return fields',
     response: {
       status: 200,
-      type: GetFinancialOverviewResponse,
+      type: FinancialOverviewDto,
     },
     request: {
       query: {
@@ -34,7 +34,7 @@ export class FinancialOverviewController {
   })
   getFinancialOverviewByNationalId(
     @Query('nationalId') nationalId: string,
-  ): Promise<GetFinancialOverviewResponse> {
+  ): Promise<FinancialOverviewDto> {
     return this.financialOverviewService.getFinancialOverviewByNationalId(
       nationalId,
     )

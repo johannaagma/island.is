@@ -28,9 +28,9 @@ export class FieldDto {
 
   @ApiProperty({
     description: 'What year this field belongs to',
-    example: '2025',
+    example: 2025,
   })
-  year!: string
+  year!: number
 
   @ApiProperty({
     description:

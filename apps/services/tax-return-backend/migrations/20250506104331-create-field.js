@@ -29,7 +29,7 @@ module.exports = {
             allowNull: true,
           },
           year: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false,
           },
           order: {
