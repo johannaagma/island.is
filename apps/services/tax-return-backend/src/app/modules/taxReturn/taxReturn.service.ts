@@ -98,6 +98,7 @@ export class TaxReturnService {
           )
         }
 
+        // Note: should not create/update entries that are not addable/editable, should add from financialOverview instead
         await this.taxReturnEntryModel.create(
           {
             taxReturnId: taxReturnId,
@@ -160,6 +161,7 @@ export class TaxReturnService {
           )
         }
 
+        // Note: should not create/update entries that are not addable/editable, should add from financialOverview instead
         await this.taxReturnEntryModel.create(
           {
             taxReturnId: taxReturnId,
