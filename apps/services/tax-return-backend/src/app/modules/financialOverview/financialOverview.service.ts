@@ -4,7 +4,7 @@ import { FinancialOverview } from './model/financialOverview'
 import { FinancialOverviewEntry } from './model/financialOverviewEntry'
 import { Field } from '../metadata/model/field'
 import { Section } from '../metadata/model/section'
-import { GetFinancialOverviewResponse } from './dto/getFinancialOverviewResponse'
+import { FinancialOverviewDto } from './dto/financialOverviewDto'
 
 @Injectable()
 export class FinancialOverviewService {
@@ -15,7 +15,7 @@ export class FinancialOverviewService {
 
   async getFinancialOverviewByNationalId(
     nationalId: string,
-  ): Promise<GetFinancialOverviewResponse> {
+  ): Promise<FinancialOverviewDto> {
     const item = await this.financialOverviewModel.findOne({
       where: { nationalId },
       include: [
@@ -36,19 +36,17 @@ export class FinancialOverviewService {
     }
 
     return {
-      data: {
-        id: item.id,
-        nationalId: item.nationalId,
-        year: item.year,
-        entries: item.entries?.map((entry) => ({
-          fieldSectionNumber: entry.field?.section?.sectionNumber || '',
-          fieldSectionName: entry.field?.section?.sectionName || '',
-          fieldNumber: entry.field?.fieldNumber || 0,
-          fieldName: entry.field?.fieldName,
-          data: entry.data,
-          amount: entry.amount,
-        })),
-      },
+      id: item.id,
+      nationalId: item.nationalId,
+      year: item.year,
+      entries: item.entries?.map((entry) => ({
+        fieldSectionNumber: entry.field?.section?.sectionNumber || '',
+        fieldSectionName: entry.field?.section?.sectionName || '',
+        fieldNumber: entry.field?.fieldNumber || 0,
+        fieldName: entry.field?.fieldName,
+        data: entry.data,
+        amount: entry.amount,
+      })),
     }
   }
 }

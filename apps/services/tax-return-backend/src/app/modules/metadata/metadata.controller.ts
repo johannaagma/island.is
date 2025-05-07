@@ -23,14 +23,14 @@ export class MetadataController {
     request: {
       query: {
         year: {
-          type: 'string',
+          type: 'integer',
           description: 'Tax return year for which to fetch section fields',
           required: true,
         },
       },
     },
   })
-  getFields(@Query('year') year: string): Promise<GetFieldsReponse> {
+  getFields(@Query('year') year: number): Promise<GetFieldsReponse> {
     return this.metadataService.getFields(year)
   }
 }

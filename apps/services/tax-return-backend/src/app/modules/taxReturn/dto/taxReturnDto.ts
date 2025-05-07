@@ -18,9 +18,9 @@ export class TaxReturnDto {
 
   @ApiProperty({
     description: 'What year this tax return is for',
-    example: '2025',
+    example: 2025,
   })
-  year!: string
+  year!: number
 
   @ApiPropertyOptional({
     description: 'Entries connected to this tax return',

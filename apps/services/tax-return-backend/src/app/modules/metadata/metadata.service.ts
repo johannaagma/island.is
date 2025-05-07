@@ -11,7 +11,7 @@ export class MetadataService {
     private fieldModel: typeof Field,
   ) {}
 
-  async getFields(year: string): Promise<GetFieldsReponse> {
+  async getFields(year: number): Promise<GetFieldsReponse> {
     const items = await this.fieldModel.findAll({
       where: { year },
       include: [

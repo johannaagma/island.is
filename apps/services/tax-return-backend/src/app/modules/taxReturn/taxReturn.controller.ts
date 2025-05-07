@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { TaxReturnService } from './taxReturn.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
@@ -15,7 +6,7 @@ import { TaxReturn } from './model/taxReturn'
 import { CreateTaxReturnDto } from './dto/createTaxReturnDto'
 import { UpdateTaxReturnDto } from './dto/updateTaxReturnDto'
 import { GetTaxReturnsResponse } from './dto/getTaxReturnsResponse'
-import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
+import { TaxReturnDto } from './dto/taxReturnDto'
 
 @ApiTags('Tax return')
 @Controller({
@@ -25,26 +16,16 @@ import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
 export class TaxReturnController {
   constructor(private readonly taxReturnService: TaxReturnService) {}
 
-  //TODOx all í pathinu?
   @Get()
   @Documentation({
-    summary: 'Get all tax returns, possible to filter by year',
+    summary: 'Get all tax returns',
     response: {
       status: 200,
       type: GetTaxReturnsResponse,
     },
-    request: {
-      query: {
-        year: {
-          type: 'string',
-          description: 'Year the tax return belongs to',
-          required: false,
-        },
-      },
-    },
   })
-  getTaxReturns(@Query('year') year?: string): Promise<GetTaxReturnsResponse> {
-    return this.taxReturnService.getTaxReturns(year)
+  getTaxReturns(): Promise<GetTaxReturnsResponse> {
+    return this.taxReturnService.getTaxReturns()
   }
 
   @Get(':id')
@@ -52,7 +33,7 @@ export class TaxReturnController {
     summary: 'Get tax return by ID',
     response: {
       status: 200,
-      type: GetTaxReturnResponse,
+      type: TaxReturnDto,
     },
     request: {
       params: {
@@ -65,7 +46,7 @@ export class TaxReturnController {
       },
     },
   })
-  getTaxReturnById(@Param('id') id: string): Promise<GetTaxReturnResponse> {
+  getTaxReturnById(@Param('id') id: string): Promise<TaxReturnDto> {
     return this.taxReturnService.getTaxReturnById(id)
   }
 

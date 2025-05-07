@@ -36,10 +36,10 @@ export class FinancialOverview extends Model<
   nationalId!: string
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   })
-  year!: string
+  year!: number
 
   @CreatedAt
   readonly created!: CreationOptional<Date>
