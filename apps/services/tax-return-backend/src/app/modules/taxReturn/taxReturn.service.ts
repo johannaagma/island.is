@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { CreateTaxReturnDto } from './dto/createTaxReturnDto'
 import { UpdateTaxReturnDto } from './dto/updateTaxReturnDto'
-import { NoContentException } from '@island.is/nest/problem'
-import { paginate } from '@island.is/nest/pagination'
 import { TaxReturn } from './model/taxReturn'
 import { TaxReturnEntry } from './model/taxReturnEntry'
 import { Field } from '../metadata/model/field'
-import { TaxReturnsResponse } from './dto/taxReturnsResponse'
+import { Section } from '../metadata/model/section'
+import { GetTaxReturnsResponse } from './dto/getTaxReturnsResponse'
 import { logger } from '@island.is/logging'
 import { Sequelize } from 'sequelize-typescript'
+import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
 
 @Injectable()
 export class TaxReturnService {
@@ -23,60 +23,57 @@ export class TaxReturnService {
     private readonly sequelize: Sequelize,
   ) {}
 
-  async getTaxReturns(
-    limit: number,
-    after: string,
-    before?: string,
-    year?: string,
-  ): Promise<TaxReturnsResponse> {
+  async getTaxReturns(year?: string): Promise<GetTaxReturnsResponse> {
     const where: {
       year?: string
     } = {}
     if (year !== undefined) where.year = year
 
-    return paginate({
-      Model: this.taxReturnModel,
-      limit: limit,
-      after: after,
-      before: before,
-      primaryKeyField: 'id',
-      orderOption: [['created', 'ASC']],
-      where: where,
-    })
+    const items = await this.taxReturnModel.findAll({ where })
+
+    return {
+      data: items.map((item) => ({
+        id: item.id,
+        nationalId: item.nationalId,
+        year: item.year,
+      })),
+    }
   }
 
-  async getTaxReturnById(id: string): Promise<TaxReturn | null> {
-    const taxReturn = await this.taxReturnModel.findByPk(id, {
+  async getTaxReturnById(id: string): Promise<GetTaxReturnResponse> {
+    const item = await this.taxReturnModel.findByPk(id, {
       include: [
         {
           model: TaxReturnEntry,
-          attributes: {
-            exclude: [
-              'id',
-              'taxReturnId',
-              'taxReturn',
-              'fieldId',
-              'created',
-              'modified',
-            ],
-          },
           include: [
             {
               model: Field,
-              attributes: {
-                exclude: ['id', 'sectionId', 'created', 'modified'],
-              },
+              include: [{ model: Section }],
             },
           ],
         },
       ],
     })
 
-    if (!taxReturn) {
-      throw new NoContentException()
+    if (!item) {
+      throw new NotFoundException()
     }
 
-    return taxReturn
+    return {
+      data: {
+        id: item.id,
+        nationalId: item.nationalId,
+        year: item.year,
+        entries: item.entries?.map((entry) => ({
+          fieldSectionNumber: entry.field?.section.sectionNumber || '',
+          fieldSectionName: entry.field?.section.sectionName || '',
+          fieldNumber: entry.field?.fieldNumber || -1,
+          fieldName: entry.field?.fieldName,
+          data: entry.data,
+          amount: entry.amount,
+        })),
+      },
+    }
   }
 
   async createTaxReturn(taxReturnDto: CreateTaxReturnDto): Promise<TaxReturn> {

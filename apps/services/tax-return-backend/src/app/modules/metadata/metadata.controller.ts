@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { MetadataService } from './metadata.service'
 import { ApiTags } from '@nestjs/swagger'
 import { Documentation } from '@island.is/nest/swagger'
-import { FieldsReponse } from './dto/fieldsResponse'
+import { GetFieldsReponse } from './dto/getFieldsResponse'
 
 @ApiTags('Metadata')
 @Controller({
@@ -17,7 +17,7 @@ export class MetadataController {
     summary: 'Get fields to display in the tax return',
     response: {
       status: 200,
-      type: FieldsReponse,
+      type: GetFieldsReponse,
     },
     request: {
       query: {
@@ -29,7 +29,7 @@ export class MetadataController {
       },
     },
   })
-  getFields(@Query('year') year: string): Promise<FieldsReponse> {
+  getFields(@Query('year') year: string): Promise<GetFieldsReponse> {
     return this.metadataService.getFields(year)
   }
 }

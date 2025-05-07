@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { Field } from './model/field'
 import { Section } from './model/section'
-import { FieldsReponse } from './dto/fieldsResponse'
+import { GetFieldsReponse } from './dto/getFieldsResponse'
 
 @Injectable()
 export class MetadataService {
@@ -11,23 +11,29 @@ export class MetadataService {
     private fieldModel: typeof Field,
   ) {}
 
-  async getFields(year: string): Promise<FieldsReponse> {
-    const fields = await this.fieldModel.findAll({
+  async getFields(year: string): Promise<GetFieldsReponse> {
+    const items = await this.fieldModel.findAll({
       where: { year },
       include: [
         {
           model: Section,
-          attributes: {
-            exclude: ['id', 'created', 'modified', 'fields'],
-          },
         },
       ],
-      attributes: {
-        exclude: ['id', 'sectionId', 'created', 'modified'],
-      },
       order: ['order'],
     })
 
-    return { data: fields || [] }
+    return {
+      data: items.map((item) => ({
+        fieldSectionNumber: item.section.sectionNumber,
+        fieldSectionName: item.section.sectionName,
+        fieldNumber: item.fieldNumber,
+        fieldName: item.fieldName,
+        year: item.year,
+        order: item.order,
+        entryDataSchema: item.entryDataSchema,
+        canEditEntry: item.canEditEntry,
+        canAddEntry: item.canAddEntry,
+      })),
+    }
   }
 }

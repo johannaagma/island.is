@@ -1,9 +1,4 @@
 import {
-  ApiHideProperty,
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger'
-import {
   BelongsTo,
   Column,
   CreatedAt,
@@ -28,7 +23,6 @@ export class TaxReturnEntry extends Model<
   InferAttributes<TaxReturnEntry>,
   InferCreationAttributes<TaxReturnEntry>
 > {
-  @ApiHideProperty()
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -37,7 +31,6 @@ export class TaxReturnEntry extends Model<
   })
   id!: CreationOptional<string>
 
-  @ApiHideProperty()
   @Column({
     type: DataType.UUID,
     allowNull: false,
@@ -45,11 +38,9 @@ export class TaxReturnEntry extends Model<
   @ForeignKey(() => TaxReturn)
   taxReturnId!: string
 
-  @ApiHideProperty()
   @BelongsTo(() => TaxReturn, 'taxReturnId')
   taxReturn?: TaxReturn
 
-  @ApiHideProperty()
   @Column({
     type: DataType.UUID,
     allowNull: false,
@@ -57,37 +48,24 @@ export class TaxReturnEntry extends Model<
   @ForeignKey(() => Field)
   fieldId!: string
 
-  @ApiPropertyOptional({
-    description: 'Entry field information',
-  })
   @BelongsTo(() => Field, 'fieldId')
   field?: Field
 
-  @ApiPropertyOptional({
-    description: 'Data object for this field entry',
-    example: "{ sourceName: 'VR' }",
-  })
   @Column({
     type: DataType.JSONB,
     allowNull: true,
   })
   data?: Record<string, unknown>
 
-  @ApiProperty({
-    description: 'Amount for this field entry',
-    example: 1000000,
-  })
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
   amount!: number
 
-  @ApiHideProperty()
   @CreatedAt
   readonly created!: CreationOptional<Date>
 
-  @ApiHideProperty()
   @UpdatedAt
   readonly modified!: CreationOptional<Date>
 }

@@ -14,7 +14,8 @@ import { Documentation } from '@island.is/nest/swagger'
 import { TaxReturn } from './model/taxReturn'
 import { CreateTaxReturnDto } from './dto/createTaxReturnDto'
 import { UpdateTaxReturnDto } from './dto/updateTaxReturnDto'
-import { TaxReturnsResponse } from './dto/taxReturnsResponse'
+import { GetTaxReturnsResponse } from './dto/getTaxReturnsResponse'
+import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
 
 @ApiTags('Tax return')
 @Controller({
@@ -29,28 +30,10 @@ export class TaxReturnController {
     summary: 'Get all tax returns, possible to filter by year',
     response: {
       status: 200,
-      type: TaxReturnsResponse,
+      type: GetTaxReturnsResponse,
     },
     request: {
       query: {
-        limit: {
-          type: 'number',
-          description:
-            'Limits the number of results in a request. The server should have a default value for this field.',
-          required: false,
-        },
-        before: {
-          type: 'string',
-          description:
-            'The client provides the value of startCursor from the previous response pageInfo to query the previous page of limit number of data items.',
-          required: false,
-        },
-        after: {
-          type: 'string',
-          description:
-            'The client provides the value of endCursor from the previous response to query the next page of limit number of data items.',
-          required: false,
-        },
         year: {
           type: 'string',
           description: 'Year the tax return belongs to',
@@ -59,13 +42,8 @@ export class TaxReturnController {
       },
     },
   })
-  getTaxReturns(
-    @Query('limit') limit: number,
-    @Query('before') before: string,
-    @Query('after') after: string,
-    @Query('year') year?: string,
-  ): Promise<TaxReturnsResponse> {
-    return this.taxReturnService.getTaxReturns(limit, before, after, year)
+  getTaxReturns(@Query('year') year?: string): Promise<GetTaxReturnsResponse> {
+    return this.taxReturnService.getTaxReturns(year)
   }
 
   @Get(':id')
@@ -73,7 +51,7 @@ export class TaxReturnController {
     summary: 'Get tax return by ID',
     response: {
       status: 200,
-      type: TaxReturn,
+      type: GetTaxReturnResponse,
     },
     request: {
       params: {
@@ -86,7 +64,7 @@ export class TaxReturnController {
       },
     },
   })
-  getTaxReturnById(@Param('id') id: string): Promise<TaxReturn | null> {
+  getTaxReturnById(@Param('id') id: string): Promise<GetTaxReturnResponse> {
     return this.taxReturnService.getTaxReturnById(id)
   }
 
