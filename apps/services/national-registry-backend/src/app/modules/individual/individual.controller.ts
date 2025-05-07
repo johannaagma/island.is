@@ -30,7 +30,7 @@ export class IndividualController {
       },
     },
   })
-  getFields(
+  getIndividual(
     @Query('nationalId') nationalId: string,
   ): Promise<GetIndividualResponse> {
     return this.individualService.getIndividual(nationalId)

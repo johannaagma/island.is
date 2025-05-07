@@ -1,0 +1,29 @@
+{
+  "name": "clients-national-registry-backend-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/clients/national-registry-backend-api/src",
+  "projectType": "library",
+  "tags": ["lib:client", "scope:client"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/clients/national-registry-backend-api/jest.config.ts"
+      }
+    },
+    "codegen/backend-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "yarn openapi-generator -o libs/clients/national-registry-backend-api/gen/fetch -i apps/services/national-registry-backend/src/openapi.yaml --additional-properties=enumPropertyNaming=original"
+        ],
+        "parallel": false
+      },
+      "outputs": ["{projectRoot}/gen/fetch"]
+    }
+  }
+}

@@ -5,12 +5,14 @@ const schema = z.object({
   basePath: z.string(),
 })
 
-export const TaxReturnClientConfig = defineConfig<z.infer<typeof schema>>({
-  name: 'TaxReturnClient',
+export const NationalRegistryBackendApiClientConfig = defineConfig<
+  z.infer<typeof schema>
+>({
+  name: 'NationalRegistryBackendApiClient',
   schema,
   load() {
     return {
-      basePath: 'http://localhost:3390',
+      basePath: 'http://localhost:3400',
     }
   },
 })

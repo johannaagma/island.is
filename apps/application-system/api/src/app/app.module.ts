@@ -67,6 +67,7 @@ import { SeminarsClientConfig } from '@island.is/clients/seminars-ver'
 import { SecondarySchoolClientConfig } from '@island.is/clients/secondary-school'
 import { PaymentsApiClientConfig } from '@island.is/clients/payments'
 import { TaxReturnClientConfig } from '@island.is/clients/tax-return'
+import { NationalRegistryBackendApiClientConfig } from '@island.is/clients/national-registry-backend-api'
 
 @Module({
   imports: [
@@ -133,6 +134,7 @@ import { TaxReturnClientConfig } from '@island.is/clients/tax-return'
         SecondarySchoolClientConfig,
         PaymentsApiClientConfig,
         TaxReturnClientConfig,
+        NationalRegistryBackendApiClientConfig,
       ],
     }),
   ],
