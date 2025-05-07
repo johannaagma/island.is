@@ -105,14 +105,13 @@ const propertyLoanSchema = z.object({
   interest: z.number().optional(),
   balance: z.number().optional(),
   loanDate: z.string().optional(),
-  purchaseYear: z.string().optional(),
 })
 
 export const TaxReturnAnswerSchema = z.object({
   approveExternalData: z.boolean().refine((v) => v),
   applicantInformation: UserSchemaBase,
   income: incomeSchema.optional(),
-  propertyLoan: z.array(propertyLoanSchema),
+  propertyLoan: z.array(propertyLoanSchema).optional(),
   otherAssets: otherAssetsSchema.optional(),
   debt: debtSchema,
 })

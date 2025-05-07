@@ -38,7 +38,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.alltlif',
             title:
               'Lífeyrisgreiðslur. Greiðslur frá Tryggingarstofnun. Aðrar bótagreiðslur, styrkir o.fl.',
             component: FieldComponents.TABLE_REPEATER,
@@ -100,7 +100,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.almennlif',
             title: 'Greiðslur úr almennum lífeyrissjóðum',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
@@ -161,7 +161,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.sereign',
             title: 'Lífeyrisgreiðslur úr séreignasjóðum',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
@@ -222,7 +222,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.serstakir',
             title: 'Lífeyrisgreiðslur úr "sérstökum" séreignasjóðum',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
@@ -283,7 +283,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.atvinnu',
             title: 'Atvinnuleysisbætur',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
@@ -344,7 +344,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           application={application}
           showFieldName
           field={{
-            id: 'income.educationGrants',
+            id: 'income.felo',
             title:
               'Félagsleg aðstoð og aðrir styrkir og bætur frá sveitarfélögum',
             component: FieldComponents.TABLE_REPEATER,

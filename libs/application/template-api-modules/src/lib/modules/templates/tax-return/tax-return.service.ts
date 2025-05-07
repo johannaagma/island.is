@@ -136,6 +136,9 @@ export class TaxReturnService extends BaseTemplateApiService {
       income?.otherIncome?.map((x) => ({
         fieldNumber: getFieldNumber('income.otherIncome'),
         amount: getNumberFromAmount(x?.payment),
+        data: {
+          description: x?.typeOfPayment,
+        },
       })) || []
 
     const otherIncome = [...otherIncomeExternalData, ...otherIncomeAnswers]
@@ -145,19 +148,25 @@ export class TaxReturnService extends BaseTemplateApiService {
     const supportingIncomeExternalData =
       getValueViaPath<any>(
         application.externalData,
-        'getFinancialOverview.data.otherIncome',
+        'getFinancialOverview.data.supportingIncome',
         undefined,
       ) || []
     const educationGrantsAnswers =
       income?.educationGrants?.map((x) => ({
         fieldNumber: getFieldNumber('income.educationGrants'),
         amount: getNumberFromAmount(x?.payment),
+        data: {
+          description: x?.explanation,
+        },
       })) || []
 
     const fitnessGrantsAnswers =
       income?.fitnessGrants?.map((x) => ({
         fieldNumber: getFieldNumber('income.fitnessGrants'),
         amount: getNumberFromAmount(x?.payment),
+        data: {
+          description: x?.description,
+        },
       })) || []
 
     const supportingIncome = [
@@ -213,7 +222,6 @@ export class TaxReturnService extends BaseTemplateApiService {
       })) || []
 
     const domesticPropertyLoans = [
-      ...propertyLoansExternalData,
       ...propertyLoansInterest,
       ...propertyLoansBalance,
     ]
@@ -278,7 +286,7 @@ export class TaxReturnService extends BaseTemplateApiService {
         application.externalData,
         'getFinancialOverview.data.otherDebts',
         [],
-      ) || []
+      )?.flat() || []
 
     const otherDebtAnswers = getValueViaPath<TaxReturnAnswers['debt']>(
       application.answers,
@@ -309,22 +317,19 @@ export class TaxReturnService extends BaseTemplateApiService {
       ...otherDebtBalance,
     ]
     /*--*/
-    try {
-      this.taxReturnClient.submitTaxReturn('1203894569', {
-        id: application.id,
-        year: new Date().getFullYear(),
-        entries: [
-          ...salary,
-          ...otherIncome,
-          ...supportingIncome,
-          ...domesticPropertyLoans,
-          ...domesticProperties,
-          ...cars,
-          ...debt,
-        ],
-      })
-    } catch (error) {
-      console.log('error', error)
-    }
+
+    this.taxReturnClient.submitTaxReturn('1203894569', {
+      id: application.id,
+      year: new Date().getFullYear(),
+      entries: [
+        ...salary,
+        ...otherIncome,
+        ...supportingIncome,
+        ...domesticPropertyLoans,
+        ...domesticProperties,
+        ...cars,
+        ...debt,
+      ].filter((x) => !!x.fieldNumber),
+    })
   }
 }
