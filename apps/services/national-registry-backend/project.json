@@ -77,6 +77,13 @@
       },
       "outputs": ["{projectRoot}/src/openapi.yaml"]
     },
+    "codegen/backend-schema-graphql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn ts-node -P apps/services/national-registry-backend/tsconfig.json scripts/build-graphql-schema.ts apps/services/national-registry-backend/src/app/app.module"
+      },
+      "outputs": ["{projectRoot}/src/api.graphql"]
+    },
     "migrate": {
       "executor": "nx:run-commands",
       "options": {

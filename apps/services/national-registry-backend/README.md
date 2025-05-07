@@ -38,9 +38,16 @@ yarn start services-national-registry-backend
 
 Open url:
 localhost:3400/api/swagger
+localhost:3400/api/graphql (for GraphQl playground)
 
 ## Regenerate the OpenAPI file
 
 ```bash
 yarn nx run services-national-registry-backend:codegen/backend-schema
+```
+
+## Regenerate the GraphQl file
+
+```bash
+yarn nx run services-national-registry-backend:codegen/backend-schema-graphql
 ```
