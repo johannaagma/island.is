@@ -44,7 +44,9 @@ export class TaxReturnService extends BaseTemplateApiService {
   }
 
   async getFinancialOverview() {
-    const results = await this.taxReturnClient.getFinancialOverview()
+    const results = await this.taxReturnClient.getFinancialOverview(
+      '1203894569',
+    )
     if (!results) {
       throw new Error('No results found')
     }
@@ -87,18 +89,28 @@ export class TaxReturnService extends BaseTemplateApiService {
     }
   }
 
-  async completeApplication({ application }: TemplateApiModuleActionProps) {
-    this.taxReturnClient.submitTaxReturn('1203894569', {
-      id: application.id,
-      year: new Date().getFullYear(),
-      entries: [
-        //TODO add fields from answers
-        {
-          fieldNumber: 21,
-          data: { name: 'Norðurljós Software ehf' },
-          amount: 9360000,
-        },
-      ],
-    })
+  async getIndividual() {
+    return this.nationalRegistryClient.getIndividual('1203894569')
+  }
+
+  async submitApplication({ application }: TemplateApiModuleActionProps) {
+    console.log('application in submitApplication', application)
+    try {
+      this.taxReturnClient.submitTaxReturn('1203894569', {
+        id: application.id,
+        year: new Date().getFullYear(),
+        entries: [
+          //TODO add fields from answers
+          {
+            fieldNumber: 21,
+            data: undefined,
+            amount: 9360000,
+          },
+        ],
+      })
+    } catch (error) {
+      console.log('error', error)
+    }
+    throw new Error('')
   }
 }

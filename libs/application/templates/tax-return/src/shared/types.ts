@@ -24,7 +24,7 @@ export enum Roles {
 
 export enum ApiActions {
   submitApplication = 'submitApplication',
-  getApplicant = 'getApplicant',
+  getIndividual = 'getIndividual',
   getFinancialOverview = 'getFinancialOverview',
   validateCanCreate = 'validateCanCreate',
 }

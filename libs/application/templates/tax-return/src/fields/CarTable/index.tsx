@@ -34,14 +34,14 @@ export const CarTable: FC<FieldBaseProps> = ({ application }) => {
         <TableRepeaterFormField
           application={application}
           field={{
-            id: 'assets.cars',
+            id: 'otherAssets.cars',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
             type: FieldTypes.TABLE_REPEATER,
             editField: true,
             getFixedBottomRow: async ({ updatedValues, staticData }) => {
               let totalValue = 0
-              const updatedValue = updatedValues.assets?.cars?.reduce(
+              const updatedValue = updatedValues.otherAssets?.cars?.reduce(
                 (acc: number, item: { price: string }) => {
                   if (item.price) {
                     return acc + deFormatIsk(item.price)

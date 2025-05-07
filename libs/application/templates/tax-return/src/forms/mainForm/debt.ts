@@ -50,7 +50,7 @@ export const debtSection = buildSection({
           },
         ),
         buildCustomField({
-          id: 'debt.otherDebst',
+          id: 'debt.otherDebts',
           component: 'OtherDebtsTable',
         }),
       ],

@@ -9,3 +9,8 @@ export const GetFinancialOveriew = defineTemplateApi({
 export const ValidateCanCreate = defineTemplateApi({
   action: ApiActions.validateCanCreate,
 })
+
+export const GetIndividual = defineTemplateApi({
+  action: ApiActions.getIndividual,
+  externalDataId: 'individual',
+})

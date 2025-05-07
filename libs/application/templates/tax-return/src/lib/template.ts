@@ -8,6 +8,7 @@ import {
   DefaultEvents,
   FormModes,
   ApplicationConfigurations,
+  defineTemplateApi,
 } from '@island.is/application/types'
 import { Events, Roles, States } from '../utils/constants'
 import { CodeOwners } from '@island.is/shared/constants'
@@ -17,7 +18,12 @@ import {
   EphemeralStateLifeCycle,
 } from '@island.is/application/core'
 import { assign } from 'xstate'
-import { GetFinancialOveriew, ValidateCanCreate } from '../dataProviders'
+import {
+  GetFinancialOveriew,
+  ValidateCanCreate,
+  GetIndividual,
+} from '../dataProviders'
+import { ApiActions } from '../shared/types'
 
 const template: ApplicationTemplate<
   ApplicationContext,
@@ -51,7 +57,7 @@ const template: ApplicationTemplate<
               ],
               write: 'all',
               read: 'all',
-              api: [GetFinancialOveriew, ValidateCanCreate],
+              api: [GetFinancialOveriew, GetIndividual, ValidateCanCreate],
               delete: true,
             },
           ],
@@ -96,6 +102,9 @@ const template: ApplicationTemplate<
           progress: 1,
           status: FormModes.COMPLETED,
           lifecycle: DefaultStateLifeCycle,
+          onEntry: defineTemplateApi({
+            action: ApiActions.submitApplication,
+          }),
           roles: [
             {
               id: Roles.APPLICANT,

@@ -500,6 +500,7 @@ export interface PhoneField extends InputField {
   allowedCountryCodes?: string[]
   enableCountrySelector?: boolean
   onChange?: (...event: any[]) => void
+  size?: FieldSizeVariants
 }
 
 export interface FileUploadField extends BaseField {

@@ -19,6 +19,7 @@ const incomeSchema = z.object({
     .array(
       z
         .object({
+          companyNationalId: z.string().optional(),
           companyName: z.string().optional(),
           salaryAmount: z.string().optional(),
         })
@@ -29,9 +30,8 @@ const incomeSchema = z.object({
     .array(
       z
         .object({
-          type: z.string().optional(),
-          amount: z.string().optional(),
-          companyName: z.string().optional(),
+          typeOfPayment: z.string().optional(),
+          payment: z.string().optional(),
         })
         .optional(),
     )
@@ -41,12 +41,47 @@ const incomeSchema = z.object({
       z
         .object({
           companyName: z.string().optional(),
-          amount: z.string().optional(),
+          explanation: z.string().optional(),
+          payment: z.string().optional(),
         })
         .optional(),
     )
     .optional(),
-  totalIncome: z.string().optional(),
+})
+
+const otherAssetsSchema = z.object({
+  domesticProperties: z
+    .array(
+      z
+        .object({
+          propertyNumber: z.string().optional(),
+          address: z.string().optional(),
+          price: z.string().optional(),
+        })
+        .optional(),
+    )
+    .optional(),
+  cars: z
+    .array(
+      z
+        .object({
+          carNumber: z.string().optional(),
+          year: z.string().optional(),
+          price: z.string().optional(),
+        })
+        .optional(),
+    )
+    .optional(),
+})
+
+const debtSchema = z.object({
+  otherDebt: z.array(
+    z.object({
+      debtName: z.string().optional(),
+      interestPayments: z.string().optional(),
+      remainingAmount: z.string().optional(),
+    }),
+  ),
 })
 
 const propertyLoanSchema = z.object({
@@ -66,6 +101,8 @@ export const TaxReturnAnswerSchema = z.object({
   applicantInformation: UserSchemaBase,
   income: incomeSchema.optional(),
   propertyLoan: z.array(propertyLoanSchema),
+  otherAssets: otherAssetsSchema.optional(),
+  debt: debtSchema,
 })
 
 export type PropertyLoanType = z.TypeOf<typeof propertyLoanSchema>

@@ -8,7 +8,12 @@ import {
 } from '@island.is/application/core'
 import { DefaultEvents } from '@island.is/application/types'
 import { FormModes } from '@island.is/application/types'
-import { GetFinancialOveriew, ValidateCanCreate } from '../../dataProviders'
+
+import {
+  GetFinancialOveriew,
+  GetIndividual,
+  ValidateCanCreate,
+} from '../../dataProviders'
 
 export const Prerequisites = buildForm({
   id: 'PrerequisitesDraft',
@@ -24,8 +29,9 @@ export const Prerequisites = buildForm({
           title: 'External data',
           dataProviders: [
             buildDataProviderItem({
+              provider: GetIndividual,
               title: 'Upplýsingar úr Þjóðskrá',
-              subTitle: 'Allar upplýsingar um þig koma frá Þjóðskrá.',
+              subTitle: 'Allar upplýsingar um þig koma frá Þjóðskrá..',
             }),
             buildDataProviderItem({
               provider: GetFinancialOveriew,

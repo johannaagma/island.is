@@ -2,6 +2,7 @@ import {
   buildAlertMessageField,
   buildLinkField,
   buildMultiField,
+  buildPhoneField,
   buildSection,
   buildTextField,
   getValueViaPath,
@@ -28,8 +29,12 @@ export const applicantSection = buildSection({
           size: 'sm',
           defaultValue: (application: Application) => {
             const { externalData } = application
+            const name = getValueViaPath<string>(
+              externalData,
+              'individual.data.name',
+            )
 
-            return 'TODO'
+            return name
           },
         }),
         buildTextField({
@@ -41,7 +46,12 @@ export const applicantSection = buildSection({
           format: '######-####',
           size: 'sm',
           defaultValue: (application: Application) => {
-            return '123456-7890'
+            const { externalData } = application
+            const nationalId = getValueViaPath<string>(
+              externalData,
+              'individual.data.nationalId',
+            )
+            return nationalId
           },
         }),
         buildTextField({
@@ -52,7 +62,12 @@ export const applicantSection = buildSection({
           readOnly: true,
           size: 'sm',
           defaultValue: (application: Application) => {
-            return 'TODO'
+            const { externalData } = application
+            const address = getValueViaPath<string>(
+              externalData,
+              'individual.data.address',
+            )
+            return address
           },
         }),
         buildTextField({
@@ -63,7 +78,12 @@ export const applicantSection = buildSection({
           readOnly: true,
           size: 'sm',
           defaultValue: (application: Application) => {
-            return 'TODO'
+            const { externalData } = application
+            const postalCode = getValueViaPath<string>(
+              externalData,
+              'individual.data.postalCode',
+            )
+            return postalCode
           },
         }),
         buildTextField({
@@ -74,7 +94,12 @@ export const applicantSection = buildSection({
           readOnly: true,
           size: 'sm',
           defaultValue: (application: Application) => {
-            return 'TODO'
+            const { externalData } = application
+            const city = getValueViaPath<string>(
+              externalData,
+              'individual.data.city',
+            )
+            return city
           },
         }),
         buildTextField({
@@ -85,10 +110,15 @@ export const applicantSection = buildSection({
           readOnly: true,
           size: 'sm',
           defaultValue: (application: Application) => {
-            return 'TODO'
+            const { externalData } = application
+            const email = getValueViaPath<string>(
+              externalData,
+              'individual.data.email',
+            )
+            return email
           },
         }),
-        buildTextField({
+        buildPhoneField({
           id: 'applicantInformation.phoneNumber',
           title: 'Símanúmer',
           backgroundColor: 'white',
@@ -96,7 +126,12 @@ export const applicantSection = buildSection({
           readOnly: true,
           size: 'sm',
           defaultValue: (application: Application) => {
-            return 'TODO'
+            const { externalData } = application
+            const phone = getValueViaPath<string>(
+              externalData,
+              'individual.data.phone',
+            )
+            return phone
           },
         }),
         buildAlertMessageField({

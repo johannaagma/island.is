@@ -42,6 +42,7 @@ export const PhoneFormField: FC<React.PropsWithChildren<Props>> = ({
     marginBottom,
     onChange = () => undefined,
     clearOnChange,
+    size,
   } = field
   const { control, clearErrors } = useFormContext()
   const { formatMessage, lang: locale } = useLocale()
@@ -71,6 +72,7 @@ export const PhoneFormField: FC<React.PropsWithChildren<Props>> = ({
             application,
             formatMessage,
           )}
+          size={size}
           label={
             showFieldName
               ? formatTextWithLocale(
