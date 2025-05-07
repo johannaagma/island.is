@@ -13,6 +13,7 @@ import {
   Tag,
   Text,
 } from '@island.is/island-ui/core'
+import { getValueViaPath } from '@island.is/application/core'
 
 export const OtherDebtsTable: FC<FieldBaseProps> = ({ application }) => {
   return (
@@ -131,13 +132,25 @@ export const OtherDebtsTable: FC<FieldBaseProps> = ({ application }) => {
               }
             },
             getStaticTableData: (_application) => {
-              return [
-                {
-                  debtName: 'Kreditkort 4469 88XX XXXX 4567',
-                  interestPayments: '39200',
-                  remainingAmount: '217000',
-                },
-              ]
+              const otherDebtsData = getValueViaPath<Array<any>>(
+                _application.externalData,
+                'getFinancialOverview.data.otherDebts',
+                [],
+              )
+              const tableData = otherDebtsData?.map((item) => {
+                return {
+                  debtName: item[0].data?.description || '',
+                  interestPayments:
+                    item
+                      .filter((x: any) => x.field?.fieldNumber === 88)[0]
+                      ?.amount?.toString() || '0',
+                  remainingAmount:
+                    item
+                      .filter((x: any) => x.field?.fieldNumber === 168)[0]
+                      ?.amount?.toString() || '0',
+                }
+              })
+              return tableData || []
             },
             fields: {
               debtName: {

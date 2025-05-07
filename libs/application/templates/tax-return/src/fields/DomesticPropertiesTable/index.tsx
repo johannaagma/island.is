@@ -13,6 +13,7 @@ import {
   Tag,
   Text,
 } from '@island.is/island-ui/core'
+import { getValueViaPath } from '@island.is/application/core'
 
 export const DomesticPropertiesTable: FC<FieldBaseProps> = ({
   application,
@@ -66,17 +67,45 @@ export const DomesticPropertiesTable: FC<FieldBaseProps> = ({
                 totalValue = updatedValue + staticDataValue
               }
               return {
-                items: ['', 'Samtals fasteignir', '', formatIsk(totalValue)],
+                items: [
+                  '',
+                  'Samtals fasteignir',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      {formatIsk(totalValue)}
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>314</Tag>
+                    </Box>
+                  </Box>,
+                ],
               }
             },
             getStaticTableData: (_application) => {
-              return [
-                {
-                  propertyNumber: '210-9876',
-                  address: 'Bláfjallagata 12',
-                  price: '52000000',
-                },
-              ]
+              const propertyData = getValueViaPath<Array<any>>(
+                _application.externalData,
+                'getFinancialOverview.data.domesticProperties',
+                [],
+              )
+              const tableData = propertyData?.map((item) => {
+                return {
+                  propertyNumber: item.data?.propertyNumber || '',
+                  address: item.data?.address || '',
+                  price: item.amount?.toString() || '0',
+                }
+              })
+              return tableData || []
             },
             fields: {
               propertyNumber: {

@@ -13,6 +13,7 @@ import {
   Tag,
   Text,
 } from '@island.is/island-ui/core'
+import { getValueViaPath } from '@island.is/application/core'
 
 export const SalaryIncomeTable: FC<FieldBaseProps> = ({ application }) => {
   return (
@@ -47,11 +48,13 @@ export const SalaryIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                 },
                 0,
               )
-
               if (staticData) {
                 const staticDataIncome = staticData.reduce(
                   (acc: number, item: Record<string, any>) => {
-                    return acc + deFormatIsk(item.salaryAmount)
+                    if (item.salaryAmount) {
+                      return acc + deFormatIsk(item.salaryAmount)
+                    }
+                    return acc
                   },
                   0,
                 )
@@ -84,18 +87,19 @@ export const SalaryIncomeTable: FC<FieldBaseProps> = ({ application }) => {
               }
             },
             getStaticTableData: (_application) => {
-              return [
-                {
-                  companyNationalId: '012345-67689',
-                  companyName: 'Norðurljós Software ehf',
-                  salaryAmount: '9360000',
-                },
-                {
-                  companyNationalId: '123456-7890',
-                  companyName: 'Mús & Merki ehf.',
-                  salaryAmount: '1200000',
-                },
-              ]
+              const salaryData = getValueViaPath<Array<any>>(
+                _application.externalData,
+                'getFinancialOverview.data.salaryIncome',
+                [],
+              )
+              const tableData = salaryData?.map((item) => {
+                return {
+                  companyNationalId: item.data?.nationalId || '',
+                  companyName: item.data?.name || '',
+                  salaryAmount: item.amount?.toString() || '0',
+                }
+              })
+              return tableData || []
             },
             fields: {
               companyNationalId: {

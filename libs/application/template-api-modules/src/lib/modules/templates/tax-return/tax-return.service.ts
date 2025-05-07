@@ -4,6 +4,17 @@ import { BaseTemplateApiService } from '../../base-template-api.service'
 import { TaxReturnClient } from '@island.is/clients/tax-return'
 import { NationalRegistryBackendApiClient } from '@island.is/clients/national-registry-backend-api'
 import { TemplateApiModuleActionProps } from '../../../types'
+import { Entry } from './types/financialOverview'
+import {
+  carCategories,
+  domesticPropertyCategories,
+  domesticPropertyLoansCategories,
+  otherDebtsCategories,
+  otherIncomeCategories,
+  salaryIncomeCategories,
+  supportingIncomeCategories,
+} from './constants/EntryCategories'
+import { groupOtherDebtsById } from './utils'
 
 @Injectable()
 export class TaxReturnService extends BaseTemplateApiService {
@@ -14,9 +25,47 @@ export class TaxReturnService extends BaseTemplateApiService {
     super(ApplicationTypes.TAX_RETURN)
   }
 
-  async getApplicant() {
+  async getFinancialOverview() {
+    const results = await this.taxReturnClient.getFinancialOverview()
+    if (!results) {
+      throw new Error('No results found')
+    }
+
+    const salaryIncome = results.entries.filter((x: Entry) =>
+      salaryIncomeCategories.includes(x.field.fieldNumber),
+    )
+
+    const otherIncome = results.entries.filter((x: Entry) =>
+      otherIncomeCategories.includes(x.field.fieldNumber),
+    )
+
+    const supportingIncome = results.entries.filter((x: Entry) =>
+      supportingIncomeCategories.includes(x.field.fieldNumber),
+    )
+
+    const domesticProperties = results.entries.filter((x: Entry) =>
+      domesticPropertyCategories.includes(x.field.fieldNumber),
+    )
+    const domesticPropertyLoans = results.entries.filter((x: Entry) =>
+      domesticPropertyLoansCategories.includes(x.field.fieldNumber),
+    )
+    const cars = results.entries.filter((x: Entry) =>
+      carCategories.includes(x.field.fieldNumber),
+    )
+    const otherDebts = results.entries.filter((x: Entry) =>
+      otherDebtsCategories.includes(x.field.fieldNumber),
+    )
+
+    const otherDebtsGrouped = groupOtherDebtsById(otherDebts)
+
     return {
-      id: 1337,
+      salaryIncome,
+      otherIncome,
+      supportingIncome,
+      domesticProperties,
+      cars,
+      otherDebts: otherDebtsGrouped,
+      domesticPropertyLoans,
     }
   }
 

@@ -8,7 +8,7 @@ import {
 } from '@island.is/application/core'
 import { DefaultEvents } from '@island.is/application/types'
 import { FormModes } from '@island.is/application/types'
-import { GetApplicantApi } from '../../dataProviders'
+import { GetFinancialOveriew } from '../../dataProviders'
 
 export const Prerequisites = buildForm({
   id: 'PrerequisitesDraft',
@@ -24,7 +24,7 @@ export const Prerequisites = buildForm({
           title: 'External data',
           dataProviders: [
             buildDataProviderItem({
-              provider: GetApplicantApi,
+              provider: GetFinancialOveriew,
               title: 'Upplýsingar úr Þjóðskrá',
               subTitle: 'Upplýsingar um þig, maka og börn.',
             }),
