@@ -36,12 +36,23 @@ const incomeSchema = z.object({
         .optional(),
     )
     .optional(),
-  supportingIncome: z
+  educationGrants: z
     .array(
       z
         .object({
           companyName: z.string().optional(),
           explanation: z.string().optional(),
+          payment: z.string().optional(),
+        })
+        .optional(),
+    )
+    .optional(),
+  fitnessGrants: z
+    .array(
+      z
+        .object({
+          companyName: z.string().optional(),
+          description: z.string().optional(),
           payment: z.string().optional(),
         })
         .optional(),
@@ -100,7 +111,7 @@ export const TaxReturnAnswerSchema = z.object({
   approveExternalData: z.boolean().refine((v) => v),
   applicantInformation: UserSchemaBase,
   income: incomeSchema.optional(),
-  propertyLoan: z.array(propertyLoanSchema),
+  propertyLoan: z.array(propertyLoanSchema).optional(),
   otherAssets: otherAssetsSchema.optional(),
   debt: debtSchema,
 })

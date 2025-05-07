@@ -70,6 +70,7 @@ export class TaxReturnService {
   }
 
   async createTaxReturn(taxReturnDto: CreateTaxReturnDto): Promise<TaxReturn> {
+    console.log('taxReturnDto', taxReturnDto)
     const transaction = await this.sequelize.transaction()
     try {
       const currentYear = new Date().getFullYear()

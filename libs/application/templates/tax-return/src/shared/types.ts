@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { DefaultEvents } from '@island.is/application/types'
 import { TaxReturnAnswerSchema } from '../lib/dataSchema'
 
-export type TaxReturn = z.TypeOf<typeof TaxReturnAnswerSchema>
+export type TaxReturnAnswers = z.TypeOf<typeof TaxReturnAnswerSchema>
 
 export interface IndexableObject {
   [index: number]: Array<string>

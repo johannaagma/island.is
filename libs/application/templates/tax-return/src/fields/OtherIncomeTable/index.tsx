@@ -96,19 +96,18 @@ export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
               }
             },
             getStaticTableData: (_application) => {
-              // const salaryData = getValueViaPath<Array<any>>(
-              //   _application.externalData,
-              //   'getFinancialOverview.data.otherIncome',
-              //   [],
-              // )
-              //              const tableData = salaryData?.map((item) => {
-              //                return {
-              //                  companyNationalId: item.data?.nationalId || '',
-              //                  companyName: item.data?.name || '',
-              //                  salaryAmount: item.amount?.toString() || '0',
-              //                }
-              //              })
-              //              return tableData || []
+              const salaryData = getValueViaPath<Array<any>>(
+                _application.externalData,
+                'getFinancialOverview.data.otherIncome',
+                [],
+              )
+              const tableData = salaryData?.map((item) => {
+                return {
+                  description: item.data?.description || '',
+                  amount: item.amount?.toString() || '0',
+                }
+              })
+              return tableData || []
               return []
             },
             fields: {
