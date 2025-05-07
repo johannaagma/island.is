@@ -3,6 +3,7 @@ import React, { FC, useContext } from 'react'
 
 import {
   Box,
+  Button,
   ButtonTypes,
   ColorSchemeContext,
   Column,
@@ -14,14 +15,12 @@ import {
   Hidden,
   Logo,
   ResponsiveSpace,
+  VisuallyHidden,
 } from '@island.is/island-ui/core'
-import { webMenuButtonClicked } from '@island.is/plausible'
 import { FixedNav, SearchInput } from '@island.is/web/components'
-import { useI18n } from '@island.is/web/i18n'
 import { LayoutProps } from '@island.is/web/layouts/main'
 
 import { LanguageToggler } from '../LanguageToggler'
-import { Menu } from '../Menu/Menu'
 import { LoginButton } from './LoginButton'
 
 interface HeaderProps {
@@ -50,11 +49,10 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
   loginButtonType = 'dropdown',
   children,
 }) => {
-  const { activeLocale, t } = useI18n()
   const { colorScheme } = useContext(ColorSchemeContext)
 
-  const locale = activeLocale
-  const english = activeLocale === 'en'
+  const locale = 'en'
+  const english = locale === 'en'
   const isWhite = colorScheme === 'white'
 
   return (
@@ -99,10 +97,9 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
                           id="search_input_header"
                           size="medium"
                           activeLocale={locale}
-                          placeholder={searchPlaceholder ?? t.searchPlaceholder}
-                          autocomplete={true}
-                          autosuggest={true}
-                          organization={organizationSearchFilter}
+                          placeholder={
+                            searchPlaceholder ?? 'Leitaðu á Ísland.is'
+                          }
                         />
                       </Box>
                     )}
@@ -119,19 +116,39 @@ export const Header: FC<React.PropsWithChildren<HeaderProps>> = ({
                       marginLeft={marginLeft}
                       display={['none', 'none', 'none', 'block']}
                     >
-                      <LanguageToggler
-                        buttonColorScheme={buttonColorScheme}
-                        queryParams={languageToggleQueryParams}
-                      />
+                      <LanguageToggler buttonColorScheme={buttonColorScheme} />
+                    </Box>
+                    <Box
+                      marginLeft={marginLeft}
+                      display={['none', 'none', 'none', 'block']}
+                    >
+                      <Button
+                        variant="utility"
+                        icon="menu"
+                        colorScheme={buttonColorScheme}
+                        data-testid="frontpage-burger-button"
+                      >
+                        {'Menu'}
+                      </Button>
                     </Box>
                     <Box marginLeft={marginLeft}>
-                      <Menu
-                        {...megaMenuData}
-                        buttonColorScheme={buttonColorScheme}
-                        onMenuOpen={webMenuButtonClicked}
-                        organizationSearchFilter={organizationSearchFilter}
-                        languageToggleQueryParams={languageToggleQueryParams}
-                      />
+                      <Box display="flex">
+                        <Box
+                          marginRight={1}
+                          display={['block', 'block', 'block', 'none']}
+                        >
+                          <Button
+                            colorScheme={buttonColorScheme}
+                            variant="utility"
+                            icon="search"
+                            value={'test'}
+                          >
+                            <VisuallyHidden>
+                              {locale === 'en' ? 'Leit' : 'Search'}
+                            </VisuallyHidden>
+                          </Button>
+                        </Box>
+                      </Box>
                     </Box>
                   </Box>
                 </Column>

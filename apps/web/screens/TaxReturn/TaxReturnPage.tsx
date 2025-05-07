@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   GridColumn,
   GridContainer,
   GridRow,
+  Hidden,
   Icon,
   LinkV2,
   Navigation,
@@ -17,12 +19,7 @@ import {
   Text,
 } from '@island.is/island-ui/core'
 import { theme } from '@island.is/island-ui/theme'
-import {
-  HeadWithSocialSharing,
-  Sticky,
-  Webreader,
-} from '@island.is/web/components'
-import { withMainLayout } from '@island.is/web/layouts/main'
+import { Header, Sticky, Webreader } from '@island.is/web/components'
 import { Screen } from '@island.is/web/types'
 
 import SidebarLayout from '../Layouts/SidebarLayout'
@@ -37,15 +34,22 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
   const lang = locale === 'is' ? 'is' : 'en'
   const minimal = false
   const showReadSpeaker = true
-  const indexableBySearchEngine = false
   const fullWidthContent = false
   const { width } = useWindowSize()
-  const [isMobile, setIsMobile] = useState<boolean | undefined>(false)
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined)
+  const [hasMounted, setHasMounted] = useState(false)
+  const router = useRouter()
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   useEffect(() => {
-    setIsMobile(width < theme.breakpoints.md)
-  }, [width])
+    if (hasMounted && width) {
+      setIsMobile(width < theme.breakpoints.md)
+    }
+  }, [hasMounted, width])
 
+  if (!hasMounted) return null // or a fallback skeleton
   const breadcrumbItems: BreadCrumbItem[] = [
     { title: t(lang, 'islandIs') },
     { title: t(lang, 'skatturinn') },
@@ -75,23 +79,12 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
 
   const backLink = {
     url: '/',
-    text: 'Einstaklingar',
+    text: t(lang, 'individuals'),
   }
 
   return (
     <>
-      <HeadWithSocialSharing
-        title={`${'Skattframtal'}${'meta description'}`}
-        description={'Page description'}
-        imageUrl={'Image url'}
-        imageContentType={'Image content type'}
-        imageWidth={'1200'}
-        imageHeight={'600'}
-      >
-        {!indexableBySearchEngine && (
-          <meta name="robots" content="noindex, nofollow" />
-        )}
-      </HeadWithSocialSharing>
+      <Header showSearchInHeader={true} megaMenuData={[]} />
       <Box></Box>
       {!minimal && (
         <SidebarLayout
@@ -149,16 +142,10 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   baseId="pageNav"
                   items={navItems}
                   title={t(lang, 'toc')}
-                  activeItemTitle={'Efnisyfirlit'}
-                  //   renderLink={(link, item) => {
-                  //     return !item?.href || shouldLinkBeAnAnchorTag(item.href) ? (
-                  //       link
-                  //     ) : (
-                  //       <NextLink href={item.href} legacyBehavior>
-                  //         {link}
-                  //       </NextLink>
-                  //     )
-                  //   }}
+                  activeItemTitle={t(lang, 'toc')}
+                  renderLink={(link, item) => {
+                    return <LinkV2 href={''}>{link}</LinkV2>
+                  }}
                 />
               </Stack>
               {/* Sidebar Content below */}
@@ -174,14 +161,30 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                     <Text variant="eyebrow" as="h2" color="blueberry600">
                       Tengt efni
                     </Text>
-                    <Text color="dark400">{t(lang, 'taxLawLibrary')}</Text>
-                    <Text color="dark400">{t(lang, 'rentalIncome')}</Text>
-                    <Text color="dark400">{t(lang, 'electronicId')}</Text>
-                    <Text color="dark400">{t(lang, 'childBenefits')}</Text>
-                    <Text color="dark400">{t(lang, 'personalDiscount')}</Text>
-                    <Text color="dark400">{t(lang, 'perDiem')}</Text>
-                    <Text color="dark400">{t(lang, 'firstApartment')}</Text>
-                    <Text color="dark400">{t(lang, 'vehicleImport')}</Text>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'taxLawLibrary')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'rentalIncome')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'electronicId')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'childBenefits')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'personalDiscount')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'perDiem')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'firstApartment')}</Text>
+                    </LinkV2>
+                    <LinkV2 href={''}>
+                      <Text color="dark400">{t(lang, 'vehicleImport')}</Text>
+                    </LinkV2>
                   </Stack>
                 </Box>
               </Box>
@@ -190,12 +193,6 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
         >
           {isMobile && (
             <Box className={styles.menuStyle}>
-              {/* {showExternalLinks && (
-                <OrganizationExternalLinks
-                  organizationPage={organizationPage}
-                  showOnMobile={true}
-                />
-              )} */}
               <Box marginY={2}>
                 <Navigation
                   baseId="pageNavMobile"
@@ -203,6 +200,9 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   items={navItems}
                   title={t(lang, 'toc')}
                   activeItemTitle={'Efnisyfirlit'}
+                  renderLink={(link, item) => {
+                    return <LinkV2 href={''}>{link}</LinkV2>
+                  }}
                 />
               </Box>
               <Box marginY={2}>
@@ -213,6 +213,9 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   items={relatedMaterialItems}
                   title={t(lang, 'toc')}
                   activeItemTitle={'Tengt efni'}
+                  renderLink={(link, item) => {
+                    return <LinkV2 href={''}>{link}</LinkV2>
+                  }}
                 />
               </Box>
             </Box>
@@ -268,16 +271,15 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                     offset={['0', '0', '0']}
                   >
                     <Box>
-                      <Text variant="h1" paddingBottom={2}>
-                        Framtal og álagning
+                      <Text
+                        variant="h1"
+                        paddingBottom={2}
+                        dataTestId="heading1"
+                      >
+                        {t(lang, 'returnAndLevy')}
                       </Text>
                       <Text variant="default">
-                        Í þessum kafla er fjallað ítarlega um forsendur
-                        álagningar allra gjalda, sem ríkisskattstjóri leggur á
-                        samkvæmt skattframtali. Einnig forsendur fyrir ákvörðun
-                        bóta. Þá leggur ríkisskattstjóri áherslu á rafræn skil
-                        skattgagna og er hér að finna upplýsingar um rafrænar
-                        skilaleiðir og um veflykla, hlutverk þeirra og virkni.
+                        {t(lang, 'returnAndLevyDesc')}
                       </Text>
                     </Box>
                   </GridColumn>
@@ -302,10 +304,14 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                       </Text>
 
                       <Button
-                      //onClick={() => router.push(applicationUrlParser())}
+                        onClick={() =>
+                          router.push(
+                            'http://localhost:4242/umsoknir/skattframtal',
+                          )
+                        }
                       >
                         <Box display={'flex'} style={{ gap: '0.5rem' }}>
-                          Sækja um
+                          Opna skattframtal
                           <Icon icon="open" type="outline" />
                         </Box>
                       </Button>
@@ -320,18 +326,13 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   >
                     <Box>
                       <Text variant="h3" paddingBottom={2}>
-                        Framtalsleiðbeiningar 2024
+                        {t(lang, 'instructions2024')}
                       </Text>
                       <Text variant="default" paddingBottom={2}>
-                        Leiðbeiningar um útfyllingu skattframtals einstaklinga
-                        eru nær eingöngu sóttar á netið. Hægt er að fá
-                        leiðbeiningarnar á pappír með því að sækja þær í næstu
-                        starfsstöð Skattsins, en þær eru ekki bornar út. Þegar
-                        talið er fram á vefnum eru framtalsleiðbeiningar alltaf
-                        við höndina.
+                        {t(lang, 'instructions2024Desc')}
                       </Text>
                       <Button variant="text" icon="arrowForward">
-                        Lesa meira
+                        {t(lang, 'readMore')}
                       </Button>
                     </Box>
                   </GridColumn>
@@ -344,15 +345,13 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   >
                     <Box>
                       <Text variant="h3" paddingBottom={2}>
-                        Að lesa úr álagningunni
+                        {t(lang, 'read')}
                       </Text>
                       <Text variant="default" paddingBottom={2}>
-                        Álagning opinberra gjalda einstaklinga fer fram í lok
-                        maí ár hvert. Niðurstöður álagningar eru birtar á
-                        þjónustuvef skattsins.
+                        {t(lang, 'readResultsDesc')}
                       </Text>
                       <Button variant="text" icon="arrowForward">
-                        Lesa meira
+                        {t(lang, 'readMore')}
                       </Button>
                     </Box>
                   </GridColumn>
@@ -365,17 +364,13 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   >
                     <Box>
                       <Text variant="h3" paddingBottom={2}>
-                        Rafræn skilríki og veflyklar
+                        {t(lang, 'electronicIdAndWebKeys')}
                       </Text>
                       <Text variant="default" paddingBottom={2}>
-                        Veflykill er aðgangsorð, gefið út af ríkisskattstjóra,
-                        fyrir rafræn samskipti við skattyfirvöld. Allir
-                        einstaklingar og félög eiga veflykla. Rafræn skilríki
-                        eiga með tímanum að leysa drjúgan hluta veflykla af
-                        hólmi.
+                        {t(lang, 'electronicIdDesc')}
                       </Text>
                       <Button variant="text" icon="arrowForward">
-                        Lesa meira
+                        {t(lang, 'readMore')}
                       </Button>
                     </Box>
                   </GridColumn>
@@ -388,18 +383,13 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                   >
                     <Box>
                       <Text variant="h3" paddingBottom={2}>
-                        Álagningarseðill og forsendur 2025
+                        {t(lang, 'taxSlip')}
                       </Text>
                       <Text variant="default" paddingBottom={2}>
-                        Opinber gjöld einstaklinga eru lögð á samkvæmt framtali
-                        og barnabætur og vaxtabætur eru einnig ákvarðaðar
-                        samkvæmt framtali. Forsendur eru margvíslegar; tekjur og
-                        eignir vegna helstu skattanna, fjölskyldustaða vegna
-                        bóta og aldur er ein forsenda t.d. útvarpsgjalds.
-                        Niðurstöður eru birtar á álagningarseðli.
+                        {t(lang, 'taxSlipDesc')}
                       </Text>
                       <Button variant="text" icon="arrowForward">
-                        Lesa meira
+                        {t(lang, 'readMore')}
                       </Button>
                     </Box>
                   </GridColumn>
@@ -410,17 +400,50 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                     span={['9/9', '9/9', '9/9']}
                     offset={['0', '0', '0']}
                   >
-                    <Box>
-                      <img
-                        src={'/assets/people_on_laptop.png'}
-                        alt={'Two people sitting and working on their laptops'}
-                      />
+                    <Box
+                      width="full"
+                      display={'flex'}
+                      flexDirection={'row'}
+                      justifyContent={'spaceBetween'}
+                      alignItems={'center'}
+                      style={{ backgroundColor: '#F2F7FF' }}
+                      padding={3}
+                    >
+                      <Text variant={'h3'} as="h3" color={'blue600'}>
+                        {t(lang, 'olderTaxReturns')}
+                      </Text>
+
+                      <Button
+                      //onClick={() => router.push(applicationUrlParser())}
+                      >
+                        <Box display={'flex'} style={{ gap: '0.5rem' }}>
+                          {t(lang, 'openMyPages')}
+                          <Icon icon="open" type="outline" />
+                        </Box>
+                      </Button>
                     </Box>
-                    <Text variant="eyebrow">
-                      Mynd sem sýnir tvær manneskjur að vinna í fartölvu
-                    </Text>
                   </GridColumn>
                 </GridRow>
+                <Hidden above="sm">
+                  <GridRow>
+                    <GridColumn
+                      paddingTop={6}
+                      span={['9/9', '9/9', '9/9']}
+                      offset={['0', '0', '0']}
+                    >
+                      <Box className={{ borderRadius: '15px' }}>
+                        <img
+                          src={'/assets/people_on_laptop.png'}
+                          alt={
+                            'Two people sitting and working on their laptops'
+                          }
+                          style={{ borderRadius: '15px' }}
+                        />
+                      </Box>
+                      <Text variant="eyebrow">{t(lang, 'pictureText')}</Text>
+                    </GridColumn>
+                  </GridRow>
+                </Hidden>
               </GridContainer>
             </Box>
           </Box>
@@ -436,4 +459,4 @@ TaxReturnPage.getProps = async ({ query, apolloClient, locale }) => {
   }
 }
 
-export default withMainLayout(TaxReturnPage, { showFooter: false })
+export default TaxReturnPage
