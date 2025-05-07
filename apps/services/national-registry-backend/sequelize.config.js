@@ -6,7 +6,7 @@ module.exports = {
     database: 'dev_db',
     host: 'localhost',
     dialect: 'postgres',
-    port: 5439,
+    port: 5440,
     seederStorage: 'sequelize',
   },
 }

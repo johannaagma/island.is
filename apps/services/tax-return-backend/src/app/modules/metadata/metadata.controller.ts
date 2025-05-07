@@ -12,6 +12,7 @@ import { GetFieldsReponse } from './dto/getFieldsResponse'
 export class MetadataController {
   constructor(private readonly metadataService: MetadataService) {}
 
+  //TODOx all í pathinu?
   @Get('fields')
   @Documentation({
     summary: 'Get fields to display in the tax return',
