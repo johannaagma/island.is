@@ -105,4 +105,8 @@ export const TaxReturnAnswerSchema = z.object({
   debt: debtSchema,
 })
 
+export type ApplicantType = z.TypeOf<typeof UserSchemaBase>
 export type PropertyLoanType = z.TypeOf<typeof propertyLoanSchema>
+export type IncomeType = z.TypeOf<typeof incomeSchema>
+export type OtherAssetsType = z.TypeOf<typeof otherAssetsSchema>
+export type DebtType = z.TypeOf<typeof debtSchema>

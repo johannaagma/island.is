@@ -1,10 +1,11 @@
 import {
+  buildCustomField,
   buildMultiField,
   buildOverviewField,
   buildSection,
   buildSubmitField,
 } from '@island.is/application/core'
-import { getOverviewItems } from '../../utils/getOverviewItems'
+import { getApplicantForOverview } from '../../utils/getOverviewItems'
 
 export const overviewSection = buildSection({
   id: 'overviewSection',
@@ -12,15 +13,20 @@ export const overviewSection = buildSection({
   children: [
     buildMultiField({
       id: 'overviewSection',
-      title: 'Overview',
+      title: 'Yfirlit skattframtals',
+      description:
+        'Vinsamlegast farðu yfir gögnin hér að neðan til að staðfesta að réttar upplýsingar hafi verið gefnar upp.',
       children: [
         buildOverviewField({
           id: 'overview',
-          title: 'Overview',
-          description: 'This is an overview, should come from messages.ts',
-          backId: 'idToSomeField',
+          title: 'Umsækjandi',
+          backId: 'umsaekjandi',
           bottomLine: false,
-          items: getOverviewItems,
+          items: getApplicantForOverview,
+        }),
+        buildCustomField({
+          id: 'overviewComp',
+          component: 'Overview',
         }),
         buildSubmitField({
           id: 'submit',
