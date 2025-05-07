@@ -14,6 +14,18 @@ export class TaxReturnClient {
     private readonly metadataApi: MetadataApi,
   ) {}
 
+  async getTaxReturns(nationalId: string): Promise<TaxReturn[]> {
+    return (
+      await this.taxReturnApi.taxReturnControllerGetTaxReturns({
+        nationalId,
+      })
+    ).data.map((x) => ({
+      id: x.id,
+      year: x.year,
+      entries: [],
+    }))
+  }
+
   async getFinancialOverview(): Promise<any> {
     //TODO map result
     return await this.financialOverviewApi.financialOverviewControllerGetFinancialOverviewByNationalId(

@@ -7,8 +7,8 @@ export class MainResolver {
   constructor(private readonly taxReturnService: TaxReturnService) {}
 
   @Query(() => [TaxReturn])
-  async taxReturns() {
-    const res = await this.taxReturnService.getTaxReturns()
+  async taxReturns(@Args('nationalId') nationalId: string) {
+    const res = await this.taxReturnService.getTaxReturns(nationalId)
     return res.data
   }
 

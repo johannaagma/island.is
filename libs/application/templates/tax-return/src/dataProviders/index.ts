@@ -5,3 +5,7 @@ export const GetFinancialOveriew = defineTemplateApi({
   action: ApiActions.getFinancialOverview,
   externalDataId: 'getFinancialOverview',
 })
+
+export const ValidateCanCreate = defineTemplateApi({
+  action: ApiActions.validateCanCreate,
+})

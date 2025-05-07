@@ -26,4 +26,5 @@ export enum ApiActions {
   submitApplication = 'submitApplication',
   getApplicant = 'getApplicant',
   getFinancialOverview = 'getFinancialOverview',
+  validateCanCreate = 'validateCanCreate',
 }

@@ -6,6 +6,7 @@ interface TaxReturnEntry {
 
 export interface TaxReturn {
   id: string
+  year: number
   entries: TaxReturnEntry[]
 }
 
