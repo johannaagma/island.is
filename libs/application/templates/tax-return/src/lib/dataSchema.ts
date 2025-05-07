@@ -105,6 +105,7 @@ const propertyLoanSchema = z.object({
   interest: z.number().optional(),
   balance: z.number().optional(),
   loanDate: z.string().optional(),
+  purchaseYear: z.string().optional(),
 })
 
 export const TaxReturnAnswerSchema = z.object({

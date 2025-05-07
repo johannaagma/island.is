@@ -39,6 +39,374 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           showFieldName
           field={{
             id: 'income.educationGrants',
+            title:
+              'Lífeyrisgreiðslur. Greiðslur frá Tryggingarstofnun. Aðrar bótagreiðslur, styrkir o.fl.',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>40</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
+            title: 'Greiðslur úr almennum lífeyrissjóðum',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>43</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
+            title: 'Lífeyrisgreiðslur úr séreignasjóðum',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>140</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
+            title: 'Lífeyrisgreiðslur úr "sérstökum" séreignasjóðum',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>143</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
+            title: 'Atvinnuleysisbætur',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>163</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
+            title:
+              'Félagsleg aðstoð og aðrir styrkir og bætur frá sveitarfélögum',
+            component: FieldComponents.TABLE_REPEATER,
+            children: undefined,
+            type: FieldTypes.TABLE_REPEATER,
+            maxRows: 0,
+            getFixedBottomRow: async ({ updatedValues, staticData }) => {
+              return {
+                items: [
+                  '',
+                  'Samtals greiðslur',
+                  '',
+                  <Box
+                    // background={'dark100'}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="spaceBetween"
+                  >
+                    <Text
+                      whiteSpace="nowrap"
+                      variant="small"
+                      fontWeight="semiBold"
+                    >
+                      0
+                    </Text>
+                    <Box paddingLeft={2}>
+                      <Tag disabled>197</Tag>
+                    </Box>
+                  </Box>,
+                ],
+              }
+            },
+            fields: {
+              companyName: {
+                component: 'input',
+                label: 'Nafn fyrirtækis',
+                width: 'half',
+                size: 'sm',
+              },
+              description: {
+                component: 'input',
+                label: 'Skýring',
+                width: 'half',
+                size: 'sm',
+              },
+              payment: {
+                component: 'input',
+                type: 'number',
+                label: 'Greiðsla',
+                width: 'half',
+                size: 'sm',
+                currency: true,
+              },
+            },
+          }}
+        ></TableRepeaterFormField>
+        <TableRepeaterFormField
+          application={application}
+          showFieldName
+          field={{
+            id: 'income.educationGrants',
             title: 'Styrkir til náms, rannsóknar- og vísindastarfa',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
@@ -89,7 +457,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                       {formatIsk(totalIncome)}
                     </Text>
                     <Box paddingLeft={2}>
-                      <Tag disabled>40</Tag>
+                      <Tag disabled>131</Tag>
                     </Box>
                   </Box>,
                 ],
@@ -191,7 +559,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                       {formatIsk(totalIncome)}
                     </Text>
                     <Box paddingLeft={2}>
-                      <Tag disabled>40</Tag>
+                      <Tag disabled>96</Tag>
                     </Box>
                   </Box>,
                 ],

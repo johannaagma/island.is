@@ -15,7 +15,7 @@ import {
   salaryIncomeCategories,
   supportingIncomeCategories,
 } from './constants/EntryCategories'
-import { groupOtherDebtsById } from './utils'
+import { getNumberFromAmount, groupOtherDebtsById } from './utils'
 import { TemplateApiError } from '@island.is/nest/problem'
 import { getValueViaPath } from '@island.is/application/core'
 import { getFieldNumber } from './utils/getFieldNumber'
@@ -97,61 +97,234 @@ export class TaxReturnService extends BaseTemplateApiService {
   }
 
   async submitApplication({ application }: TemplateApiModuleActionProps) {
-    console.log('application in submitApplication', application)
-
     const income = getValueViaPath<TaxReturnAnswers['income']>(
       application.answers,
       'income',
       undefined,
     )
 
-    const salaryIncomeFieldNumber = getFieldNumber('income.salaryIncome')
-    const salary =
+    /*--*/
+    const salaryExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.salaryIncome',
+        undefined,
+      ) || []
+
+    const salaryAnswers =
       income?.salaryIncome?.map((x) => ({
-        fieldNumber: salaryIncomeFieldNumber,
-        amount: x?.salaryAmount,
+        fieldNumber: getFieldNumber('income.salaryIncome'),
+        amount: getNumberFromAmount(x?.salaryAmount),
         data: {
           companyName: x?.companyName,
           companyNationalId: x?.companyNationalId,
         },
       })) || []
 
-    const otherIncomeFieldNumber = getFieldNumber('income.otherIncome')
-    const otherIncome =
+    const salary = [...salaryExternalData, ...salaryAnswers]
+
+    /*--*/
+    /*--*/
+    const otherIncomeExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.otherIncome',
+        undefined,
+      ) || []
+
+    const otherIncomeAnswers =
       income?.otherIncome?.map((x) => ({
-        fieldNumber: otherIncomeFieldNumber,
-        amount: x?.payment,
+        fieldNumber: getFieldNumber('income.otherIncome'),
+        amount: getNumberFromAmount(x?.payment),
       })) || []
 
-    // const otherIncomeFieldNumber = getFieldNumber('income.otherIncome')
-    // const otherIncome =
-    //   income?.otherIncome?.map((x) => ({
-    //     fieldNumber: otherIncomeFieldNumber,
-    //     amount: x?.payment,
-    //   })) || []
+    const otherIncome = [...otherIncomeExternalData, ...otherIncomeAnswers]
 
-    const returnObj = {
-      id: application.id,
-      year: new Date().getFullYear(),
-      entries: [...salary, ...otherIncome],
-    }
+    /*--*/
+    /*--*/
+    const supportingIncomeExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.otherIncome',
+        undefined,
+      ) || []
+    const educationGrantsAnswers =
+      income?.educationGrants?.map((x) => ({
+        fieldNumber: getFieldNumber('income.educationGrants'),
+        amount: getNumberFromAmount(x?.payment),
+      })) || []
 
+    const fitnessGrantsAnswers =
+      income?.fitnessGrants?.map((x) => ({
+        fieldNumber: getFieldNumber('income.fitnessGrants'),
+        amount: getNumberFromAmount(x?.payment),
+      })) || []
+
+    const supportingIncome = [
+      ...supportingIncomeExternalData,
+      ...educationGrantsAnswers,
+      ...fitnessGrantsAnswers,
+    ]
+    /*--*/
+    /*--*/
+
+    const propertyLoansAnswers =
+      getValueViaPath<TaxReturnAnswers['propertyLoan']>(
+        application.answers,
+        'propertyLoan',
+        undefined,
+      ) || []
+
+    const propertyLoansExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.domesticPropertyLoans',
+        [],
+      ) || []
+
+    const propertyLoansInterest =
+      propertyLoansAnswers?.map((x) => ({
+        fieldNumber: getFieldNumber('propertyLoan.interest'),
+        amount: x?.interest || 0,
+        data: {
+          lenderName: x?.loaner,
+          loanNumber: x?.loanNumber,
+          loanStartDate: x?.loanDate,
+          lenderNationalId: x?.loanerSSN,
+          loanPeriodInYears: x?.loanTime,
+          purchaseYear: propertyLoansExternalData[0]?.data.purchaseYear,
+          address: propertyLoansExternalData[0]?.data.address,
+        },
+      })) || []
+
+    const propertyLoansBalance =
+      propertyLoansAnswers?.map((x) => ({
+        fieldNumber: getFieldNumber('propertyLoan.balance'),
+        amount: x?.balance || 0,
+        data: {
+          lenderName: x?.loaner,
+          loanNumber: x?.loanNumber,
+          loanStartDate: x?.loanDate,
+          lenderNationalId: x?.loanerSSN,
+          loanPeriodInYears: x?.loanTime,
+          purchaseYear: propertyLoansExternalData[0]?.data.purchaseYear,
+          address: propertyLoansExternalData[0]?.data.address,
+        },
+      })) || []
+
+    const domesticPropertyLoans = [
+      ...propertyLoansExternalData,
+      ...propertyLoansInterest,
+      ...propertyLoansBalance,
+    ]
+    /*--*/
+    /*--*/
+    const domesticPropertiesExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.domesticProperties',
+        [],
+      ) || []
+
+    const domesticPropertiesAnswers =
+      getValueViaPath<TaxReturnAnswers['otherAssets']>(
+        application.answers,
+        'otherAssets',
+        undefined,
+      )?.domesticProperties || []
+
+    const domesticPropertiesAnswersMapped =
+      domesticPropertiesAnswers?.map((x) => ({
+        fieldNumber: getFieldNumber('otherAssets.domesticProperties'),
+        amount: getNumberFromAmount(x?.price),
+        data: {
+          propertyNumber: x?.propertyNumber,
+          address: x?.address,
+        },
+      })) || []
+    const domesticProperties = [
+      ...domesticPropertiesExternalData,
+      ...domesticPropertiesAnswersMapped,
+    ]
+    /*--*/
+    const carsExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.cars',
+        [],
+      ) || []
+    const carsAnswers =
+      getValueViaPath<TaxReturnAnswers['otherAssets']>(
+        application.answers,
+        'otherAssets',
+        undefined,
+      )?.cars || []
+    const carAnswersMapped =
+      carsAnswers?.map((x) => ({
+        fieldNumber: getFieldNumber('otherAssets.cars'),
+        amount: getNumberFromAmount(x?.price),
+        data: {
+          permno: x?.carNumber,
+          purchaseYear: x?.year,
+        },
+      })) || []
+
+    const cars = [...carsExternalData, ...carAnswersMapped]
+    /*--*/
+    /*--*/
+
+    const otherDebtExternalData =
+      getValueViaPath<any>(
+        application.externalData,
+        'getFinancialOverview.data.otherDebts',
+        [],
+      ) || []
+
+    const otherDebtAnswers = getValueViaPath<TaxReturnAnswers['debt']>(
+      application.answers,
+      'debt',
+      undefined,
+    )
+
+    const otherDebtInterest =
+      otherDebtAnswers?.otherDebt?.map((x) => ({
+        fieldNumber: getFieldNumber('otherDebt.interest'),
+        amount: getNumberFromAmount(x?.interestPayments),
+        data: {
+          description: x?.debtName,
+        },
+      })) || []
+
+    const otherDebtBalance =
+      otherDebtAnswers?.otherDebt?.map((x) => ({
+        fieldNumber: getFieldNumber('otherDebt.balance'),
+        amount: getNumberFromAmount(x?.remainingAmount),
+        data: {
+          description: x?.debtName,
+        },
+      })) || []
+    const debt = [
+      ...otherDebtExternalData,
+      ...otherDebtInterest,
+      ...otherDebtBalance,
+    ]
+    /*--*/
     try {
       this.taxReturnClient.submitTaxReturn('1203894569', {
         id: application.id,
         year: new Date().getFullYear(),
         entries: [
-          //TODO add fields from answers
-          {
-            fieldNumber: 21,
-            data: undefined,
-            amount: 9360000,
-          },
+          ...salary,
+          ...otherIncome,
+          ...supportingIncome,
+          ...domesticPropertyLoans,
+          ...domesticProperties,
+          ...cars,
+          ...debt,
         ],
       })
     } catch (error) {
       console.log('error', error)
     }
-    throw new Error('')
   }
 }

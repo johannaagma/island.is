@@ -125,7 +125,8 @@ export const TableRepeaterFormField: FC<Props> = ({
   const tableHeader = table?.header ?? buildDefaultTableHeader(tableItems)
   const tableRows = table?.rows ?? buildDefaultTableRows(tableItems)
   const staticData = getStaticTableData?.(application)
-  const canAddItem = maxRows ? savedFields.length < maxRows : true
+  const canAddItem =
+    maxRows === 0 ? false : maxRows ? savedFields.length < maxRows : true
 
   const [fixedBottomRow, setFixedBottomRow] = useState<
     Array<ReactNode> | undefined
@@ -399,19 +400,17 @@ export const TableRepeaterFormField: FC<Props> = ({
                     ))}
                   </T.Row>
                 ))}
-              {fixedBottomRow &&
-                ((savedFields && savedFields.length > 0) ||
-                  (staticData && staticData.length > 0)) && (
-                  <T.Row>
-                    {fixedBottomRow.map((item, index) => (
-                      <T.Data key={index} text={{ fontWeight: 'semiBold' }}>
-                        {typeof item === 'string'
-                          ? formatText(item ?? '', application, formatMessage)
-                          : item}
-                      </T.Data>
-                    ))}
-                  </T.Row>
-                )}
+              {fixedBottomRow && (
+                <T.Row>
+                  {fixedBottomRow.map((item, index) => (
+                    <T.Data key={index} text={{ fontWeight: 'semiBold' }}>
+                      {typeof item === 'string'
+                        ? formatText(item ?? '', application, formatMessage)
+                        : item}
+                    </T.Data>
+                  ))}
+                </T.Row>
+              )}
             </T.Body>
           </T.Table>
           {activeField ? (
@@ -455,17 +454,19 @@ export const TableRepeaterFormField: FC<Props> = ({
               </Box>
             </Stack>
           ) : (
-            <Box display="flex" justifyContent="flexEnd">
-              <Button
-                variant="ghost"
-                type="button"
-                onClick={handleNewItem}
-                icon="add"
-                disabled={!canAddItem}
-              >
-                {formatText(addItemButtonText, application, formatMessage)}
-              </Button>
-            </Box>
+            canAddItem && (
+              <Box display="flex" justifyContent="flexEnd">
+                <Button
+                  variant="ghost"
+                  type="button"
+                  onClick={handleNewItem}
+                  icon="add"
+                  disabled={!canAddItem}
+                >
+                  {formatText(addItemButtonText, application, formatMessage)}
+                </Button>
+              </Box>
+            )
           )}
         </Stack>
         {error && typeof error === 'string' && (

@@ -13,3 +13,7 @@ export const groupOtherDebtsById = (data: Array<OtherDebtProps>) => {
 
   return Array.from(map.values())
 }
+
+export const getNumberFromAmount = (amount?: string) => {
+  return parseInt(amount || '') || 0
+}

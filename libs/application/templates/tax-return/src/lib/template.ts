@@ -35,6 +35,7 @@ const template: ApplicationTemplate<
   codeOwner: CodeOwners.Origo,
   translationNamespaces: [ApplicationConfigurations.TaxReturn.translation],
   allowMultipleApplicationsInDraft: false,
+
   dataSchema: TaxReturnAnswerSchema,
   stateMachineConfig: {
     initial: States.PREREQUISITES,
@@ -113,7 +114,6 @@ const template: ApplicationTemplate<
                   Promise.resolve(module.completedForm),
                 ),
               read: 'all',
-              delete: true,
             },
           ],
         },
