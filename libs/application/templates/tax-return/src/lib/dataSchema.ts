@@ -53,6 +53,7 @@ const propertyLoanSchema = z.object({
   loaner: z.string().optional(),
   loanerSSN: z.string().optional(),
   loanNumber: z.number().optional(),
+  loanTime: z.number().optional(),
   total: z.number().optional(),
   installment: z.number().optional(),
   interest: z.number().optional(),
@@ -66,3 +67,5 @@ export const TaxReturnAnswerSchema = z.object({
   income: incomeSchema.optional(),
   propertyLoan: z.array(propertyLoanSchema),
 })
+
+export type PropertyLoanType = z.TypeOf<typeof propertyLoanSchema>

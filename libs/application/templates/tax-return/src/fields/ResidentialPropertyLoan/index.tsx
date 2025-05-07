@@ -21,6 +21,27 @@ import { formatCurrency } from '@island.is/shared/utils'
 import { UPDATE_APPLICATION } from '@island.is/application/graphql'
 import { useMutation } from '@apollo/client'
 import { useLocale } from '@island.is/localization'
+import { getValueViaPath } from '@island.is/application/core'
+import { PropertyLoanType } from '../../lib/dataSchema'
+
+type LoanField = {
+  data: {
+    address: string
+    lenderName: string
+    loanNumber: string
+    puchaseYear: string
+    loanStartDate: string // ISO date format
+    lenderNationalId: string
+    loanPeriodInYears: number
+    principalRepayment: number
+    totalAnnualPayments: number
+  }
+  amount: number
+  fieldName: string
+  fieldNumber: number
+  fieldSectionName: string
+  fieldSectionNumber: string
+}
 
 const labels = [
   'Lánveitandi',
@@ -59,12 +80,58 @@ const InfoBox: React.FC<InfoRowProps> = ({ items }) => (
   </Box>
 )
 
+const externalToLoanInfo = (data: LoanField[]) => {
+  const item = data[0]
+  return [
+    item.data.lenderName,
+    item.data.lenderNationalId,
+    item.data.loanNumber,
+    item.data.loanStartDate,
+    item.data.loanPeriodInYears.toString(),
+    item.data.totalAnnualPayments.toString(),
+    item.data.principalRepayment.toString(),
+    item.amount.toString(),
+    data[1].amount.toString(),
+  ]
+}
+
+const answerToLoanInfo = (data: PropertyLoanType[]) => {
+  return data.map((item) => {
+    return [
+      item.loaner || '',
+      item.loanerSSN || '',
+      item.loanNumber?.toString() || '123123',
+      item.loanDate || '',
+      item.loanTime?.toString() || '01.01.2025',
+      item.total?.toString() || '99999',
+      item.installment?.toString() || '79999',
+      item.interest?.toString() || '499900',
+      item.balance?.toString() || '390000',
+    ]
+  })
+}
+
 export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
   application,
   setBeforeSubmitCallback,
 }) => {
-  const [showInputs, setShowInputs] = useState<boolean>(true)
-  const [loanInfo, setLoanInfo] = useState<string[][]>([])
+  const propertyData = getValueViaPath<LoanField[]>(
+    application.externalData,
+    'getFinancialOverview.data.domesticPropertyLoans',
+  )
+  const propertyDataAnswers = getValueViaPath<PropertyLoanType[]>(
+    application.answers,
+    'propertyLoan',
+  )
+
+  const data = externalToLoanInfo(propertyData || [])
+  const dataAnswers = answerToLoanInfo(propertyDataAnswers || [])
+
+  const [showInputs, setShowInputs] = useState<boolean>(false)
+  const [loanInfo, setLoanInfo] = useState<string[][]>(() => {
+    if (dataAnswers.length > 0) return dataAnswers
+    else return [data]
+  })
   const { getValues } = useFormContext()
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [updateApplication] = useMutation(UPDATE_APPLICATION)
@@ -77,7 +144,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
         loanerSSN: loan[1],
         loanNumber: parseInt(loan[2]),
         loanDate: loan[3],
-        loanTime: loan[4],
+        loanTime: parseInt(loan[4]),
         total: parseInt(loan[5]),
         installment: parseInt(loan[6]),
         interest: parseInt(loan[7]),
@@ -105,7 +172,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
       loanerSSN,
       loanNumber,
       loanDate,
-      `${loanTime} ár`,
+      loanTime,
       total,
       installment,
       interest,
@@ -123,7 +190,6 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
 
   setBeforeSubmitCallback?.(async () => {
     const loanList = mapToPropertyLoan()
-    console.log(loanList)
 
     await updateApplication({
       variables: {
@@ -176,30 +242,31 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
           {/* Saekja gotu i externalData */}
         </Box>
 
-        <InfoBox items={[]} />
         {loanInfo.map((loan, index) => (
           <Box key={index}>
-            <Box
-              marginTop={2}
-              marginBottom={2}
-              display={'flex'}
-              justifyContent={'flexEnd'}
-            >
-              <Button
-                colorScheme="default"
-                iconType="filled"
-                preTextIconType="filled"
-                variant="utility"
-                size="default"
-                icon="pencil"
-                onClick={(_) => {
-                  setShowInputs(true)
-                  setIsEditing(true)
-                }}
+            {index > 0 && (
+              <Box
+                marginTop={2}
+                marginBottom={2}
+                display={'flex'}
+                justifyContent={'flexEnd'}
               >
-                Breyta upplysingum
-              </Button>
-            </Box>
+                <Button
+                  colorScheme="default"
+                  iconType="filled"
+                  preTextIconType="filled"
+                  variant="utility"
+                  size="default"
+                  icon="pencil"
+                  onClick={(_) => {
+                    setShowInputs(true)
+                    setIsEditing(true)
+                  }}
+                >
+                  Breyta upplysingum
+                </Button>
+              </Box>
+            )}
             <InfoBox items={loan} />
           </Box>
         ))}
@@ -259,6 +326,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
             <GridRow marginBottom={2} rowGap={1}>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   name="propertyLoan.loaner"
                   label="Lánveitandi"
                   type="text"
@@ -268,6 +336,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   backgroundColor="blue"
                   name="propertyLoan.loanerSSN"
                   label="Kennitala lánveitanda"
@@ -278,6 +347,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   backgroundColor="blue"
                   name="propertyLoan.loanNumber"
                   label="Lántökunúmer"
@@ -289,6 +359,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
             <GridRow marginBottom={2} rowGap={1}>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <DatePickerController
+                  required
                   id={'debt.date'}
                   name="propertyLoan.loanDate"
                   backgroundColor={'blue'}
@@ -297,6 +368,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   backgroundColor={'blue'}
                   name={'propertyLoan.loanTime'}
                   label="Lánstími ár"
@@ -306,6 +378,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   backgroundColor={'blue'}
                   name={'propertyLoan.total'}
                   label="Heildargreiðslur"
@@ -318,6 +391,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
             <GridRow marginBottom={2} rowGap={1}>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   id={'debt.installment'}
                   backgroundColor={'blue'}
                   name={'propertyLoan.installment'}
@@ -328,6 +402,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   id={'debt.interest'}
                   backgroundColor={'blue'}
                   name={'propertyLoan.interest'}
@@ -338,6 +413,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               </GridColumn>
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
+                  required
                   id={'debt.balance'}
                   backgroundColor={'blue'}
                   name={'propertyLoan.balance'}
