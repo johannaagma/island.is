@@ -263,7 +263,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                     setIsEditing(true)
                   }}
                 >
-                  Breyta upplysingum
+                  Breyta upplýsingum
                 </Button>
               </Box>
             )}
