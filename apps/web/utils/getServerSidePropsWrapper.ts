@@ -48,6 +48,8 @@ export const getServerSidePropsWrapper: (
       props,
     }
   } catch (error) {
+    console.log('ERRORING OUT')
+
     if (error instanceof CustomNextError) {
       if (error.statusCode === 404) {
         logger.info(
