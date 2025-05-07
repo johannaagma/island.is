@@ -49,8 +49,23 @@ const incomeSchema = z.object({
   totalIncome: z.string().optional(),
 })
 
+const propertyLoanSchema = z.object({
+  loaner: z.string().optional(),
+  loanerSSN: z.string().optional(),
+  loanNumber: z.number().optional(),
+  loanTime: z.number().optional(),
+  total: z.number().optional(),
+  installment: z.number().optional(),
+  interest: z.number().optional(),
+  balance: z.number().optional(),
+  loanDate: z.string().optional(),
+})
+
 export const TaxReturnAnswerSchema = z.object({
   approveExternalData: z.boolean().refine((v) => v),
   applicantInformation: UserSchemaBase,
   income: incomeSchema.optional(),
+  propertyLoan: z.array(propertyLoanSchema),
 })
+
+export type PropertyLoanType = z.TypeOf<typeof propertyLoanSchema>
