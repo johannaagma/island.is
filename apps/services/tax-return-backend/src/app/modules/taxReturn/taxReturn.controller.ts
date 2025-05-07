@@ -25,6 +25,7 @@ import { GetTaxReturnResponse } from './dto/getTaxReturnResponse'
 export class TaxReturnController {
   constructor(private readonly taxReturnService: TaxReturnService) {}
 
+  //TODOx all í pathinu?
   @Get()
   @Documentation({
     summary: 'Get all tax returns, possible to filter by year',

@@ -1,0 +1,15 @@
+services:
+  db_national_registry_backend:
+    image: public.ecr.aws/docker/library/postgres:15.3-alpine
+    container_name: db_national_registry_backend
+    networks:
+      - local
+    environment:
+      - POSTGRES_DB=dev_db
+      - POSTGRES_USER=dev_db
+      - POSTGRES_PASSWORD=dev_db
+    ports:
+      - 5440:5432
+
+networks:
+  local:
