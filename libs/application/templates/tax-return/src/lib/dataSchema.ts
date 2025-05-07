@@ -36,12 +36,23 @@ const incomeSchema = z.object({
         .optional(),
     )
     .optional(),
-  supportingIncome: z
+  educationGrants: z
     .array(
       z
         .object({
           companyName: z.string().optional(),
           explanation: z.string().optional(),
+          payment: z.string().optional(),
+        })
+        .optional(),
+    )
+    .optional(),
+  fitnessGrants: z
+    .array(
+      z
+        .object({
+          companyName: z.string().optional(),
+          description: z.string().optional(),
           payment: z.string().optional(),
         })
         .optional(),

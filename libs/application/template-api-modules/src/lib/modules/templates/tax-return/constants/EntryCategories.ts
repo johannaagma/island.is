@@ -1,5 +1,5 @@
 export const supportingIncomeCategories = [
-  40, 43, 140, 145, 143, 163, 197, 131, 243, 96, 37,
+  40, 43, 140, 145, 143, 163, 197, 131, 243, 37,
 ]
 export const salaryIncomeCategories = [21]
 export const otherIncomeCategories = [23, 96]

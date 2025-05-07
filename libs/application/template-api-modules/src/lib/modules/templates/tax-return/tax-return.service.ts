@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { ApplicationTypes } from '@island.is/application/types'
 import { BaseTemplateApiService } from '../../base-template-api.service'
-import { TaxReturnClient } from '@island.is/clients/tax-return'
+import { TaxReturn, TaxReturnClient } from '@island.is/clients/tax-return'
 import { NationalRegistryBackendApiClient } from '@island.is/clients/national-registry-backend-api'
 import { TemplateApiModuleActionProps } from '../../../types'
 import { Entry } from './types/financialOverview'
+import { TaxReturnAnswers } from '@island.is/application/templates/tax-return'
 import {
   carCategories,
   domesticPropertyCategories,
@@ -16,6 +17,8 @@ import {
 } from './constants/EntryCategories'
 import { groupOtherDebtsById } from './utils'
 import { TemplateApiError } from '@island.is/nest/problem'
+import { getValueViaPath } from '@island.is/application/core'
+import { getFieldNumber } from './utils/getFieldNumber'
 
 @Injectable()
 export class TaxReturnService extends BaseTemplateApiService {
@@ -95,6 +98,44 @@ export class TaxReturnService extends BaseTemplateApiService {
 
   async submitApplication({ application }: TemplateApiModuleActionProps) {
     console.log('application in submitApplication', application)
+
+    const income = getValueViaPath<TaxReturnAnswers['income']>(
+      application.answers,
+      'income',
+      undefined,
+    )
+
+    const salaryIncomeFieldNumber = getFieldNumber('income.salaryIncome')
+    const salary =
+      income?.salaryIncome?.map((x) => ({
+        fieldNumber: salaryIncomeFieldNumber,
+        amount: x?.salaryAmount,
+        data: {
+          companyName: x?.companyName,
+          companyNationalId: x?.companyNationalId,
+        },
+      })) || []
+
+    const otherIncomeFieldNumber = getFieldNumber('income.otherIncome')
+    const otherIncome =
+      income?.otherIncome?.map((x) => ({
+        fieldNumber: otherIncomeFieldNumber,
+        amount: x?.payment,
+      })) || []
+
+    // const otherIncomeFieldNumber = getFieldNumber('income.otherIncome')
+    // const otherIncome =
+    //   income?.otherIncome?.map((x) => ({
+    //     fieldNumber: otherIncomeFieldNumber,
+    //     amount: x?.payment,
+    //   })) || []
+
+    const returnObj = {
+      id: application.id,
+      year: new Date().getFullYear(),
+      entries: [...salary, ...otherIncome],
+    }
+
     try {
       this.taxReturnClient.submitTaxReturn('1203894569', {
         id: application.id,

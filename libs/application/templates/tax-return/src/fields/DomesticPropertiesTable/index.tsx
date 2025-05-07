@@ -36,7 +36,7 @@ export const DomesticPropertiesTable: FC<FieldBaseProps> = ({
         <TableRepeaterFormField
           application={application}
           field={{
-            id: 'assets.domesticProperties',
+            id: 'otherAssets.domesticProperties',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
             type: FieldTypes.TABLE_REPEATER,
@@ -44,7 +44,7 @@ export const DomesticPropertiesTable: FC<FieldBaseProps> = ({
             getFixedBottomRow: async ({ updatedValues, staticData }) => {
               let totalValue = 0
               const updatedValue =
-                updatedValues.assets?.domesticProperties?.reduce(
+                updatedValues.otherAssets?.domesticProperties?.reduce(
                   (acc: number, item: { price: string }) => {
                     if (item.price) {
                       return acc + deFormatIsk(item.price)
