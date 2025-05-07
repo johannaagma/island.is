@@ -167,6 +167,10 @@ export const routesTemplate = {
     is: '/s/blodbankinn/ahrif-a-blodgjof',
     en: '/en/o/icelandic-blood-bank/affecting-factors',
   },
+  taxreturn: {
+    is: '/s/skattframtal',
+    en: '/en/o/tax-return',
+  },
   blooddonationrestrictiondetails: {
     is: '/s/blodbankinn/ahrif-a-blodgjof/[id]',
     en: '/en/o/icelandic-blood-bank/affecting-factors/[id]',
