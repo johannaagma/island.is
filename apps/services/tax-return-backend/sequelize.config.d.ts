@@ -10,7 +10,6 @@ interface SequelizeConfig {
 
 declare namespace SequelizeConfig {
   const production: SequelizeConfig
-  const development: SequelizeConfig
 }
 
 export = SequelizeConfig
