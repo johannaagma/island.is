@@ -80,7 +80,7 @@ export const UserButton = ({
                 )}
               </>
             ) : (
-              profile.name
+              'Jökull Þórðarson'
             )}
           </div>
         </Button>

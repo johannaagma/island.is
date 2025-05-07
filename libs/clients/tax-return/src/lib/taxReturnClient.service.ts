@@ -4,6 +4,7 @@ import {
   MetadataApi,
   TaxReturnApi,
 } from '../../gen/fetch/apis'
+import { TaxReturn } from './taxReturnClient.types'
 
 @Injectable()
 export class TaxReturnClient {
@@ -20,5 +21,19 @@ export class TaxReturnClient {
         nationalId: '1203894569', // TODO use logged in users nationalId?
       },
     )
+  }
+
+  async submitTaxReturn(nationalId: string, taxReturn: TaxReturn) {
+    await this.taxReturnApi.taxReturnControllerCreateTaxReturn({
+      createTaxReturnDto: {
+        id: taxReturn.id,
+        nationalId,
+        entries: taxReturn.entries.map((x) => ({
+          fieldNumber: x.fieldNumber,
+          data: x.data,
+          amount: x.amount,
+        })),
+      },
+    })
   }
 }

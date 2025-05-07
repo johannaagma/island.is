@@ -16,7 +16,7 @@ export const capitalInfoSection = buildSection({
         buildAlertMessageField({
           id: 'capitalInfoSection.alert',
           alertType: 'info',
-          description:
+          message:
             'Fjármagnstekjur eru vaxtatekjur, arður, söluhagnaður, leigutekjur utan rekstrar og höfundarréttargreiðslur. Með vaxtatekjum er átt við vexti, verðbætur, afföll og gengishagnað. Vaxtatekjur sem áfallnar voru fyrir gildistöku laga um skatt á fjármagnstekjur, þ.e. fyrir 1. janúar 1997, eiga ekki að færast á framtal því þær mynda ekki stofn til skatts á fjármagnstekjur.',
         }),
         buildCustomField(

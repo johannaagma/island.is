@@ -13,6 +13,7 @@ import {
   Tag,
   Text,
 } from '@island.is/island-ui/core'
+import { getValueViaPath } from '@island.is/application/core'
 
 export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
   return (
@@ -95,12 +96,20 @@ export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
               }
             },
             getStaticTableData: (_application) => {
-              return [
-                {
-                  typeOfPayment: 'Dagpeningar',
-                  payment: '120000',
-                },
-              ]
+              // const salaryData = getValueViaPath<Array<any>>(
+              //   _application.externalData,
+              //   'getFinancialOverview.data.otherIncome',
+              //   [],
+              // )
+              //              const tableData = salaryData?.map((item) => {
+              //                return {
+              //                  companyNationalId: item.data?.nationalId || '',
+              //                  companyName: item.data?.name || '',
+              //                  salaryAmount: item.amount?.toString() || '0',
+              //                }
+              //              })
+              //              return tableData || []
+              return []
             },
             fields: {
               typeOfPayment: {

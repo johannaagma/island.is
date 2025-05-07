@@ -13,6 +13,7 @@ import {
   Tag,
   Text,
 } from '@island.is/island-ui/core'
+import { getValueViaPath } from '@island.is/application/core'
 
 export const CarTable: FC<FieldBaseProps> = ({ application }) => {
   return (
@@ -82,25 +83,26 @@ export const CarTable: FC<FieldBaseProps> = ({ application }) => {
                       {formatIsk(totalValue)}
                     </Text>
                     <Box paddingLeft={2}>
-                      <Tag disabled>80</Tag>
+                      <Tag disabled>06</Tag>
                     </Box>
                   </Box>,
                 ],
               }
             },
             getStaticTableData: (_application) => {
-              return [
-                {
-                  carNumber: 'KB-521',
-                  year: '2021',
-                  price: '31000000',
-                },
-                {
-                  carNumber: 'JU-329',
-                  year: '2021',
-                  price: '430000',
-                },
-              ]
+              const carData = getValueViaPath<Array<any>>(
+                _application.externalData,
+                'getFinancialOverview.data.cars',
+                [],
+              )
+              const tableData = carData?.map((item) => {
+                return {
+                  carNumber: item.data?.permno || '',
+                  year: item.data?.purchaseYear || '',
+                  price: item.amount?.toString() || '0',
+                }
+              })
+              return tableData || []
             },
             fields: {
               carNumber: {

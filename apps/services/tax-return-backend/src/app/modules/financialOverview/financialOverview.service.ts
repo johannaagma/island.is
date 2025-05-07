@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { NoContentException } from '@island.is/nest/problem'
 import { FinancialOverview } from './model/financialOverview'
 import { FinancialOverviewEntry } from './model/financialOverviewEntry'
 import { Field } from '../metadata/model/field'
+import { Section } from '../metadata/model/section'
+import { FinancialOverviewDto } from './dto/financialOverviewDto'
 
 @Injectable()
 export class FinancialOverviewService {
@@ -14,38 +15,38 @@ export class FinancialOverviewService {
 
   async getFinancialOverviewByNationalId(
     nationalId: string,
-  ): Promise<FinancialOverview | null> {
-    const financialOverview = await this.financialOverviewModel.findOne({
+  ): Promise<FinancialOverviewDto> {
+    const item = await this.financialOverviewModel.findOne({
       where: { nationalId },
       include: [
         {
           model: FinancialOverviewEntry,
-          attributes: {
-            exclude: [
-              'id',
-              'financialOverviewId',
-              'financialOverview',
-              'fieldId',
-              'created',
-              'modified',
-            ],
-          },
           include: [
             {
               model: Field,
-              attributes: {
-                exclude: ['id', 'sectionId', 'created', 'modified'],
-              },
+              include: [{ model: Section }],
             },
           ],
         },
       ],
     })
 
-    if (!financialOverview) {
-      throw new NoContentException()
+    if (!item) {
+      throw new NotFoundException()
     }
 
-    return financialOverview
+    return {
+      id: item.id,
+      nationalId: item.nationalId,
+      year: item.year,
+      entries: item.entries?.map((entry) => ({
+        fieldSectionNumber: entry.field?.section?.sectionNumber || '',
+        fieldSectionName: entry.field?.section?.sectionName || '',
+        fieldNumber: entry.field?.fieldNumber || 0,
+        fieldName: entry.field?.fieldName,
+        data: entry.data,
+        amount: entry.amount,
+      })),
+    }
   }
 }

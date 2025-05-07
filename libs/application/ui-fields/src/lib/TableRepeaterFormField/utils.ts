@@ -17,11 +17,10 @@ export const handleCustomStaticValues = <T>(
 ) => {
   return tableItems.reduce((acc, item) => {
     if (item.component === 'input' && item.currency) {
-      const stat = staticData as Array<Value<T>>
-      return handleCurrency(item, stat)
+      return handleCurrency(item, acc)
     }
     return acc
-  }, [] as Array<Value<T>>)
+  }, staticData as Array<Value<T>>)
 }
 
 export const handleCustomMappedValues = <T>(
@@ -34,10 +33,10 @@ export const handleCustomMappedValues = <T>(
       return handleNationalIdWithNameItem(item, values)
     }
     if (item.component === 'input' && item.currency) {
-      return handleCurrency(item, values)
+      return handleCurrency(item, acc)
     }
     return acc
-  }, [] as Array<Value<T>>)
+  }, values as Array<Value<T>>)
 }
 
 const handleCurrency = <T>(item: Item, values: Array<Value<T>>) => {
@@ -49,7 +48,6 @@ const handleCurrency = <T>(item: Item, values: Array<Value<T>>) => {
     if (value[item.id]) {
       const { [item.id]: nestedObject, ...rest } = value
       const formattedCurrency = formatIsk(nestedObject as number)
-
       return {
         [item.id]: formattedCurrency as T,
         ...rest,

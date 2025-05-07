@@ -1,0 +1,146 @@
+{
+  "name": "services-national-registry-backend",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/services/national-registry-backend/src",
+  "projectType": "application",
+  "prefix": "services-national-registry-backend",
+  "tags": ["scope:nest"],
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "./tools/executors/node:build",
+      "options": {
+        "outputPath": "dist/apps/services/national-registry-backend",
+        "main": "apps/services/national-registry-backend/src/main.ts",
+        "tsConfig": "apps/services/national-registry-backend/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "*",
+            "input": "apps/services/national-registry-backend/migrations",
+            "output": "./migrations"
+          },
+          {
+            "glob": "*",
+            "input": "apps/services/national-registry-backend/seeders",
+            "output": "./seeders"
+          },
+          {
+            "glob": ".sequelizerc",
+            "input": "apps/services/national-registry-backend",
+            "output": "./"
+          },
+          {
+            "glob": "sequelize.config.js",
+            "input": "apps/services/national-registry-backend",
+            "output": "./"
+          }
+        ],
+        "maxWorkers": 2
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "services-national-registry-backend:build",
+        "runtimeArgs": ["--no-experimental-fetch", "--trace-deprecation"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "worker": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "services-national-registry-backend:build",
+        "args": ["--job", "worker"]
+      }
+    },
+    "dev-services": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose up -d",
+        "cwd": "apps/services/national-registry-backend"
+      }
+    },
+    "codegen/backend-schema": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env INIT_SCHEMA=true yarn ts-node -P apps/services/national-registry-backend/tsconfig.app.json apps/services/national-registry-backend/src/buildOpenApi.ts"
+      },
+      "outputs": ["{projectRoot}/src/openapi.yaml"]
+    },
+    "codegen/backend-schema-graphql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn ts-node -P apps/services/national-registry-backend/tsconfig.json scripts/build-graphql-schema.ts apps/services/national-registry-backend/src/app/app.module"
+      },
+      "outputs": ["{projectRoot}/src/api.graphql"]
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:migrate",
+        "cwd": "apps/services/national-registry-backend"
+      }
+    },
+    "migrate/undo": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:migrate:undo",
+        "cwd": "apps/services/national-registry-backend"
+      }
+    },
+    "migrate/generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli migration:generate --name $(whoami)",
+        "cwd": "apps/services/national-registry-backend"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sequelize-cli db:seed:all",
+        "cwd": "apps/services/national-registry-backend"
+      }
+    },
+    "docker-express": {
+      "executor": "Intentionally left blank, only so this target is valid when using `nx show projects --with-target docker-express`"
+    },
+    "dev-init": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "yarn dev-services services-national-registry-backend",
+          "yarn nx run services-national-registry-backend:migrate",
+          "yarn nx run services-national-registry-backend:seed"
+        ],
+        "parallel": false
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["yarn start services-national-registry-backend"],
+        "parallel": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/services/national-registry-backend"
+      ],
+      "options": {
+        "jestConfig": "apps/services/national-registry-backend/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,6 +1,12 @@
+interface TaxReturnEntry {
+  fieldNumber: number
+  data?: object
+  amount: number
+}
+
 export interface TaxReturn {
   id: string
-  //TODO
+  entries: TaxReturnEntry[]
 }
 
 export interface FinancialOverview {

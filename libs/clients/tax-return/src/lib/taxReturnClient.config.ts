@@ -8,12 +8,9 @@ const schema = z.object({
 export const TaxReturnClientConfig = defineConfig<z.infer<typeof schema>>({
   name: 'TaxReturnClient',
   schema,
-  load(env) {
+  load() {
     return {
-      basePath: env.required(
-        'TAX_RETURN_BACKEND_API_URL',
-        'http://localhost:3390',
-      ),
+      basePath: 'http://localhost:3390',
     }
   },
 })

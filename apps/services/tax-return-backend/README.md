@@ -38,9 +38,16 @@ yarn start services-tax-return-backend
 
 Open url:
 localhost:3390/api/swagger
+localhost:3390/api/graphql (for GraphQl playground)
 
 ## Regenerate the OpenAPI file
 
 ```bash
 yarn nx run services-tax-return-backend:codegen/backend-schema
+```
+
+## Regenerate the GraphQl file
+
+```bash
+yarn nx run services-tax-return-backend:codegen/backend-schema-graphql
 ```
