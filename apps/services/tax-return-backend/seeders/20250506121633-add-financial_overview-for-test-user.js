@@ -66,6 +66,7 @@ module.exports = {
           data: JSON.stringify({
             nationalId: '1111111111',
             name: 'Norðurljós Software ehf',
+            description: 'Íþróttastyrkur',
           }),
           amount: 75000,
           created: new Date(),
@@ -79,6 +80,7 @@ module.exports = {
           data: JSON.stringify({
             nationalId: '2222222222',
             name: 'Mús & Merki ehf.',
+            description: 'Starfsmenntastyrkur',
           }),
           amount: 130000,
           created: new Date(),
