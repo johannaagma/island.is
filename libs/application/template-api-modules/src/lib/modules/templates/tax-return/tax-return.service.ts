@@ -32,28 +32,28 @@ export class TaxReturnService extends BaseTemplateApiService {
     }
 
     const salaryIncome = results.entries.filter((x: Entry) =>
-      salaryIncomeCategories.includes(x.field.fieldNumber),
+      salaryIncomeCategories.includes(x.fieldNumber),
     )
 
     const otherIncome = results.entries.filter((x: Entry) =>
-      otherIncomeCategories.includes(x.field.fieldNumber),
+      otherIncomeCategories.includes(x.fieldNumber),
     )
 
     const supportingIncome = results.entries.filter((x: Entry) =>
-      supportingIncomeCategories.includes(x.field.fieldNumber),
+      supportingIncomeCategories.includes(x.fieldNumber),
     )
 
     const domesticProperties = results.entries.filter((x: Entry) =>
-      domesticPropertyCategories.includes(x.field.fieldNumber),
+      domesticPropertyCategories.includes(x.fieldNumber),
     )
     const domesticPropertyLoans = results.entries.filter((x: Entry) =>
-      domesticPropertyLoansCategories.includes(x.field.fieldNumber),
+      domesticPropertyLoansCategories.includes(x.fieldNumber),
     )
     const cars = results.entries.filter((x: Entry) =>
-      carCategories.includes(x.field.fieldNumber),
+      carCategories.includes(x.fieldNumber),
     )
     const otherDebts = results.entries.filter((x: Entry) =>
-      otherDebtsCategories.includes(x.field.fieldNumber),
+      otherDebtsCategories.includes(x.fieldNumber),
     )
 
     const otherDebtsGrouped = groupOtherDebtsById(otherDebts)

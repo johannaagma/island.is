@@ -1,20 +1,17 @@
-export type Field = {
-  canAddEntry: boolean
-  canEditEntry: boolean
-  fieldName: string
-  fieldNumber: number
-  order: number
-  year: string
-}
-
 export type Entry = {
+  fieldSectionNumber: string
+  fieldSectionName: string
+  fieldNumber: number
+  fieldName?: string
+  data?: any
   amount: number
-  data: any
-  field: any
 }
 
 export type OtherDebtProps = {
-  field: Field
+  fieldSectionNumber: string
+  fieldSectionName: string
+  fieldNumber: number
+  fieldName?: string
   data: { description: string; id: string }
   amount: number
 }
