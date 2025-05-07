@@ -4,70 +4,41 @@ import { FormValue } from '@island.is/application/types'
 
 import { getValueViaPath } from '@island.is/application/core'
 import { KeyValueItem } from '@island.is/application/types'
+import { ApplicantType } from '../lib/dataSchema'
 
-export const getOverviewItems = (
+export const getApplicantForOverview = (
   answers: FormValue,
   _externalData: ExternalData,
 ): Array<KeyValueItem> => {
+  const applicant = getValueViaPath<ApplicantType>(
+    answers,
+    'applicantInformation',
+  )
   return [
     {
       width: 'full',
-      keyText: 'Full width',
-      valueText: getValueViaPath<string>(answers, 'applicant.name') ?? '',
-    },
-    {
-      width: 'half',
-      keyText: 'Half width',
-      valueText:
-        getValueViaPath<string>(answers, 'applicant.phoneNumber') ?? '',
-    },
-    {
-      width: 'half',
-      keyText: 'Half width',
-      valueText: 'Hvassaleiti 5',
-    },
-    {
-      width: 'full',
-      // empty item to end line
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: 'test@test.is',
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: '+354 123 4567',
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: '+354 123 4567',
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: '+354 123 4567',
-    },
-    {
-      width: 'full',
-      // empty item to end line
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: 'Reykjavík',
-    },
-    {
-      width: 'half',
-      keyText: 'Half width',
-      valueText: 'test@test.is',
-    },
-    {
-      width: 'snug',
-      keyText: 'Snug width',
-      valueText: 'test@test.is',
+      valueText: [
+        {
+          id: '1',
+          defaultMessage: applicant?.name,
+        },
+        {
+          id: '2',
+          defaultMessage: applicant?.nationalId,
+        },
+        {
+          id: '3',
+          defaultMessage: 'Heimilisfang, postnumer borg',
+        },
+        {
+          id: '4',
+          defaultMessage: 'Sími: +3547781779 ...',
+        },
+        {
+          id: '5',
+          defaultMessage: 'Email@email.com',
+        },
+      ],
     },
   ]
 }
