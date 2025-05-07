@@ -24,10 +24,10 @@ export const debtSection = buildSection({
             sectionId: '5.1',
           },
         ),
-        // buildCustomField({
-        //   id: 'income.otherIncome',
-        //   component: 'OtherIncomeTable',
-        // }),
+        buildCustomField({
+          id: 'debt.residentialLoan',
+          component: 'ResidentialPropertyLoan',
+        }),
         buildCustomField(
           {
             id: 'debt.more5.3',

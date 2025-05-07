@@ -155,7 +155,7 @@ export const DatePicker: React.FC<React.PropsWithChildren<DatePickerProps>> = ({
               placeholderText={placeholderText}
               onInputClick={onInputClick}
               backgroundColor={backgroundColor}
-              icon={icon}
+              //icon={icon}
               size={size}
             />
           }
@@ -202,7 +202,7 @@ const CustomInput = forwardRef<
   ) => (
     <Input
       {...props}
-      icon={icon}
+      //icon={icon}
       ref={ref}
       fixedFocusState={fixedFocusState}
       placeholder={placeholderText}

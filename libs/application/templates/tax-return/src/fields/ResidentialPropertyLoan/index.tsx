@@ -1,0 +1,380 @@
+import { FieldBaseProps } from '@island.is/application/types'
+import { FC, useState } from 'react'
+import {
+  Accordion,
+  AccordionItem,
+  AlertMessage,
+  Box,
+  Button,
+  GridColumn,
+  GridContainer,
+  GridRow,
+  Tag,
+  Text,
+} from '@island.is/island-ui/core'
+import {
+  DatePickerController,
+  InputController,
+} from '@island.is/shared/form-fields'
+import { useFormContext } from 'react-hook-form'
+import { formatCurrency } from '@island.is/shared/utils'
+import { UPDATE_APPLICATION } from '@island.is/application/graphql'
+import { useMutation } from '@apollo/client'
+import { useLocale } from '@island.is/localization'
+
+const labels = [
+  'Lánveitandi',
+  'Kennitala lánveitanda',
+  'Lánsnúmer',
+  'Lántökudagur',
+  'Lánstími ár',
+  'Heildargreiðslur',
+  'Afborgun á nafnverði',
+  'Vaxtagjöld',
+  'Eftirstöðvar',
+]
+
+interface InfoRowProps {
+  items: string[]
+}
+
+const InfoBox: React.FC<InfoRowProps> = ({ items }) => (
+  <Box border="standard" padding={1} marginTop={2} marginBottom={2}>
+    {labels.map((label, index) => {
+      let item = items[index] || '-'
+      if (index > 4) {
+        item = formatCurrency(parseInt(item))
+      }
+      return (
+        <Box key={label} display={'flex'} flexDirection={'row'} margin={1}>
+          <Box width="full">
+            <Text fontWeight="semiBold">{label}</Text>
+          </Box>
+          <Box width="full">
+            <Text>{item}</Text>
+          </Box>
+        </Box>
+      )
+    })}
+  </Box>
+)
+
+export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
+  application,
+  setBeforeSubmitCallback,
+}) => {
+  const [showInputs, setShowInputs] = useState<boolean>(true)
+  const [loanInfo, setLoanInfo] = useState<string[][]>([])
+  const { getValues } = useFormContext()
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [updateApplication] = useMutation(UPDATE_APPLICATION)
+  const { locale } = useLocale()
+
+  const mapToPropertyLoan = () => {
+    return loanInfo.map((loan) => {
+      return {
+        loaner: loan[0],
+        loanerSSN: loan[1],
+        loanNumber: parseInt(loan[2]),
+        loanDate: loan[3],
+        loanTime: loan[4],
+        total: parseInt(loan[5]),
+        installment: parseInt(loan[6]),
+        interest: parseInt(loan[7]),
+        balance: parseInt(loan[8]),
+      }
+    })
+  }
+
+  const handleSave = () => {
+    setShowInputs(false)
+    const {
+      loaner,
+      loanerSSN,
+      loanNumber,
+      loanTime,
+      total,
+      installment,
+      interest,
+      balance,
+      loanDate,
+    } = getValues().propertyLoan
+
+    const newList = [
+      loaner,
+      loanerSSN,
+      loanNumber,
+      loanDate,
+      `${loanTime} ár`,
+      total,
+      installment,
+      interest,
+      balance,
+    ]
+
+    if (isEditing) {
+      setLoanInfo((prev) => [prev[0], newList])
+    } else {
+      setLoanInfo((prev) => [...prev, newList])
+    }
+
+    setIsEditing(false)
+  }
+
+  setBeforeSubmitCallback?.(async () => {
+    const loanList = mapToPropertyLoan()
+    console.log(loanList)
+
+    await updateApplication({
+      variables: {
+        input: {
+          id: application.id,
+          answers: { propertyLoan: loanList },
+        },
+        locale,
+      },
+    })
+    return [true, null]
+  })
+
+  const getTotalByIndex = (idx: number) => {
+    let total = 0
+    loanInfo.forEach((loan) => {
+      total += parseInt(loan[idx])
+    })
+    return total
+  }
+
+  return (
+    <Accordion>
+      <AccordionItem
+        key={`accordion-item-other-income`}
+        id={`accordion-item-other-income`}
+        label={
+          <Box display="flex" flexDirection="row">
+            <Tag variant="purple">5.2</Tag>
+            <Box paddingLeft={2}>
+              <Text variant="h4">Lán vegna íbúðarhúsnæðis</Text>
+            </Box>
+          </Box>
+        }
+        startExpanded
+      >
+        <Box marginTop={2}>
+          <AlertMessage
+            type="info"
+            title={
+              'Lán vegna kaupa eða byggingar íbúðarhúsnæðis til eigin nota.'
+            }
+            message={
+              'Ef hluti láns er nýttur til annars en öflunar íbúðarhúsnæðis skal tilgreina hve hátt hlutfall fjárhæðar er til öflunar íbúðarhúsnæðis (reitur 1). Í reiti 5 til 8 skal færa heildarfjárhæðir (án hlutföllunar) en í dálka 9 og 10 skal aðeins færa þann hluta af vaxtagjöldum og eftirstöðvum sem tilheyra öflun íbúðarhúsnæðis.'
+            }
+          />
+        </Box>
+        <Box marginTop={2}>
+          <Text variant="h5">{`Staðsetning íbúðarhúsnæðis: Bláfjallagata 12`}</Text>{' '}
+          {/* Saekja gotu i externalData */}
+        </Box>
+
+        <InfoBox items={[]} />
+        {loanInfo.map((loan, index) => (
+          <Box key={index}>
+            <Box
+              marginTop={2}
+              marginBottom={2}
+              display={'flex'}
+              justifyContent={'flexEnd'}
+            >
+              <Button
+                colorScheme="default"
+                iconType="filled"
+                preTextIconType="filled"
+                variant="utility"
+                size="default"
+                icon="pencil"
+                onClick={(_) => {
+                  setShowInputs(true)
+                  setIsEditing(true)
+                }}
+              >
+                Breyta upplysingum
+              </Button>
+            </Box>
+            <InfoBox items={loan} />
+          </Box>
+        ))}
+        <Box
+          border="standard"
+          padding={1}
+          marginTop={2}
+          marginBottom={2}
+          style={{ backgroundColor: '#FAFAFA' }}
+        >
+          <Box display={'flex'} flexDirection={'row'} margin={1}>
+            <Box width="full">
+              <Text>{'Samtals Vaxtagjold'}</Text>
+            </Box>
+            <Box width="full" display={'flex'} justifyContent={'spaceBetween'}>
+              <Text fontWeight="semiBold">
+                {formatCurrency(getTotalByIndex(7))}
+              </Text>
+              <Tag disabled>87</Tag>
+            </Box>
+          </Box>
+          <Box display={'flex'} flexDirection={'row'} margin={1}>
+            <Box width="full">
+              <Text>{'Samtals eftirstodvar'}</Text>
+            </Box>
+            <Box width="full" display={'flex'} justifyContent={'spaceBetween'}>
+              <Text fontWeight="semiBold">
+                {formatCurrency(getTotalByIndex(8))}
+              </Text>
+              <Tag disabled>45</Tag>
+            </Box>
+          </Box>
+        </Box>
+
+        {!showInputs && (
+          <Box
+            marginTop={2}
+            marginBottom={2}
+            display={'flex'}
+            justifyContent={'flexEnd'}
+          >
+            <Button
+              colorScheme="default"
+              iconType="filled"
+              preTextIconType="filled"
+              size="default"
+              variant="ghost"
+              icon="add"
+              onClick={(_) => setShowInputs(true)}
+            >
+              Bæta við láni
+            </Button>
+          </Box>
+        )}
+        {showInputs && (
+          <GridContainer>
+            <GridRow marginBottom={2} rowGap={1}>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  name="propertyLoan.loaner"
+                  label="Lánveitandi"
+                  type="text"
+                  backgroundColor="blue"
+                  id="debt.loaner"
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  backgroundColor="blue"
+                  name="propertyLoan.loanerSSN"
+                  label="Kennitala lánveitanda"
+                  type="text"
+                  id="debt.loanerSSN"
+                  format="######-####"
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  backgroundColor="blue"
+                  name="propertyLoan.loanNumber"
+                  label="Lántökunúmer"
+                  type="number"
+                  id="debt.loaner_number"
+                />
+              </GridColumn>
+            </GridRow>
+            <GridRow marginBottom={2} rowGap={1}>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <DatePickerController
+                  id={'debt.date'}
+                  name="propertyLoan.loanDate"
+                  backgroundColor={'blue'}
+                  label={'Lántökudagur'}
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  backgroundColor={'blue'}
+                  name={'propertyLoan.loanTime'}
+                  label="Lánstími ár"
+                  type={'number'}
+                  id={'debt.loanTime'}
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  backgroundColor={'blue'}
+                  name={'propertyLoan.total'}
+                  label="Heildargreiðslur"
+                  type={'number'}
+                  id={'debt.total'}
+                  currency={true}
+                />
+              </GridColumn>
+            </GridRow>
+            <GridRow marginBottom={2} rowGap={1}>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  id={'debt.installment'}
+                  backgroundColor={'blue'}
+                  name={'propertyLoan.installment'}
+                  label="Afborgun á nafnverði"
+                  type={'number'}
+                  currency={true}
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  id={'debt.interest'}
+                  backgroundColor={'blue'}
+                  name={'propertyLoan.interest'}
+                  label="Vaxtagjöld"
+                  type={'number'}
+                  currency={true}
+                />
+              </GridColumn>
+              <GridColumn span={['12/12', '12/12', '3/9']}>
+                <InputController
+                  id={'debt.balance'}
+                  backgroundColor={'blue'}
+                  name={'propertyLoan.balance'}
+                  label="Eftirstöðvar"
+                  type={'number'}
+                  currency={true}
+                />
+              </GridColumn>
+            </GridRow>
+            <Box
+              marginTop={2}
+              marginBottom={2}
+              display={'flex'}
+              justifyContent={'flexEnd'}
+            >
+              <Button
+                colorScheme="default"
+                preTextIconType="filled"
+                size="default"
+                variant="ghost"
+                onClick={(_) => setShowInputs(false)}
+              >
+                Hætta við
+              </Button>
+              <Box marginLeft={1}>
+                <Button
+                  colorScheme="default"
+                  size="default"
+                  onClick={handleSave}
+                >
+                  Skrá lán
+                </Button>
+              </Box>
+            </Box>
+          </GridContainer>
+        )}
+      </AccordionItem>
+    </Accordion>
+  )
+}
