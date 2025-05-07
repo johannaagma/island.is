@@ -1,0 +1,136 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f9f9ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-wrapper {
+  padding: 1rem;
+}
+
+.login-card {
+  max-width: 400px;
+  background: white;
+  border: 1px solid #cfe0ff;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #0052cc;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.description {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.input-label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: #0052cc;
+  margin-bottom: 0.25rem;
+}
+
+.input-wrapper {
+  margin-bottom: 1rem;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #cfe0ff;
+  border-radius: 8px;
+  background: #f0f4ff;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.checkbox-wrapper input {
+  accent-color: #0052cc;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #0052cc;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primary-button:hover {
+  background-color: #003fa3;
+}
+
+
+.divider {
+  position: relative;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.divider::before {
+  left: 0;
+}
+.divider::after {
+  right: 0;
+}
+
+.secondary-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #0052cc;
+  border-radius: 8px;
+  color: #0052cc;
+  background-color: white;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+}
