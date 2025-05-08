@@ -1,42 +1,50 @@
 import { ExternalData } from '@island.is/application/types'
-
 import { FormValue } from '@island.is/application/types'
-
 import { getValueViaPath } from '@island.is/application/core'
 import { KeyValueItem } from '@island.is/application/types'
-import { ApplicantType } from '../lib/dataSchema'
+import kennitala from 'kennitala'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
+
+const formatKennitala = (nationalId: string | undefined): string => {
+  if (!nationalId) return ''
+  return kennitala.format(nationalId)
+}
+
+const formatPhoneNumber = (phoneNumber: string | undefined): string => {
+  if (!phoneNumber) return ''
+  const phone = parsePhoneNumberFromString(phoneNumber, 'IS')
+  return phone?.formatNational() || phoneNumber
+}
 
 export const getApplicantForOverview = (
-  answers: FormValue,
-  _externalData: ExternalData,
+  _answers: FormValue,
+  externalData: ExternalData,
 ): Array<KeyValueItem> => {
-  const applicant = getValueViaPath<ApplicantType>(
-    answers,
-    'applicantInformation',
-  )
+  const individual = getValueViaPath<any>(externalData, 'individual.data')
+
   return [
     {
       width: 'full',
       valueText: [
         {
           id: '1',
-          defaultMessage: applicant?.name,
+          defaultMessage: individual?.name,
         },
         {
           id: '2',
-          defaultMessage: applicant?.nationalId,
+          defaultMessage: formatKennitala(individual?.nationalId),
         },
         {
           id: '3',
-          defaultMessage: 'Heimilisfang, postnumer borg',
+          defaultMessage: `${individual?.address}, ${individual?.postalCode} ${individual?.city}`,
         },
         {
           id: '4',
-          defaultMessage: 'Sími: +3547781779 ...',
+          defaultMessage: formatPhoneNumber(individual?.phone),
         },
         {
           id: '5',
-          defaultMessage: 'Email@email.com',
+          defaultMessage: individual?.email,
         },
       ],
     },
