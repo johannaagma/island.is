@@ -24,14 +24,8 @@ export const incomeSection = buildSection({
           component: 'OtherIncomeTable',
         }),
         buildCustomField({
-          id: 'income.supportingIncome',
+          id: 'income',
           component: 'SupportingIncomeTable',
-        }),
-        buildHiddenInput({
-          id: 'income.fitnessGrants',
-        }),
-        buildHiddenInput({
-          id: 'income.educationGrants',
         }),
         buildCustomField(
           {

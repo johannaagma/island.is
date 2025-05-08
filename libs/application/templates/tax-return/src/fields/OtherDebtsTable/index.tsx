@@ -158,6 +158,7 @@ export const OtherDebtsTable: FC<FieldBaseProps> = ({ application }) => {
             fields: {
               debtName: {
                 component: 'input',
+                type: 'number',
                 label: 'Skuld',
                 width: 'third',
                 size: 'sm',
