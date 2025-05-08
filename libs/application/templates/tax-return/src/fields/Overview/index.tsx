@@ -132,7 +132,7 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
         payment: '75000',
       },
     ],
-    supportingIncome: [
+    educationGrants: [
       {
         companyName: 'Norðurljós Software ehf',
         explanation: 'Íþróttastyrkur',
@@ -257,8 +257,8 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
 
       {/* Loop this */}
       {income &&
-        income.supportingIncome &&
-        income.supportingIncome.map((inc, index) => {
+        income.educationGrants &&
+        income.educationGrants.map((inc, index) => {
           return (
             <InfoRowthreeValues
               key={index}
@@ -268,10 +268,10 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
             />
           )
         })}
-      {income && income.supportingIncome && (
+      {income && income.educationGrants && (
         <InfoRowTotal
           label={'Samtals launagreiðslur'}
-          value={income.supportingIncome
+          value={income.educationGrants
             .reduce(
               (total, item) => total + parseInt(item?.payment || '0') || 0,
               0,
