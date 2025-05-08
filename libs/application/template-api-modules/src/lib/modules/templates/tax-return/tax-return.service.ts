@@ -331,7 +331,5 @@ export class TaxReturnService extends BaseTemplateApiService {
         ...debt,
       ].filter((x) => !!x.fieldNumber),
     })
-
-    throw new Error('')
   }
 }
