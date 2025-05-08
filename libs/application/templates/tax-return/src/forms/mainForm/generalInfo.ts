@@ -11,6 +11,7 @@ export const generalInfoSection = buildSection({
     buildMultiField({
       id: 'generalInfo',
       title: 'Almennar upplýsingar',
+      description: `Vinsamlegast farið vel yfir alla liði. Það gæti þurft að fylla út í reiti sem hafa ekki verið sjálfkrafa fylltir út af Skattinum. Nánari leiðbeiningar um hluta 1 á vefsíðu Skattsins.`,
       children: [
         buildCustomField(
           {

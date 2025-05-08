@@ -33,11 +33,6 @@ export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
         }
         startExpanded
       >
-        <Text>
-          {`Hægt er að senda umsóknir og önnur gögn með pósti, tölvupósti eða
-          faxi. Læknisvottorð verða að berast með pósti þar sem við þurfum
-          frumritið.`}
-        </Text>
         <TableRepeaterFormField
           application={application}
           field={{
@@ -104,7 +99,7 @@ export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
               const tableData = salaryData?.map((item) => {
                 return {
                   description: item.data?.description || '',
-                  amount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []

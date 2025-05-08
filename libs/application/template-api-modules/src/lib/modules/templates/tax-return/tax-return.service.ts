@@ -156,7 +156,7 @@ export class TaxReturnService extends BaseTemplateApiService {
         fieldNumber: getFieldNumber('income.educationGrants'),
         amount: getNumberFromAmount(x?.payment),
         data: {
-          description: x?.explanation,
+          description: x?.description,
         },
       })) || []
 

@@ -39,8 +39,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           showFieldName
           field={{
             id: 'income.alltlif',
-            title:
-              'Lífeyrisgreiðslur. Greiðslur frá Tryggingarstofnun. Aðrar bótagreiðslur, styrkir o.fl.',
+            title: 'Lífeyrisgreiðslur og aðrar bótagreiðslur',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
             type: FieldTypes.TABLE_REPEATER,
@@ -223,7 +222,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
           showFieldName
           field={{
             id: 'income.serstakir',
-            title: 'Lífeyrisgreiðslur úr "sérstökum" séreignasjóðum',
+            title: 'Sérstök útgreiðsla séreignarsparnaðar',
             component: FieldComponents.TABLE_REPEATER,
             children: undefined,
             type: FieldTypes.TABLE_REPEATER,
@@ -476,7 +475,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                 return {
                   companyName: item.data?.name || '',
                   description: item.data?.description || '',
-                  salaryAmount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []
@@ -578,7 +577,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                 return {
                   companyName: item.data?.name || '',
                   description: item.data?.description || '',
-                  salaryAmount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []

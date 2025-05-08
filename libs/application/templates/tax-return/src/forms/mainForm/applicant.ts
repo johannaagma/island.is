@@ -22,7 +22,7 @@ export const applicantSection = buildSection({
       children: [
         buildTextField({
           id: 'applicantInformation.name',
-          title: 'Full nafn',
+          title: 'Fullt nafn',
           backgroundColor: 'white',
           width: 'full',
           readOnly: true,

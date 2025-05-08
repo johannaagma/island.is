@@ -1,5 +1,6 @@
 import {
   buildCustomField,
+  buildHiddenInput,
   buildMultiField,
   buildSection,
 } from '@island.is/application/core'
@@ -12,7 +13,7 @@ export const incomeSection = buildSection({
       id: 'income',
       title: 'Tekjur ársins 2024',
       description:
-        'Laun, hlunnindi, starfstengdar greiðslur, styrkir o.fl., eru árituð á framtalið samkvæmt innsendum launamiðum. Einnig greiðslur frá Tryggingastofnun ríkisins, Atvinnuleysistryggingasjóði, Fæðingarorlofssjóði og lífeyrissjóðum. Á vefframtalinu eru laun sundurliðuð á launagreiðendur.',
+        'Allar tekjur sem þú færð í tengslum við vinnu, svo sem laun, bónusa, styrki og aðrar greiðslur, eru sjálfkrafa skráðar í framtalið þitt út frá upplýsingum sem atvinnurekendur og stofnanir senda inn. Þetta á líka við um greiðslur frá opinberum aðilum eins og Tryggingastofnun, Vinnumálastofnun, Fæðingarorlofssjóði og lífeyrissjóðum. Í vefframtalinu geturðu séð sundurliðun á þessum greiðslum eftir þeim sem greiddu þær.',
       children: [
         buildCustomField({
           id: 'income.salaryIncome',
@@ -23,7 +24,7 @@ export const incomeSection = buildSection({
           component: 'OtherIncomeTable',
         }),
         buildCustomField({
-          id: 'income.supportingIncome',
+          id: 'income',
           component: 'SupportingIncomeTable',
         }),
         buildCustomField(

@@ -6,13 +6,13 @@ import {
 
 export const debtSection = buildSection({
   id: 'debtSection',
-  title: 'Skuldir og vaxtagjöld',
+  title: 'Skuldir, lán og vaxtagjöld',
   children: [
     buildMultiField({
       id: 'debt',
-      title: 'Skuldir (lán) og vaxtagjöld',
+      title: 'Skuldir, lán og vaxtagjöld',
       description:
-        'Gera skal grein fyrir öllum skuldum í árslok, þ.m.t. skuldum við greiðslukortafyrirtæki og smálánafyrirtæki.',
+        'Þú þarft að skrá allar skuldir sem þú átt í lok ársins. Þar á meðal skuldir við greiðslukortafyrirtæki og smálánafyrirtæki.',
       children: [
         buildCustomField(
           {

@@ -27,7 +27,6 @@ export class TaxReturnClient {
   }
 
   async getFinancialOverview(nationalId: string): Promise<any> {
-    //TODO map result
     return await this.financialOverviewApi.financialOverviewControllerGetFinancialOverviewByNationalId(
       { nationalId },
     )

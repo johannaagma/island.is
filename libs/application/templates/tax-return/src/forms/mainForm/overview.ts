@@ -9,13 +9,13 @@ import { getApplicantForOverview } from '../../utils/getOverviewItems'
 
 export const overviewSection = buildSection({
   id: 'overviewSection',
-  title: 'Overview',
+  title: 'Yfirlit',
   children: [
     buildMultiField({
       id: 'overviewSection',
       title: 'Yfirlit skattframtals',
       description:
-        'Vinsamlegast farðu yfir gögnin hér að neðan til að staðfesta að réttar upplýsingar hafi verið gefnar upp.',
+        'Vinsamlegast farðu yfir gögnin hér að neðan til að staðfesta að réttar upplýsingar hafi verið gefnar upp. Þú getur gert breytingar í hverjum lið fyrir sig.',
       children: [
         buildOverviewField({
           id: 'overview',
@@ -35,7 +35,7 @@ export const overviewSection = buildSection({
           actions: [
             {
               event: 'SUBMIT',
-              name: 'Submit',
+              name: 'Senda skattframtal',
               type: 'primary',
             },
           ],

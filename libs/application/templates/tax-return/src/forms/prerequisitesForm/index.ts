@@ -32,7 +32,8 @@ export const Prerequisites = buildForm({
             buildDataProviderItem({
               provider: GetIndividual,
               title: 'Upplýsingar úr Þjóðskrá',
-              subTitle: 'Allar upplýsingar um þig koma frá Þjóðskrá..',
+              subTitle:
+                'Allar upplýsingar um þig, börn, maka og lögheimili koma frá Þjóðskrá',
             }),
             buildDataProviderItem({
               title: 'Netfang og símanúmer úr þínum stillingum',
@@ -43,7 +44,7 @@ export const Prerequisites = buildForm({
               provider: GetFinancialOveriew,
               title: 'Upplýsingar frá Skattinum',
               subTitle:
-                'Skatturinn sækir gögn varðandi tekjur, eignir og fleira',
+                'Skatturinn sækir gögn varðandi tekjur, skuldir og eignir',
             }),
             buildDataProviderItem({
               provider: ValidateCanCreate,
