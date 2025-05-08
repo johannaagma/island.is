@@ -54,11 +54,18 @@ export class TaxReturnService {
       throw new NotFoundException()
     }
 
+    // Sort entries by field.order
+    const sortedEntries = (item.entries ?? []).sort((a, b) => {
+      const orderA = a.field?.order ?? Number.MAX_SAFE_INTEGER
+      const orderB = b.field?.order ?? Number.MAX_SAFE_INTEGER
+      return orderA - orderB
+    })
+
     return {
       id: item.id,
       nationalId: item.nationalId,
       year: item.year,
-      entries: item.entries?.map((entry) => ({
+      entries: sortedEntries.map((entry) => ({
         fieldSectionNumber: entry.field?.section.sectionNumber || '',
         fieldSectionName: entry.field?.section.sectionName || '',
         fieldNumber: entry.field?.fieldNumber || -1,
