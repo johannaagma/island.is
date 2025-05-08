@@ -41,7 +41,7 @@ const incomeSchema = z.object({
       z
         .object({
           companyName: z.string().optional(),
-          explanation: z.string().optional(),
+          description: z.string().optional(),
           payment: z.string().optional(),
         })
         .optional(),

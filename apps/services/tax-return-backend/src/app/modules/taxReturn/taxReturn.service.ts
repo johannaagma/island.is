@@ -54,11 +54,18 @@ export class TaxReturnService {
       throw new NotFoundException()
     }
 
+    // Sort entries by field.order
+    const sortedEntries = (item.entries ?? []).sort((a, b) => {
+      const orderA = a.field?.order ?? Number.MAX_SAFE_INTEGER
+      const orderB = b.field?.order ?? Number.MAX_SAFE_INTEGER
+      return orderA - orderB
+    })
+
     return {
       id: item.id,
       nationalId: item.nationalId,
       year: item.year,
-      entries: item.entries?.map((entry) => ({
+      entries: sortedEntries.map((entry) => ({
         fieldSectionNumber: entry.field?.section.sectionNumber || '',
         fieldSectionName: entry.field?.section.sectionName || '',
         fieldNumber: entry.field?.fieldNumber || -1,
@@ -70,11 +77,25 @@ export class TaxReturnService {
   }
 
   async createTaxReturn(taxReturnDto: CreateTaxReturnDto): Promise<TaxReturn> {
-    console.log('taxReturnDto', taxReturnDto)
     const transaction = await this.sequelize.transaction()
     try {
       const currentYear = new Date().getFullYear()
 
+      // First check if a tax return already exists for this nationalId and year
+      const existingTaxReturn = await this.taxReturnModel.findOne({
+        where: {
+          nationalId: taxReturnDto.nationalId,
+          year: currentYear,
+        },
+      })
+
+      if (existingTaxReturn) {
+        throw new Error(
+          `A tax return already exists for national ID ${taxReturnDto.nationalId} and year ${currentYear}`,
+        )
+      }
+
+      // Otherwise create tax return
       const taxReturnId = (
         await this.taxReturnModel.create(
           {
@@ -134,9 +155,18 @@ export class TaxReturnService {
   ): Promise<TaxReturn> {
     const transaction = await this.sequelize.transaction()
     try {
+      // Check if tax return exists
       const taxReturn = await this.taxReturnModel.findByPk(taxReturnId)
       if (!taxReturn) {
         throw new Error(`Tax return with id ${taxReturnId} not found`)
+      }
+
+      // Only allow update if the tax return is for the current year
+      const currentYear = new Date().getFullYear()
+      if (taxReturn.year !== currentYear) {
+        throw new Error(
+          `Cannot update tax return for year ${taxReturn.year}. Only the current year (${currentYear}) is allowed.`,
+        )
       }
 
       // Delete all old entries

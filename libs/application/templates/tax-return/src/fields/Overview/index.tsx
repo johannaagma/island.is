@@ -135,12 +135,12 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
     educationGrants: [
       {
         companyName: 'Norðurljós Software ehf',
-        explanation: 'Íþróttastyrkur',
+        description: 'Íþróttastyrkur',
         payment: '75000',
       },
       {
         companyName: 'Mús & Merki ehf.',
-        explanation: 'Starfsmenntastyrkur',
+        description: 'Starfsmenntastyrkur',
         payment: '130000',
       },
     ],
@@ -168,10 +168,10 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
     ],
   }
 
-  const propertyLoan = getValueViaPath<PropertyLoanType[]>(
-    application.answers,
-    'propertyLoan',
-  )
+  const propertyLoan =
+    getValueViaPath<PropertyLoanType[]>(application.answers, 'propertyLoan') ||
+    []
+  console.log('propertyLoan', propertyLoan)
 
   //const debt = getValueViaPath<DebtType>(application.answers, 'debt')
   const debt: DebtType = {
@@ -263,7 +263,7 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
             <InfoRowthreeValues
               key={index}
               label={inc?.companyName || ''}
-              secondLabel={inc?.explanation || ''}
+              secondLabel={inc?.description || ''}
               value={inc?.payment || ''}
             />
           )
