@@ -104,7 +104,7 @@ export const OtherIncomeTable: FC<FieldBaseProps> = ({ application }) => {
               const tableData = salaryData?.map((item) => {
                 return {
                   description: item.data?.description || '',
-                  amount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []

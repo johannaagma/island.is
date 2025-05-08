@@ -476,7 +476,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                 return {
                   companyName: item.data?.name || '',
                   description: item.data?.description || '',
-                  salaryAmount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []
@@ -578,7 +578,7 @@ export const SupportingIncomeTable: FC<FieldBaseProps> = ({ application }) => {
                 return {
                   companyName: item.data?.name || '',
                   description: item.data?.description || '',
-                  salaryAmount: item.amount?.toString() || '0',
+                  payment: item.amount?.toString() || '0',
                 }
               })
               return tableData || []
