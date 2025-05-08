@@ -1,11 +1,12 @@
 export const translations = {
   en: {
+    returnAndLevy: 'Tax return and levy',
     islandIs: 'Ísland.is',
     skatturinn: 'Skatturinn',
     individuals: 'Individuals',
     serviceProvider: 'Service provider',
     toc: 'Table of contents',
-    returnAndLevy: 'Tax return and levy',
+    heading1: 'Tax return – view, edit or submit',
     taxSlip: 'Taxation slip and assumptions 2025',
     instructions: 'Tax return instructions',
     electronicIdAndWebKeys: 'Electronic ID and web keys',
@@ -21,7 +22,7 @@ export const translations = {
     firstApartment: 'First apartment',
     vehicleImport: 'Vehicle import',
     returnAndLevyDesc:
-      'This chapter discusses in detail the criteria for the assessment of all fees that the Director of Internal Revenue imposes according to a tax return. Also the criteria for determining benefits. The Director of Internal Revenue also emphasizes electronic submission of tax data and here you will find information about electronic submission methods and about web keys, their role and functionality.',
+      'The tax return provides an overview of income, deductions, assets, and liabilities for the previous year. The tax return is pre-filled with information from employers, banks, and other sources.',
     instructions2024: 'Tax return instructions 2024',
     instructions2024Desc:
       'Instructions for completing individual tax returns are almost exclusively downloaded from the Internet. You can get the instructions in paper form by picking them up at the nearest Tax Office, but they are not mailed out. When filing online, the tax return instructions are always at hand.',
@@ -36,14 +37,30 @@ export const translations = {
     olderTaxReturns: 'View older tax returns on my pages',
     openMyPages: 'Open my pages',
     pictureText: 'Image showing two people working on a laptop',
+    checkEverything: 'Check that everything is correct.',
+    checkEverythingDesc:
+      'Check your income, taxes paid, loans and assets. If you have loans abroad, you will need to add them yourself if they are missing.',
+    whatNeedDone: 'What do you need to do?',
+    findOut: 'Find out if you are entitled to a deduction',
+    findOutDesc:
+      'In some cases, expenses for tax deduction have been pre-filled, but in other cases you will need to enter the expenses yourself.',
+    return: 'Submit your tax return.',
+    returnDesc:
+      'The deadline is April 30. You can apply for a 30-day extension if you need to. If you do not submit your return by the deadline, it will be returned with pre-filled information.',
+    refund: 'Refund or debt',
+    refundDesc:
+      'After you have submitted your tax return, the Tax Office will calculate whether you are entitled to a refund or have to pay the Tax Office back.',
+    submit: 'Submit tax return',
+    open: 'Open tax return',
   },
   is: {
+    returnAndLevy: 'Framtal og álagning',
     islandIs: 'Ísland.is',
     skatturinn: 'Skatturinn',
     individuals: 'Einstaklingar',
     serviceProvider: 'Þjónustuaðili',
     toc: 'Efnisyfirlit',
-    returnAndLevy: 'Framtal og álagning',
+    heading1: 'Skattframtal – skoða, breyta eða skila',
     taxSlip: 'Álagningarseðill og forsendur 2025',
     instructions: 'Framtalsleiðbeiningar',
     electronicIdAndWebKeys: 'Rafræn skilríki og veflyklar',
@@ -59,7 +76,7 @@ export const translations = {
     firstApartment: 'Fyrsta íbúð',
     vehicleImport: 'Innflutningur ökutækja',
     returnAndLevyDesc:
-      'Í þessum kafla er fjallað ítarlega um forsendur álagningar allra gjalda, sem ríkisskattstjóri leggur á samkvæmt skattframtali. Einnig forsendur fyrir ákvörðun bóta. Þá leggur ríkisskattstjóri áherslu á rafræn skil skattgagna og er hér að finna upplýsingar um rafrænar skilaleiðir og um veflykla, hlutverk þeirra og virkni.',
+      'Skattframtalið veitir yfirlit yfir tekjur, frádrætti, eignir og skuldir síðasta árs. Skattframtalið er forútfyllt með upplýsingum frá vinnuveitendum, bönkum og öðrum aðilum.',
     instructions2024: 'Framtalsleiðbeiningar 2024',
     instructions2024Desc:
       'Leiðbeiningar um útfyllingu skattframtals einstaklinga eru nær eingöngu sóttar á netið. Hægt er að fá leiðbeiningarnar á pappír með því að sækja þær í næstu starfsstöð Skattsins, en þær eru ekki bornar út. Þegar talið er fram á vefnum eru framtalsleiðbeiningar alltaf við höndina.',
@@ -74,6 +91,21 @@ export const translations = {
     olderTaxReturns: 'Skoða eldri skattframtöl á mínum síðum',
     openMyPages: 'Opna mínar síður',
     pictureText: 'Mynd sem sýnir tvær manneskjur að vinna í fartölvu',
+    checkEverything: 'Skoðaðu að allt sé rétt',
+    checkEverythingDesc:
+      'Athugaðu tekjur, greidda skatta, lán og eignir. Ef þú átt lán erlendis, þarftu að bæta þeim við sjálfur ef þau vantar.',
+    whatNeedDone: 'Hvað þarf að gera?',
+    findOut: 'Finndu út hvort þú eigir rétt á frádrætti',
+    findOutDesc:
+      'Í sumum tilfellum er búið að forútfylla útgjöld til frádráttar á skattstofni en í öðrum tilfellum þarftu að færa útgjöldin inn sjálf/ur/t',
+    return: 'Skilaðu skattframtalinu',
+    returnDesc:
+      'Síðasti skiladagur er 30. apríl. Þú getur sótt um 30 daga framlengingu ef þú þarft. Ef þú skilar ekki framtalinu fyrir lokafrest, verður því skilað með forútfylltum upplýsingum.',
+    refund: 'Endurgreiðsla eða skuld',
+    refundDesc:
+      'Eftir að þú hefur skilað skattframtalinu, mun Skatturinn reikna út hvort þú eigir rétt á endurgreiðslu eða þurfir að greiða Skattinum til baka.',
+    submit: 'Skila skattframtali',
+    open: 'Opna skattframtal',
   },
 } as const
 

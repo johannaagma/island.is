@@ -4,6 +4,7 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
 import {
+  AccordionCard,
   Box,
   BreadCrumbItem,
   Breadcrumbs,
@@ -243,14 +244,16 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                 )}
 
                 {showReadSpeaker && (
-                  <Webreader
-                    marginTop={breadcrumbItems?.length ? 3 : 0}
-                    marginBottom={breadcrumbItems?.length ? 0 : 3}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore make web strict
-                    readId={null}
-                    readClass="rs_read"
-                  />
+                  <Box zIndex={80}>
+                    <Webreader
+                      marginTop={breadcrumbItems?.length ? 3 : 0}
+                      marginBottom={breadcrumbItems?.length ? 0 : 3}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore make web strict
+                      readId={null}
+                      readClass="rs_read"
+                    />
+                  </Box>
                 )}
               </GridColumn>
             </GridRow>
@@ -271,15 +274,8 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                     offset={['0', '0', '0']}
                   >
                     <Box>
-                      <Text
-                        variant="h1"
-                        paddingBottom={2}
-                        dataTestId="heading1"
-                      >
-                        {t(lang, 'returnAndLevy')}
-                      </Text>
-                      <Text variant="default">
-                        {t(lang, 'returnAndLevyDesc')}
+                      <Text variant="h1" dataTestId="heading1">
+                        {t(lang, 'heading1')}
                       </Text>
                     </Box>
                   </GridColumn>
@@ -300,7 +296,7 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                       padding={3}
                     >
                       <Text variant={'h3'} as="h3" color={'blue600'}>
-                        Skila skattframtali
+                        {t(lang, 'submit')}
                       </Text>
 
                       <Button
@@ -311,13 +307,70 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                         }
                       >
                         <Box display={'flex'} style={{ gap: '0.5rem' }}>
-                          Opna skattframtal
+                          {t(lang, 'open')}
                           <Icon icon="open" type="outline" />
                         </Box>
                       </Button>
                     </Box>
                   </GridColumn>
                 </GridRow>
+                <Box marginY={2}>
+                  <Text variant="default">{t(lang, 'returnAndLevyDesc')}</Text>
+                </Box>
+                <Box marginY={2}>
+                  <Button variant="text" icon="arrowForward">
+                    {t(lang, 'olderTaxReturns')}
+                  </Button>
+                </Box>
+                <GridRow>
+                  <GridColumn
+                    paddingTop={6}
+                    span={['9/9', '9/9', '9/9']}
+                    offset={['0', '0', '0']}
+                  >
+                    <Box marginBottom={4}>
+                      <Text variant={'h2'} as="h2">
+                        {t(lang, 'whatNeedDone')}
+                      </Text>
+                    </Box>
+                  </GridColumn>
+                </GridRow>
+                <Box marginBottom={2}>
+                  <AccordionCard
+                    id="conclusion-card1"
+                    label={t(lang, 'checkEverything')}
+                    startExpanded={true}
+                  >
+                    <Text>{t(lang, 'checkEverythingDesc')}</Text>
+                  </AccordionCard>
+                </Box>
+                <Box marginBottom={2}>
+                  <AccordionCard
+                    id="conclusion-card2"
+                    label={t(lang, 'findOut')}
+                    startExpanded={true}
+                  >
+                    <Text>{t(lang, 'findOutDesc')}</Text>
+                  </AccordionCard>
+                </Box>
+                <Box marginBottom={2}>
+                  <AccordionCard
+                    id="conclusion-card3"
+                    label={t(lang, 'return')}
+                    startExpanded={true}
+                  >
+                    <Text>{t(lang, 'returnDesc')}</Text>
+                  </AccordionCard>
+                </Box>
+                <Box marginBottom={2}>
+                  <AccordionCard
+                    id="conclusion-card4"
+                    label={t(lang, 'refund')}
+                    startExpanded={true}
+                  >
+                    <Text>{t(lang, 'refundDesc')}</Text>
+                  </AccordionCard>
+                </Box>
                 <GridRow>
                   <GridColumn
                     paddingTop={6}
@@ -399,30 +452,7 @@ const TaxReturnPage: Screen<UniversityComparisonProps> = ({ locale }) => {
                     paddingTop={6}
                     span={['9/9', '9/9', '9/9']}
                     offset={['0', '0', '0']}
-                  >
-                    <Box
-                      width="full"
-                      display={'flex'}
-                      flexDirection={'row'}
-                      justifyContent={'spaceBetween'}
-                      alignItems={'center'}
-                      style={{ backgroundColor: '#F2F7FF' }}
-                      padding={3}
-                    >
-                      <Text variant={'h3'} as="h3" color={'blue600'}>
-                        {t(lang, 'olderTaxReturns')}
-                      </Text>
-
-                      <Button
-                      //onClick={() => router.push(applicationUrlParser())}
-                      >
-                        <Box display={'flex'} style={{ gap: '0.5rem' }}>
-                          {t(lang, 'openMyPages')}
-                          <Icon icon="open" type="outline" />
-                        </Box>
-                      </Button>
-                    </Box>
-                  </GridColumn>
+                  ></GridColumn>
                 </GridRow>
                 <Hidden above="sm">
                   <GridRow>
