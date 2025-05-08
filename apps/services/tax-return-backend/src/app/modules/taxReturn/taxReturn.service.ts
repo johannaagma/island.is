@@ -70,11 +70,25 @@ export class TaxReturnService {
   }
 
   async createTaxReturn(taxReturnDto: CreateTaxReturnDto): Promise<TaxReturn> {
-    console.log('taxReturnDto', taxReturnDto)
     const transaction = await this.sequelize.transaction()
     try {
       const currentYear = new Date().getFullYear()
 
+      // First check if a tax return already exists for this nationalId and year
+      const existingTaxReturn = await this.taxReturnModel.findOne({
+        where: {
+          nationalId: taxReturnDto.nationalId,
+          year: currentYear,
+        },
+      })
+
+      if (existingTaxReturn) {
+        throw new Error(
+          `A tax return already exists for national ID ${taxReturnDto.nationalId} and year ${currentYear}`,
+        )
+      }
+
+      // Otherwise create tax return
       const taxReturnId = (
         await this.taxReturnModel.create(
           {
@@ -134,9 +148,18 @@ export class TaxReturnService {
   ): Promise<TaxReturn> {
     const transaction = await this.sequelize.transaction()
     try {
+      // Check if tax return exists
       const taxReturn = await this.taxReturnModel.findByPk(taxReturnId)
       if (!taxReturn) {
         throw new Error(`Tax return with id ${taxReturnId} not found`)
+      }
+
+      // Only allow update if the tax return is for the current year
+      const currentYear = new Date().getFullYear()
+      if (taxReturn.year !== currentYear) {
+        throw new Error(
+          `Cannot update tax return for year ${taxReturn.year}. Only the current year (${currentYear}) is allowed.`,
+        )
       }
 
       // Delete all old entries
