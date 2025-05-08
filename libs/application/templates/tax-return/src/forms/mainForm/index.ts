@@ -7,6 +7,7 @@ import { generalInfoSection } from './generalInfo'
 import { otherAssetsSection } from './otherAssets'
 import { capitalInfoSection } from './capitalIncome'
 import { debtSection } from './debt'
+import { childSection } from './child'
 
 export const MainForm = buildForm({
   id: 'MainForm',
@@ -20,6 +21,7 @@ export const MainForm = buildForm({
     capitalInfoSection,
     otherAssetsSection,
     debtSection,
+    childSection,
     overviewSection,
   ],
 })

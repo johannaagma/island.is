@@ -7,8 +7,7 @@ export const completedForm = buildForm({
   mode: FormModes.COMPLETED,
   children: [
     buildFormConclusionSection({
-      alertTitle: 'Congratulations',
-      alertMessage: 'You have completed this boilerplate application',
+      alertTitle: 'Skattframtal sent inn til Skattsins!',
     }),
   ],
 })
