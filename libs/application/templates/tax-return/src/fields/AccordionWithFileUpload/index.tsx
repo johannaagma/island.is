@@ -37,11 +37,14 @@ export const AccordionWithFileUpload = ({
             </Box>
           </Box>
         }
+        startExpanded
       >
         <FileUploadController
           id={`${sectionName}.${sectionId}`}
           application={application}
           header={fileUploadTitle}
+          description="Eingöngu er tekið við skjölum með endingunum: .pdf., jpg., jpeg., png. "
+          buttonLabel="Hlaða inn fylgiskjali"
         />
       </AccordionItem>
     </Accordion>

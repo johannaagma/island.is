@@ -1,5 +1,6 @@
 import {
   buildCustomField,
+  buildHiddenInput,
   buildMultiField,
   buildSection,
 } from '@island.is/application/core'
@@ -25,6 +26,12 @@ export const incomeSection = buildSection({
         buildCustomField({
           id: 'income.supportingIncome',
           component: 'SupportingIncomeTable',
+        }),
+        buildHiddenInput({
+          id: 'income.fitnessGrants',
+        }),
+        buildHiddenInput({
+          id: 'income.educationGrants',
         }),
         buildCustomField(
           {

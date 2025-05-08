@@ -9,7 +9,7 @@ import { getApplicantForOverview } from '../../utils/getOverviewItems'
 
 export const overviewSection = buildSection({
   id: 'overviewSection',
-  title: 'Overview',
+  title: 'Yfirlit',
   children: [
     buildMultiField({
       id: 'overviewSection',
