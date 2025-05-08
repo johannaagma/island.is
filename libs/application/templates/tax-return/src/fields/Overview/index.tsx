@@ -216,7 +216,7 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
           size="default"
           icon="pencil"
         >
-          Breyta upplysingum
+          Breyta
         </Button>
       </Box>
       <Box marginBottom={1}>
@@ -319,7 +319,7 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
           size="default"
           icon="pencil"
         >
-          Breyta upplysingum
+          Breyta
         </Button>
       </Box>
 
@@ -383,7 +383,7 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
           size="default"
           icon="pencil"
         >
-          Breyta upplysingum
+          Breyta
         </Button>
       </Box>
 

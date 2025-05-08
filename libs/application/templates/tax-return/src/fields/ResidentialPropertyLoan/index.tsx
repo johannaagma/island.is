@@ -233,7 +233,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               'Lán vegna kaupa eða byggingar íbúðarhúsnæðis til eigin nota.'
             }
             message={
-              'Ef hluti láns er nýttur til annars en öflunar íbúðarhúsnæðis skal tilgreina hve hátt hlutfall fjárhæðar er til öflunar íbúðarhúsnæðis (reitur 1). Í reiti 5 til 8 skal færa heildarfjárhæðir (án hlutföllunar) en í dálka 9 og 10 skal aðeins færa þann hluta af vaxtagjöldum og eftirstöðvum sem tilheyra öflun íbúðarhúsnæðis.'
+              'Ef hluti lánsins var notaður í eitthvað annað en að kaupa eða byggja íbúðarhúsnæði, þarf að gefa upp hvaða hlutfall fór í íbúðarhúsnæði í reit númer 1. Í reitum 5 til 8 skráir þú heildarfjárhæðir lánsins en í dálkum 9 og 10 skaltu aðeins skrá þann hluta vaxtagjalda og eftirstöðva sem tengist íbúðarhúsnæðinu.'
             }
           />
         </Box>

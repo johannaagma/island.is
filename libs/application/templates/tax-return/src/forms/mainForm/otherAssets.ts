@@ -12,7 +12,7 @@ export const otherAssetsSection = buildSection({
       id: 'otherAssets',
       title: 'Eignir aðrar en peningalegar',
       description:
-        'Hér skal gera grein fyrir öllum eignum, öðrum en peningalegum. Þó skal ekki gera grein fyrir rétti til eftirlauna og lífeyris, húsgögnum, húsmunum og eignum sem hafa persónulegt gildi.',
+        'Hér skal gera grein fyrir öllum eignum, öðrum en peningalegum. Þú þarft hins vegar ekki að skrá eftirlaunarétt, húsgögn, innanstokksmuni eða hluti sem hafa eingöngu persónulegt gildi.',
       children: [
         buildCustomField({
           id: 'otherAssets.domesticProperties',
