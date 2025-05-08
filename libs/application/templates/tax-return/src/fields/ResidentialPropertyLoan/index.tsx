@@ -132,7 +132,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
     if (dataAnswers.length > 0) return dataAnswers
     else return [data]
   })
-  const { getValues } = useFormContext()
+  const { getValues, setValue } = useFormContext()
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [updateApplication] = useMutation(UPDATE_APPLICATION)
   const { locale } = useLocale()
@@ -190,6 +190,8 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
 
   setBeforeSubmitCallback?.(async () => {
     const loanList = mapToPropertyLoan()
+
+    setValue('propertyLoan', loanList)
 
     await updateApplication({
       variables: {

@@ -171,7 +171,6 @@ export const Overview: FC<FieldBaseProps> = ({ application }) => {
   const propertyLoan =
     getValueViaPath<PropertyLoanType[]>(application.answers, 'propertyLoan') ||
     []
-  console.log('propertyLoan', propertyLoan)
 
   //const debt = getValueViaPath<DebtType>(application.answers, 'debt')
   const debt: DebtType = {

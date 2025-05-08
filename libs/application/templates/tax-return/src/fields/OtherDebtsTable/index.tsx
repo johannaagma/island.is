@@ -42,7 +42,6 @@ export const OtherDebtsTable: FC<FieldBaseProps> = ({ application }) => {
             getFixedBottomRow: async ({ updatedValues, staticData }) => {
               let totalInterestPayments = 0
               let totalRemainingValue = 0
-              console.log('updatedValues', updatedValues)
               const updatedInterestPayments =
                 updatedValues.debt?.otherDebt?.reduce(
                   (acc: number, item: { interestPayments: string }) => {
@@ -64,8 +63,6 @@ export const OtherDebtsTable: FC<FieldBaseProps> = ({ application }) => {
                   },
                   0,
                 )
-
-              console.log('staticData', staticData)
 
               if (staticData) {
                 const staticDataInterestPayments = staticData.reduce(
