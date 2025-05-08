@@ -12,7 +12,7 @@ export const childSection = buildSection({
       id: 'child',
       title: 'Framtal barna',
       description:
-        'Börn yngri en 16 ára greiða ekki tekjuskatt og útsvar af fyrstu 180.000  kr. af launatekjum sínum á árinu 2024. Eftir sem áður skal telja allar launatekjur barns fram á barnaframtali. Gera skal grein fyrir tekjunum á sérstöku framtali, Skattframtal barns RSK 1.02. Aðeins 1. kafli framtals er þá fylltur út. Rita skal nafn og kennitölu barns og foreldris (framfæranda) á framtalið og skiptir ekki máli hvort skráð er kennitala föður eða móður.',
+        'Börn sem eru yngri en 16 ára þurfa ekki að borga tekjuskatt og útsvar af fyrstu 180.000 krónum sem þau afla í launatekjum á árinu 2024. Samt þarf að skrá allar launatekjur barnsins í framtalið. Þetta er gert á sérstakt framtal sem heitir „Skattframtal barns – RSK 1.02“. Þar þarf bara að fylla út fyrsta kaflann. Einnig þarf að skrá nafn og kennitölu barnsins og þess foreldris sem sér um barnið. Það skiptir ekki máli hvort það er móðir eða faðir.',
       children: [
         buildCustomField(
           {

@@ -1,5 +1,4 @@
 import {
-  buildAlertMessageField,
   buildCustomField,
   buildMultiField,
   buildSection,
@@ -12,20 +11,16 @@ export const capitalInfoSection = buildSection({
     buildMultiField({
       id: 'capitalInfoSection',
       title: 'Fjármagnstekjur',
+      description:
+        'Fjármagnstekjur eru til dæmis vextir af sparnaði, arður af hlutabréfum, hagnaður af sölu eigna, leigutekjur, utan rekstrar, og greiðslur fyrir höfundarrétt. Til vaxtatekna teljast líka verðbætur, afföll og gengishagnaður. Tekjur sem þú hefur fengið í vöxtum fyrir 1. janúar 1997 þarf ekki að skrá í framtalið, því þær falla ekki undir fjármagnstekjuskatt samkvæmt lögum.',
       children: [
-        buildAlertMessageField({
-          id: 'capitalInfoSection.alert',
-          alertType: 'info',
-          message:
-            'Fjármagnstekjur eru vaxtatekjur, arður, söluhagnaður, leigutekjur utan rekstrar og höfundarréttargreiðslur. Með vaxtatekjum er átt við vexti, verðbætur, afföll og gengishagnað. Vaxtatekjur sem áfallnar voru fyrir gildistöku laga um skatt á fjármagnstekjur, þ.e. fyrir 1. janúar 1997, eiga ekki að færast á framtal því þær mynda ekki stofn til skatts á fjármagnstekjur.',
-        }),
         buildCustomField(
           {
             id: 'capitalInfo3.1',
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Innstæður í innlendum bönkum og sparisjóðum (0)',
+            sectionName: 'Innstæður í innlendum bönkum og sparisjóðum',
             sectionId: '3.1',
           },
         ),
@@ -35,7 +30,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Innstæður í erlendum bönkum (0)',
+            sectionName: 'Innstæður í erlendum bönkum',
             sectionId: '3.2',
           },
         ),
@@ -46,7 +41,7 @@ export const capitalInfoSection = buildSection({
           },
           {
             sectionName:
-              'Innlend og erlend verðbréf og kröfur. Stofnsjóðsinneign. (0)',
+              'Innlend og erlend verðbréf og kröfur. Stofnsjóðsinneign.',
             sectionId: '3.3',
           },
         ),
@@ -56,7 +51,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Innstæður og verðbréf barna (0)',
+            sectionName: 'Innstæður og verðbréf barna',
             sectionId: '3.4',
           },
         ),
@@ -66,7 +61,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Hlutabréf og stofnfjárbréf sparisjóða (0)',
+            sectionName: 'Hlutabréf og stofnfjárbréf sparisjóða',
             sectionId: '3.5',
           },
         ),
@@ -76,7 +71,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Hlutabréf í erlendum hlutafélögum (0)',
+            sectionName: 'Hlutabréf í erlendum hlutafélögum',
             sectionId: '3.6',
           },
         ),
@@ -86,7 +81,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Leigutekjur (0)',
+            sectionName: 'Leigutekjur',
             sectionId: '3.7',
           },
         ),
@@ -96,7 +91,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Söluhagnaður/tap af hlutabréfum (0)',
+            sectionName: 'Söluhagnaður/tap af hlutabréfum',
             sectionId: '3.8',
           },
         ),
@@ -106,7 +101,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Annar söluhagnaður (0)',
+            sectionName: 'Annar söluhagnaður',
             sectionId: '3.9',
           },
         ),
@@ -116,7 +111,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Tapaðar fjármagnstekjur. Mótreikningur. (0)',
+            sectionName: 'Tapaðar fjármagnstekjur. Mótreikningur.',
             sectionId: '3.10',
           },
         ),
@@ -126,7 +121,7 @@ export const capitalInfoSection = buildSection({
             component: 'AccordionWithTagSection',
           },
           {
-            sectionName: 'Höfundarréttargreiðslur (0)',
+            sectionName: 'Höfundarréttargreiðslur',
             sectionId: '3.11',
           },
         ),
@@ -137,7 +132,7 @@ export const capitalInfoSection = buildSection({
           },
           {
             sectionName:
-              'Arður og söluhagnaður hlutabréfa á markaði í frítekjumarki fjármagnstekna (0)',
+              'Arður og söluhagnaður hlutabréfa á markaði í frítekjumarki fjármagnstekna',
             sectionId: '3.12',
           },
         ),
