@@ -12,7 +12,7 @@ class TaxReturnEntry {
   @Field(() => Number)
   fieldNumber!: number
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   fieldName?: string
 
   @Field(() => GraphQLJSON, { nullable: true })
