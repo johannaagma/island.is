@@ -265,6 +265,18 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 >
                   Breyta upplýsingum
                 </Button>
+                <Box marginLeft={1}>
+                  <Button
+                    colorScheme="default"
+                    iconType="filled"
+                    preTextIconType="filled"
+                    variant="utility"
+                    size="default"
+                    icon="trash"
+                  >
+                    Eyða upplýsingum
+                  </Button>
+                </Box>
               </Box>
             )}
             <InfoBox items={loan} />
