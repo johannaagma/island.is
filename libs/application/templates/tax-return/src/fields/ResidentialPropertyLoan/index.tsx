@@ -165,7 +165,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
       interest,
       balance,
       loanDate,
-    } = getValues().propertyLoan
+    } = getValues().propertyLoanNew
 
     const newList = [
       loaner,
@@ -327,7 +327,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
               <GridColumn span={['12/12', '12/12', '3/9']}>
                 <InputController
                   required
-                  name="propertyLoan.loaner"
+                  name="propertyLoanNew.loaner"
                   label="Lánveitandi"
                   type="text"
                   backgroundColor="blue"
@@ -338,7 +338,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 <InputController
                   required
                   backgroundColor="blue"
-                  name="propertyLoan.loanerSSN"
+                  name="propertyLoanNew.loanerSSN"
                   label="Kennitala lánveitanda"
                   type="text"
                   id="debt.loanerSSN"
@@ -349,7 +349,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 <InputController
                   required
                   backgroundColor="blue"
-                  name="propertyLoan.loanNumber"
+                  name="propertyLoanNew.loanNumber"
                   label="Lántökunúmer"
                   type="number"
                   id="debt.loaner_number"
@@ -361,7 +361,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 <DatePickerController
                   required
                   id={'debt.date'}
-                  name="propertyLoan.loanDate"
+                  name="propertyLoanNew.loanDate"
                   backgroundColor={'blue'}
                   label={'Lántökudagur'}
                 />
@@ -370,7 +370,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 <InputController
                   required
                   backgroundColor={'blue'}
-                  name={'propertyLoan.loanTime'}
+                  name={'propertyLoanNew.loanTime'}
                   label="Lánstími ár"
                   type={'number'}
                   id={'debt.loanTime'}
@@ -380,7 +380,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                 <InputController
                   required
                   backgroundColor={'blue'}
-                  name={'propertyLoan.total'}
+                  name={'propertyLoanNew.total'}
                   label="Heildargreiðslur"
                   type={'number'}
                   id={'debt.total'}
@@ -394,7 +394,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                   required
                   id={'debt.installment'}
                   backgroundColor={'blue'}
-                  name={'propertyLoan.installment'}
+                  name={'propertyLoanNew.installment'}
                   label="Afborgun á nafnverði"
                   type={'number'}
                   currency={true}
@@ -405,7 +405,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                   required
                   id={'debt.interest'}
                   backgroundColor={'blue'}
-                  name={'propertyLoan.interest'}
+                  name={'propertyLoanNew.interest'}
                   label="Vaxtagjöld"
                   type={'number'}
                   currency={true}
@@ -416,7 +416,7 @@ export const ResidentialPropertyLoan: FC<FieldBaseProps> = ({
                   required
                   id={'debt.balance'}
                   backgroundColor={'blue'}
-                  name={'propertyLoan.balance'}
+                  name={'propertyLoanNew.balance'}
                   label="Eftirstöðvar"
                   type={'number'}
                   currency={true}
